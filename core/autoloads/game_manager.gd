@@ -14,6 +14,7 @@ signal score_changed(new_score)
 signal combo_changed(new_combo)
 signal on_game_over
 signal merge_occurred(pos, power)
+signal chain_event(pos, count, bonus) # Nuovo segnale per il meter
 
 var fruits_data: Array = []
 var shared_texture: Texture2D
@@ -92,10 +93,14 @@ func _spawn_merged_fruit(data: Resource, pos: Vector2) -> void:
 	
 	merge_occurred.emit(pos, data.id)
 	
-	# Gestione Combo
+	# Gestione Combo e Chain
 	combo_multiplier += 1
 	combo_timer = COMBO_RESET_TIME
 	combo_changed.emit(combo_multiplier)
+	
+	# Calcolo bonus per il Brainrot Meter
+	var bonus_refill = float(data.id * 2.0) + (combo_multiplier * 1.5)
+	chain_event.emit(pos, combo_multiplier, bonus_refill)
 	
 	score += (data.id * 10) * combo_multiplier
 	score_changed.emit(score)
@@ -105,7 +110,13 @@ func _spawn_merged_fruit(data: Resource, pos: Vector2) -> void:
 		
 	print("Merged! New Score: ", score)
 
+var is_game_over: bool = false
+
 func game_over() -> void:
+	if is_game_over:
+		return
+	is_game_over = true
+	
 	if score > high_score:
 		high_score = score
 		save_data()

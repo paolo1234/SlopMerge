@@ -10,6 +10,7 @@ func _ready() -> void:
 	gm.score_changed.connect(_on_score_changed)
 	gm.combo_changed.connect(_on_combo_changed)
 	score_label.text = str(gm.score)
+	combo_label.modulate.a = 0.0
 
 func _on_score_changed(new_score: int) -> void:
 	score_label.text = str(new_score)

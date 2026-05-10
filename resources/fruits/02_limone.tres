@@ -7,4 +7,4 @@ script = ExtResource("1_script")
 id = 2
 fruit_name = "Limone Arrabbiato"
 mass = 1.2
-radius = 90.0
+radius = 115.0

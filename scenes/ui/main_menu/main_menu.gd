@@ -6,6 +6,26 @@ func _ready() -> void:
 	$VBoxContainer/SlopdexButton.pressed.connect(_on_slopdex_pressed)
 	$VBoxContainer/WardrobeButton.pressed.connect(_on_wardrobe_pressed)
 	$VBoxContainer/QuitButton.pressed.connect(_on_quit_pressed)
+	
+	_setup_juice()
+
+func _setup_juice() -> void:
+	# Pulse title
+	var tween = create_tween().set_loops()
+	tween.tween_property($Title, "scale", Vector2(1.05, 1.05), 1.5).set_trans(Tween.TRANS_SINE)
+	tween.tween_property($Title, "scale", Vector2(1.0, 1.0), 1.5).set_trans(Tween.TRANS_SINE)
+	$Title.pivot_offset = $Title.size / 2
+	
+	# Button hover effects
+	for btn in $VBoxContainer.get_children():
+		if btn is Button:
+			btn.pivot_offset = btn.size / 2
+			btn.mouse_entered.connect(func(): 
+				create_tween().tween_property(btn, "scale", Vector2(1.1, 1.1), 0.1).set_trans(Tween.TRANS_BACK)
+			)
+			btn.mouse_exited.connect(func(): 
+				create_tween().tween_property(btn, "scale", Vector2(1.0, 1.0), 0.1).set_trans(Tween.TRANS_BACK)
+			)
 
 func _on_play_pressed() -> void:
 	if has_node("/root/TransitionManager"):

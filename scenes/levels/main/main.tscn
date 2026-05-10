@@ -1,4 +1,4 @@
-[gd_scene format=3]
+[gd_scene load_steps=14 format=3]
 
 [ext_resource type="Script" path="res://scenes/levels/main/main.gd" id="1_osekl"]
 [ext_resource type="Script" path="res://scenes/levels/main/cringe_line.gd" id="1_sg7u5"]
@@ -9,49 +9,76 @@
 [ext_resource type="Script" path="res://scenes/ui/brainrot_meter/brainrot_meter.gd" id="6_x8310"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud/hud.tscn" id="7_hud"]
 [ext_resource type="Script" path="res://scenes/ui/hud/hud.gd" id="9_dwkvq"]
+[ext_resource type="Shader" path="res://assets/shaders/dashed_line.gdshader" id="10_shader"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
-size = Vector2(720, 50)
+size = Vector2(1080, 50)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
-size = Vector2(50, 1280)
+size = Vector2(50, 1920)
 
-[node name="Main" type="Node2D" unique_id=603532834]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cringe"]
+shader = ExtResource("10_shader")
+shader_parameter/dash_size = 20.0
+shader_parameter/gap_size = 10.0
+shader_parameter/line_color = Color(1, 0, 0, 0.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cringe"]
+size = Vector2(1080, 40)
+
+[node name="Main" type="Node2D"]
 script = ExtResource("1_osekl")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 anchor_mode = 0
-enabled = true
 
-[node name="Boundaries" type="StaticBody2D" parent="." unique_id=845912989]
+[node name="Boundaries" type="StaticBody2D" parent="."]
 
-[node name="Ceiling" type="CollisionShape2D" parent="Boundaries" unique_id=1689164839]
-position = Vector2(360, 50)
+[node name="Ceiling" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(540, 50)
 shape = SubResource("RectangleShape2D_floor")
 
-[node name="LeftWall" type="CollisionShape2D" parent="Boundaries" unique_id=922523230]
-position = Vector2(0, 640)
+[node name="LeftWall" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(0, 960)
 shape = SubResource("RectangleShape2D_wall")
 
-[node name="RightWall" type="CollisionShape2D" parent="Boundaries" unique_id=557717344]
-position = Vector2(720, 640)
+[node name="RightWall" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(1080, 960)
 shape = SubResource("RectangleShape2D_wall")
 
-[node name="CringeLine" type="Area2D" parent="." unique_id=1169234312]
-position = Vector2(360, 1000)
+[node name="CringeLine" type="Area2D" parent="."]
+position = Vector2(540, 1500)
 script = ExtResource("1_sg7u5")
 
-[node name="Spawner" type="Marker2D" parent="." unique_id=1670917877]
-position = Vector2(360, 1150)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CringeLine"]
+shape = SubResource("RectangleShape2D_cringe")
+
+[node name="Visual" type="ColorRect" parent="CringeLine"]
+material = SubResource("ShaderMaterial_cringe")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -540.0
+offset_top = -2.0
+offset_right = 540.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Spawner" type="Marker2D" parent="."]
+position = Vector2(540, 1750)
 script = ExtResource("1_spawner")
 fruit_scene = ExtResource("2_fruit_scene")
 current_fruit_data = ExtResource("3_pisello")
 
-[node name="FruitsContainer" type="Node2D" parent="." unique_id=1422840182]
+[node name="FruitsContainer" type="Node2D" parent="."]
 
-[node name="UI" type="CanvasLayer" parent="." unique_id=203059788]
+[node name="UI" type="CanvasLayer" parent="."]
 
-[node name="BrainrotMeter" type="Control" parent="UI" unique_id=864505607 instance=ExtResource("4_brainrot_meter")]
+[node name="BrainrotMeter" type="Control" parent="UI" instance=ExtResource("4_brainrot_meter")]
 layout_mode = 3
 anchors_preset = 11
 anchor_left = 1.0
@@ -61,7 +88,7 @@ grow_horizontal = 0
 grow_vertical = 2
 script = ExtResource("6_x8310")
 
-[node name="HUD" type="Control" parent="UI" unique_id=1199992489 instance=ExtResource("7_hud")]
+[node name="HUD" type="Control" parent="UI" instance=ExtResource("7_hud")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -71,5 +98,10 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("9_dwkvq")
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=1621074604]
-anchor_mode = 0
+[node name="FloatingContainer" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

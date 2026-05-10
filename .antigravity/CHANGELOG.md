@@ -17,3 +17,21 @@ Tutte le modifiche importanti a questo progetto saranno documentate in questo fi
 
 ### Fixed
 - Corretto bug nel calcolo della regione dello sprite per la nuova spritesheet.
+- Ottimizzati raggi di collisione nei file `.tres` per evitare sovrapposizioni visive.
+
+## [1.2.0] - 2026-05-11
+### Added
+- **Sistema di Combo**: Tracciamento delle fusioni consecutive con moltiplicatori di punteggio.
+- **Chain Events**: Segnalazione centralizzata delle catene di fusioni per UI e gameplay.
+- **Brainrot Meter**: Barra di energia che si ricarica tramite combo, con stati di feedback visivo (Ready/Shake).
+- **Floating Text System**: Feedback arcade immediato con etichette animate per combo (X2, Super, Brainrot).
+
+### Changed
+- **Risoluzione di Gioco**: Aumentata la risoluzione base a **1080x1920** (Full HD Portrait) per standard mobile moderni.
+- **Main Scene**: Integrazione della UI per i testi fluttuanti e gestione coordinata delle coordinate mondo-UI.
+- **Layout Fisico**: Adattati i confini (Boundaries) e lo Spawner per la nuova risoluzione.
+
+### Fixed
+- Corretto errore di parsing in Godot 4 per costanti Tween non esistenti (`TRANS_OUT`).
+- Risolto bug di posizionamento iniziale dei testi fluttuanti che apparivano a (0,0).
+- Ottimizzata la sensibilità del Brainrot Meter ai bonus di tier elevati.
