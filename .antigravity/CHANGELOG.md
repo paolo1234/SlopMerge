@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.3.0] - 2026-05-11
+### Added
+- **Premium GameOver**: Upgrade grafico della schermata di sconfitta con blur shader e animazioni Tween.
+- **Dashed CringeLine**: Shader personalizzato per la linea di pericolo tratteggiata con pulsazione dinamica.
+
+### Fixed
+- **Input Block**: Risolto bug che impediva il click dei tasti Restart/Menu durante la pausa.
+- **Crash Prevention**: Implementato flag `is_game_over` per prevenire l'istanziamento infinito della UI.
+- **Scene Parsing**: Corretto l'ordine dei tag nei file `.tscn` per caricamento corretto in Godot 4.
+
+### Git
+- Merge completo della feature nel branch `develop`.
+
+
 Tutte le modifiche importanti a questo progetto saranno documentate in questo file.
 
 ## [1.1.0] - 2026-05-11
