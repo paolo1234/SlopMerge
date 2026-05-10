@@ -15,6 +15,7 @@ signal combo_changed(new_combo)
 signal on_game_over
 signal merge_occurred(pos, power)
 signal chain_event(pos, count, bonus) # Nuovo segnale per il meter
+signal special_ability_triggered(type, count)
 
 var fruits_data: Array = []
 var shared_texture: Texture2D

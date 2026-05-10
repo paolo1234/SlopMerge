@@ -5,6 +5,7 @@ extends Control
 
 var current_value: float = 0.0
 var is_ready: bool = false
+var pulse_tween: Tween
 
 func _ready() -> void:
 	var gm = get_node("/root/GameManager")
@@ -36,9 +37,13 @@ func _on_chain_event(_pos: Vector2, count: int, bonus: float) -> void:
 func _trigger_ready_effect() -> void:
 	is_ready = true
 	ready_label.visible = true
-	var tween = create_tween().set_loops()
-	tween.tween_property(ready_label, "modulate:a", 1.0, 0.2)
-	tween.tween_property(ready_label, "modulate:a", 0.5, 0.2)
+	
+	if pulse_tween: pulse_tween.kill()
+	pulse_tween = create_tween().set_loops().set_parallel(true)
+	pulse_tween.tween_property(ready_label, "modulate:a", 1.0, 0.3)
+	pulse_tween.tween_property(ready_label, "scale", Vector2(1.2, 1.2), 0.3)
+	pulse_tween.chain().tween_property(ready_label, "modulate:a", 0.5, 0.3)
+	pulse_tween.tween_property(ready_label, "scale", Vector2(1.0, 1.0), 0.3)
 	
 	var bar_tween = create_tween().set_loops()
 	bar_tween.tween_property(progress_bar, "modulate", Color(1.5, 1.5, 1.5, 1), 0.3)
@@ -47,4 +52,49 @@ func _trigger_ready_effect() -> void:
 func _reset_ready_effect() -> void:
 	is_ready = false
 	ready_label.visible = false
+	if pulse_tween: pulse_tween.kill()
 	progress_bar.modulate = Color(1, 1, 1, 1)
+
+func _on_ultimate_pressed() -> void:
+	if is_ready:
+		_trigger_skibidi_blast()
+
+func _trigger_skibidi_blast() -> void:
+	print("SKIBIDI BLAST ACTIVATED!")
+	current_value = 0.0
+	progress_bar.value = 0.0
+	_reset_ready_effect()
+	
+	# Trova tutti i frutti e distruggi quelli di basso rango (0, 1, 2)
+	var fruits_container = get_node("/root/Main/FruitsContainer")
+	var count = 0
+	for fruit in fruits_container.get_children():
+		if fruit.has_method("get_rank") and fruit.get_rank() <= 2:
+			# Effetto particellare opzionale qui
+			fruit.queue_free()
+			count += 1
+	
+	# Effetto screen shake
+	var cam = get_viewport().get_camera_2d()
+	if cam and cam.has_method("shake"):
+		cam.shake(30.0, 0.5)
+	
+	# Istanzia VFX dell'esplosione
+	var vfx_scene = load("res://scenes/vfx/skibidi_blast_vfx.tscn")
+	var vfx = vfx_scene.instantiate() as CPUParticles2D
+	get_tree().root.add_child(vfx)
+	vfx.global_position = Vector2(540, 960) # Centro schermo
+	vfx.emitting = true
+	
+	# Notifica AudioManager per un suono potente
+	if has_node("/root/AudioManager"):
+		get_node("/root/AudioManager").play_sound("explosion") 
+	
+	# Notifica GameManager per effetti sonori/particelle globali
+	var gm = get_node("/root/GameManager")
+	if gm.has_signal("special_ability_triggered"):
+		gm.emit_signal("special_ability_triggered", "blast", count)
+	
+	# Timer per rimuovere il VFX
+	await get_tree().create_timer(2.0).timeout
+	vfx.queue_free()

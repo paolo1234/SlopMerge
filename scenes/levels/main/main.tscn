@@ -11,6 +11,14 @@
 [ext_resource type="Script" path="res://scenes/ui/hud/hud.gd" id="9_dwkvq"]
 [ext_resource type="Shader" path="res://assets/shaders/dashed_line.gdshader" id="10_shader"]
 
+[ext_resource type="Shader" path="res://assets/shaders/game_background.gdshader" id="11_bg_shader"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_background"]
+shader = ExtResource("11_bg_shader")
+shader_parameter/color1 = Color(0.04, 0.04, 0.06, 1)
+shader_parameter/color2 = Color(0.08, 0.05, 0.12, 1)
+shader_parameter/speed = 0.2
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
 size = Vector2(1080, 50)
 
@@ -28,6 +36,16 @@ size = Vector2(1080, 40)
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_osekl")
+
+[node name="Background" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_background")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1080.0
+offset_bottom = 1920.0
+mouse_filter = 2
+color = Color(0.05, 0.05, 0.08, 1)
 
 [node name="Camera2D" type="Camera2D" parent="."]
 anchor_mode = 0
