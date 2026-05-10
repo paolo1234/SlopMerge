@@ -13,6 +13,7 @@ const COMBO_RESET_TIME: float = 2.0
 signal score_changed(new_score)
 signal combo_changed(new_combo)
 signal on_game_over
+signal merge_occurred(pos, power)
 
 var fruits_data: Array = []
 var shared_texture: Texture2D
@@ -88,6 +89,8 @@ func _spawn_merged_fruit(data: Resource, pos: Vector2) -> void:
 	if not discovered_fruits.has(data.id):
 		discovered_fruits.append(data.id)
 		save_data()
+	
+	merge_occurred.emit(pos, data.id)
 	
 	# Gestione Combo
 	combo_multiplier += 1
