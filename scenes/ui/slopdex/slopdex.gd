@@ -5,7 +5,7 @@ extends Control
 
 func _ready() -> void:
 	back_button.pressed.connect(_on_back_pressed)
-	_populate_pokedex()
+	_populate_slopdex()
 
 func _populate_slopdex() -> void:
 	var gm = get_node("/root/GameManager")
