@@ -19,7 +19,7 @@ Il flusso vitale del giocatore si divide in tre macro-stati:
    - Viene offerta la possibilità di moltiplicare i gettoni guadagnati guardando una Ads.
 3. **Il Metagame (Progression)**: 
    - Nel Menu Principale, il giocatore spende i gettoni alla Macchinetta Gacha per sbloccare Skin tematiche (Zombie, Cyberpunk).
-   - Visita il Pokedex per osservare quali frutti assurdi ha sbloccato e ammirare le "silhouette oscurate" di quelli che gli mancano (FOMO).
+   - Visita il Slopdex per osservare quali frutti assurdi ha sbloccato e ammirare le "silhouette oscurate" di quelli che gli mancano (FOMO).
    - Riscuote premi per le *Daily Quests*.
 
 ---
@@ -30,7 +30,7 @@ Il flusso vitale del giocatore si divide in tre macro-stati:
 - **Visuale**: Il contenitore di gioco vuoto fa da sfondo. Il Titolo "SLOP MERGE" pulsa in alto al centro.
 - **Interazioni**:
   - Bottone gigante centrale **"PLAY"**.
-  - Angolo in basso a sinistra: **Icona Libro** -> Apre il *Pokedex*.
+  - Angolo in basso a sinistra: **Icona Libro** -> Apre il *Slopdex*.
   - Angolo in basso a destra: **Icona Distributore** -> Apre lo *Shop/Gacha*.
   - Icona laterale: **Quest Log** (con badge numerico rosso se ci sono ricompense da riscattare).
 

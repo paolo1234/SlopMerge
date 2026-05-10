@@ -27,7 +27,7 @@ res://
 ├── scenes/
 │   ├── entities/ (fruit.tscn)
 │   ├── levels/ (main.tscn)
-│   ├── ui/ (hud.tscn, game_over.tscn)
+│   ├── ui/ (hud.tscn, game_over.tscn, slopdex.tscn, gacha.tscn)
 │   └── vfx/ (merge_particles.tscn)
 ├── scripts/
 │   └── resources/ (fruit_data.gd)
