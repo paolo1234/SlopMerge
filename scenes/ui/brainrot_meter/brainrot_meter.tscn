@@ -10,10 +10,10 @@ border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
 border_color = Color(0.3, 0.3, 0.4, 1)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fill"]
 bg_color = Color(0.9, 0, 0.9, 1)
@@ -22,49 +22,45 @@ border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(1, 0.5, 1, 1)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
 shadow_color = Color(1, 0, 1, 0.4)
-shadow_size = 15
+shadow_size = 10
 
 [sub_resource type="LabelSettings" id="LabelSettings_ready"]
-font_size = 32
+font_size = 28
 font_color = Color(1, 1, 0, 1)
-outline_size = 8
+outline_size = 6
 outline_color = Color(0, 0, 0, 1)
-shadow_size = 10
+shadow_size = 8
 shadow_color = Color(0.8, 0, 0.8, 0.5)
 
 [sub_resource type="LabelSettings" id="LabelSettings_name"]
-font_size = 24
+font_size = 20
 font_color = Color(1, 0.5, 1, 1)
 outline_size = 4
 outline_color = Color(0, 0, 0, 1)
 
 [node name="BrainrotMeter" type="Control"]
 layout_mode = 3
-anchors_preset = 11
+anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -300.0
+offset_left = -175.0
+offset_top = 180.0
+offset_right = -85.0
+offset_bottom = 680.0
 grow_horizontal = 0
-grow_vertical = 2
 theme = ExtResource("2_theme")
 script = ExtResource("1_x8310")
 
 [node name="ProgressBar" type="ProgressBar" parent="."]
 layout_mode = 1
-anchors_preset = 13
-anchor_left = 0.5
-anchor_right = 0.5
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -40.0
-offset_top = 250.0
-offset_right = 40.0
-offset_bottom = -250.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_bg")
@@ -91,11 +87,11 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -80.0
-offset_top = 180.0
+offset_top = -45.0
 offset_right = 80.0
-offset_bottom = 230.0
+offset_bottom = -5.0
 grow_horizontal = 2
-text = "SKIBIDI!"
+text = "READY!"
 label_settings = SubResource("LabelSettings_ready")
 horizontal_alignment = 1
 
@@ -107,12 +103,12 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -60.0
-offset_top = -240.0
+offset_top = 10.0
 offset_right = 60.0
-offset_bottom = -210.0
+offset_bottom = 40.0
 grow_horizontal = 2
 grow_vertical = 0
-text = "BRAINROT"
+text = "SKIBIDI"
 label_settings = SubResource("LabelSettings_name")
 horizontal_alignment = 1
 
