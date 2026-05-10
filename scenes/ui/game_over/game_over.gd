@@ -21,7 +21,7 @@ func _ready() -> void:
 	center_panel.scale = Vector2.ZERO
 	center_panel.pivot_offset = center_panel.size / 2
 	var tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
-	tween.tween_property(center_panel, "scale", Vector2.ONE, 0.5).set_trans(Tween.TRANS_BACK).set_ease(Tween.E_OUT)
+	tween.tween_property(center_panel, "scale", Vector2.ONE, 0.5).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	
 	_setup_juice()
 
