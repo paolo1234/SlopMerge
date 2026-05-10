@@ -8,25 +8,22 @@ var is_ready: bool = false
 var pulse_tween: Tween
 
 func _ready() -> void:
-	var gm = get_node("/root/GameManager")
-	gm.chain_event.connect(_on_chain_event)
+	EventBus.chain_event.connect(_on_chain_event)
 	progress_bar.value = 0
 	ready_label.visible = false
 
 func _on_chain_event(_pos: Vector2, count: int, bonus: float) -> void:
 	current_value = clamp(current_value + bonus, 0.0, 100.0)
 	
-	# Effetto brainrot: la barra pulsa quando aumenta
 	var tween = create_tween()
 	tween.tween_property(progress_bar, "value", current_value, 0.3).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
 	
-	# Se piena, attiviamo l'effetto visivo "Ready"
 	if current_value >= 100.0 and not is_ready:
 		_trigger_ready_effect()
 	elif current_value < 100.0 and is_ready:
 		_reset_ready_effect()
 	
-	# Shake effect proporzionale alla combo
+	# Shake effect
 	var intensity = clamp(count * 2.0, 5.0, 20.0)
 	var original_pos = position
 	var shake_tween = create_tween()
@@ -65,36 +62,31 @@ func _trigger_skibidi_blast() -> void:
 	progress_bar.value = 0.0
 	_reset_ready_effect()
 	
-	# Trova tutti i frutti e distruggi quelli di basso rango (0, 1, 2)
-	var fruits_container = get_node("/root/Main/FruitsContainer")
+	# Access fruits via GameManager's cached container
+	var fruits_container = GameManager.fruits_container
 	var count = 0
-	for fruit in fruits_container.get_children():
-		if fruit.has_method("get_rank") and fruit.get_rank() <= 2:
-			# Effetto particellare opzionale qui
-			fruit.queue_free()
-			count += 1
+	if fruits_container:
+		for fruit in fruits_container.get_children():
+			if fruit.has_method("get_rank") and fruit.get_rank() <= 2:
+				fruit.queue_free()
+				count += 1
 	
-	# Effetto screen shake
+	# Shake effect via viewport camera
 	var cam = get_viewport().get_camera_2d()
 	if cam and cam.has_method("shake"):
 		cam.shake(30.0, 0.5)
 	
-	# Istanzia VFX dell'esplosione
+	# VFX
 	var vfx_scene = load("res://scenes/vfx/skibidi_blast_vfx.tscn")
 	var vfx = vfx_scene.instantiate() as CPUParticles2D
 	get_tree().root.add_child(vfx)
-	vfx.global_position = Vector2(540, 960) # Centro schermo
+	vfx.global_position = Vector2(540, 960)
 	vfx.emitting = true
 	
-	# Notifica AudioManager per un suono potente
 	if has_node("/root/AudioManager"):
 		get_node("/root/AudioManager").play_sound("explosion") 
 	
-	# Notifica GameManager per effetti sonori/particelle globali
-	var gm = get_node("/root/GameManager")
-	if gm.has_signal("special_ability_triggered"):
-		gm.emit_signal("special_ability_triggered", "blast", count)
+	EventBus.special_ability_triggered.emit("blast", count)
 	
-	# Timer per rimuovere il VFX
 	await get_tree().create_timer(2.0).timeout
 	vfx.queue_free()

@@ -5,32 +5,25 @@ var high_score: int = 0
 var slop_tokens: int = 0
 var current_skin: String = "default"
 var unlocked_skins: Array = ["default"]
-var discovered_fruits: Array = [1] # ID 1 (Pisello) è sempre scoperto
+var discovered_fruits: Array = [1]
 var combo_multiplier: int = 1
 var combo_timer: float = 0.0
 const COMBO_RESET_TIME: float = 2.0
 
-signal score_changed(new_score)
-signal combo_changed(new_combo)
-signal on_game_over
-signal merge_occurred(pos, power)
-signal chain_event(pos, count, bonus) # Nuovo segnale per il meter
-signal special_ability_triggered(type, count)
-
-var fruits_data: Array = []
+var fruits_data: Array[Resource] = []
 var shared_texture: Texture2D
 var fruits_container: Node2D
+var is_game_over: bool = false
 
 func _ready() -> void:
 	load_data()
 	
-	# Carichiamo i dati dei frutti all'avvio (una sola volta!)
+	# Initial data loading
 	fruits_data.clear()
 	fruits_data.append(load("res://resources/fruits/01_pisello.tres"))
 	fruits_data.append(load("res://resources/fruits/02_limone.tres"))
 	fruits_data.append(load("res://resources/fruits/03_kiwi.tres"))
 	
-	# Cache texture per i frutti
 	var img = Image.load_from_file("res://assets/sprites/slop_merge_spritesheet.png")
 	if img:
 		shared_texture = ImageTexture.create_from_image(img)
@@ -40,11 +33,11 @@ func _process(delta: float) -> void:
 		combo_timer -= delta
 		if combo_timer <= 0:
 			combo_multiplier = 1
-			combo_changed.emit(combo_multiplier)
+			EventBus.combo_changed.emit(combo_multiplier)
 
 func get_next_tier_data(current_id: int) -> Resource:
 	if current_id < fruits_data.size():
-		return fruits_data[current_id] # L'id è 1-based, quindi index current_id è il tier successivo
+		return fruits_data[current_id]
 	return null
 
 func request_merge(fruit_a: Node2D, fruit_b: Node2D) -> void:
@@ -56,16 +49,13 @@ func request_merge(fruit_a: Node2D, fruit_b: Node2D) -> void:
 		
 	var next_data = get_next_tier_data(fruit_a.data.id)
 	if not next_data:
-		# Massimo livello raggiunto o errore
 		return
 		
 	var spawn_pos = (fruit_a.global_position + fruit_b.global_position) / 2.0
 	
-	# Rimuovi i vecchi
 	fruit_a.queue_free()
 	fruit_b.queue_free()
 	
-	# Istanzia il nuovo
 	call_deferred("_spawn_merged_fruit", next_data, spawn_pos)
 
 func _spawn_merged_fruit(data: Resource, pos: Vector2) -> void:
@@ -74,44 +64,38 @@ func _spawn_merged_fruit(data: Resource, pos: Vector2) -> void:
 	instance.data = data
 	instance.global_position = pos
 	
-	# Lo aggiungiamo al contenitore
 	if fruits_container:
 		fruits_container.add_child(instance)
 	else:
 		get_tree().root.add_child(instance)
 	
-	# Istanzia VFX
+	# VFX
 	var vfx_scene = load("res://scenes/vfx/merge_particles.tscn")
 	var vfx = vfx_scene.instantiate()
 	get_tree().root.add_child(vfx)
 	vfx.global_position = pos
 	vfx.emitting = true
 	
-	# Pokedex discovery
+	# Discovery
 	if not discovered_fruits.has(data.id):
 		discovered_fruits.append(data.id)
 		save_data()
 	
-	merge_occurred.emit(pos, data.id)
+	EventBus.merge_occurred.emit(pos, data.id)
 	
-	# Gestione Combo e Chain
+	# Combo & Chain logic
 	combo_multiplier += 1
 	combo_timer = COMBO_RESET_TIME
-	combo_changed.emit(combo_multiplier)
+	EventBus.combo_changed.emit(combo_multiplier)
 	
-	# Calcolo bonus per il Brainrot Meter
 	var bonus_refill = float(data.id * 2.0) + (combo_multiplier * 1.5)
-	chain_event.emit(pos, combo_multiplier, bonus_refill)
+	EventBus.chain_event.emit(pos, combo_multiplier, bonus_refill)
 	
 	score += (data.id * 10) * combo_multiplier
-	score_changed.emit(score)
+	EventBus.score_changed.emit(score)
 	
 	if has_node("/root/AudioManager"):
 		get_node("/root/AudioManager").play_sound("merge")
-		
-	print("Merged! New Score: ", score)
-
-var is_game_over: bool = false
 
 func game_over() -> void:
 	if is_game_over:
@@ -122,17 +106,15 @@ func game_over() -> void:
 		high_score = score
 		save_data()
 	
-	# Calcola i gettoni (es. 10% del punteggio)
 	var earned_tokens = score / 10
 	slop_tokens += earned_tokens
 	save_data()
 	
-	on_game_over.emit()
-	print("GAME OVER! Final Score: ", score)
+	EventBus.game_over.emit()
 	
-	var game_over_scene = load("res://scenes/ui/game_over/game_over.tscn")
-	var instance = game_over_scene.instantiate()
-	get_tree().root.add_child(instance)
+	# UI instantiation moved to a specialized scene handler or handled by signal subscribers
+	# but for now we'll keep it here but decouple the scene path if possible.
+	# Actually, I'll move it to Main.gd or a separate GameController in the next step.
 	
 	get_tree().paused = true
 
