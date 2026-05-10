@@ -34,6 +34,7 @@ func _on_combo_changed(new_combo: int) -> void:
 		tween.tween_property(combo_label, "modulate:a", 0.0, 0.5)
 
 func _on_pause_pressed() -> void:
+	get_viewport().set_input_as_handled()
 	var pause_menu_scene = load("res://scenes/ui/pause_menu/pause_menu.tscn")
 	var instance = pause_menu_scene.instantiate()
 	get_tree().root.add_child(instance)

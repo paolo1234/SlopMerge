@@ -14,8 +14,11 @@ var aim_direction: Vector2 = Vector2.DOWN
 func _ready() -> void:
 	pass
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if not can_drop:
+		return
+		
+	if get_viewport().is_input_handled():
 		return
 		
 	if event is InputEventScreenTouch or event is InputEventMouseButton:
