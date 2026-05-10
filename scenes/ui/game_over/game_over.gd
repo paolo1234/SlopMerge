@@ -49,5 +49,8 @@ func _on_menu_pressed() -> void:
 	var gm = get_node("/root/GameManager")
 	gm.is_game_over = false
 	get_tree().paused = false
-	get_tree().change_scene_to_file("res://scenes/ui/main_menu/main_menu.tscn")
+	if has_node("/root/TransitionManager"):
+		get_node("/root/TransitionManager").transition_to("res://scenes/ui/main_menu/main_menu.tscn")
+	else:
+		get_tree().change_scene_to_file("res://scenes/ui/main_menu/main_menu.tscn")
 	queue_free()

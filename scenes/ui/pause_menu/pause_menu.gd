@@ -37,7 +37,7 @@ func _on_resume_pressed() -> void:
 func _on_main_menu_pressed() -> void:
 	get_tree().paused = false
 	if has_node("/root/TransitionManager"):
-		get_node("/root/TransitionManager").fade_to_scene("res://scenes/ui/main_menu/main_menu.tscn")
+		get_node("/root/TransitionManager").transition_to("res://scenes/ui/main_menu/main_menu.tscn")
 	else:
 		get_tree().change_scene_to_file("res://scenes/ui/main_menu/main_menu.tscn")
 	queue_free()
