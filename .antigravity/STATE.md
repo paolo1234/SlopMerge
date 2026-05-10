@@ -14,14 +14,15 @@
 - [x] Sistema Gacha base (Estrazione Skin)
 - [x] Persistenza Skin e Valuta
 - [x] UI Main Menu aggiornata con Gacha
+- [x] Sistema Slopdex (Galleria scoperte)
+- [x] Sistema Wardrobe (Selezione Skin)
+- [x] Implementazione Juice (Screen Shake & Particles)
+- [x] Ottimizzazione Performance (Caching & Direct Refs)
 
 ## Task Attivi (In corso) 🛠️
-- [ ] Bilanciamento raggio collisioni (Risoluzione sovrapposizione frutti)
-- [ ] Implementazione effettiva delle Skin visuali sui frutti
 - [ ] Sistema di reazioni a catena (Brainrot Meter refill)
-- [ ] Pokedex/Galleria frutti
-- [ ] Implementazione Power-up "Laser Beam" (completamento feedback visivo)
-- [ ] Rifinitura Trajectory Line (animazione o particelle)
+- [ ] Power-up aggiuntivi (es. Slow Motion)
+- [ ] Daily Quests base
 
 ## Debiti Tecnici ⚠️
 - I raggi di collisione nei file `.tres` sono sottodimensionati rispetto agli sprite, causando sovrapposizioni.
