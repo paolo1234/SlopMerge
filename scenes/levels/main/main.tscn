@@ -96,25 +96,9 @@ current_fruit_data = ExtResource("3_pisello")
 
 [node name="UI" type="CanvasLayer" parent="."]
 
-[node name="BrainrotMeter" type="Control" parent="UI" instance=ExtResource("4_brainrot_meter")]
-layout_mode = 3
-anchors_preset = 11
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 0
-grow_vertical = 2
-script = ExtResource("6_x8310")
+[node name="BrainrotMeter" parent="UI" instance=ExtResource("4_brainrot_meter")]
 
-[node name="HUD" type="Control" parent="UI" instance=ExtResource("7_hud")]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-script = ExtResource("9_dwkvq")
+[node name="HUD" parent="UI" instance=ExtResource("7_hud")]
 
 [node name="FloatingContainer" type="Control" parent="UI"]
 layout_mode = 3
