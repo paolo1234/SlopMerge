@@ -1,5 +1,6 @@
 [gd_scene format=3]
 
+[ext_resource type="Script" path="res://scenes/levels/main/main.gd" id="1_osekl"]
 [ext_resource type="Script" path="res://scenes/levels/main/cringe_line.gd" id="1_sg7u5"]
 [ext_resource type="Script" path="res://scenes/levels/main/spawner.gd" id="1_spawner"]
 [ext_resource type="PackedScene" path="res://scenes/entities/fruit/fruit.tscn" id="2_fruit_scene"]
@@ -7,6 +8,7 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/brainrot_meter/brainrot_meter.tscn" id="4_brainrot_meter"]
 [ext_resource type="Script" path="res://scenes/ui/brainrot_meter/brainrot_meter.gd" id="6_x8310"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud/hud.tscn" id="7_hud"]
+[ext_resource type="Script" path="res://scenes/ui/hud/hud.gd" id="9_dwkvq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
 size = Vector2(720, 50)
@@ -15,6 +17,7 @@ size = Vector2(720, 50)
 size = Vector2(50, 1280)
 
 [node name="Main" type="Node2D" unique_id=603532834]
+script = ExtResource("1_osekl")
 
 [node name="Boundaries" type="StaticBody2D" parent="." unique_id=845912989]
 
@@ -54,12 +57,12 @@ grow_horizontal = 0
 grow_vertical = 2
 script = ExtResource("6_x8310")
 
-
-
-[node name="HUD" parent="UI" unique_id=1199992489 instance=ExtResource("7_hud")]
+[node name="HUD" type="Control" parent="UI" unique_id=1199992489 instance=ExtResource("7_hud")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("9_dwkvq")

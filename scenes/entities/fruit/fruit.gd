@@ -21,11 +21,9 @@ func _ready() -> void:
 		sprite.material.shader = load("res://assets/shaders/squishy_fruit.gdshader")
 
 func _apply_data() -> void:
-	# Configura la spritesheet (Caricamento manuale per evitare problemi di importazione headless)
-	var path = "res://assets/sprites/slop_merge_spritesheet.png"
-	var img = Image.load_from_file(path)
-	if img:
-		sprite.texture = ImageTexture.create_from_image(img)
+	var gm = get_node("/root/GameManager")
+	if gm.shared_texture:
+		sprite.texture = gm.shared_texture
 	
 	sprite.region_enabled = true
 	

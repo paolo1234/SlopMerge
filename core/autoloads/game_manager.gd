@@ -15,10 +15,22 @@ signal combo_changed(new_combo)
 signal on_game_over
 
 var fruits_data: Array = []
+var shared_texture: Texture2D
+var fruits_container: Node2D
 
 func _ready() -> void:
 	load_data()
-	# ... rest of ready ...
+	
+	# Carichiamo i dati dei frutti all'avvio (una sola volta!)
+	fruits_data.clear()
+	fruits_data.append(load("res://resources/fruits/01_pisello.tres"))
+	fruits_data.append(load("res://resources/fruits/02_limone.tres"))
+	fruits_data.append(load("res://resources/fruits/03_kiwi.tres"))
+	
+	# Cache texture per i frutti
+	var img = Image.load_from_file("res://assets/sprites/slop_merge_spritesheet.png")
+	if img:
+		shared_texture = ImageTexture.create_from_image(img)
 
 func _process(delta: float) -> void:
 	if combo_multiplier > 1:
@@ -26,10 +38,6 @@ func _process(delta: float) -> void:
 		if combo_timer <= 0:
 			combo_multiplier = 1
 			combo_changed.emit(combo_multiplier)
-	# Carichiamo i dati dei frutti (in futuro automatizzato)
-	fruits_data.append(load("res://resources/fruits/01_pisello.tres"))
-	fruits_data.append(load("res://resources/fruits/02_limone.tres"))
-	fruits_data.append(load("res://resources/fruits/03_kiwi.tres"))
 
 func get_next_tier_data(current_id: int) -> Resource:
 	if current_id < fruits_data.size():
@@ -63,8 +71,11 @@ func _spawn_merged_fruit(data: Resource, pos: Vector2) -> void:
 	instance.data = data
 	instance.global_position = pos
 	
-	# Lo aggiungiamo al contenitore (dovremmo avere un riferimento o usare il root)
-	get_tree().root.find_child("FruitsContainer", true, false).add_child(instance)
+	# Lo aggiungiamo al contenitore
+	if fruits_container:
+		fruits_container.add_child(instance)
+	else:
+		get_tree().root.add_child(instance)
 	
 	# Istanzia VFX
 	var vfx_scene = load("res://scenes/vfx/merge_particles.tscn")

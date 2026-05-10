@@ -98,7 +98,11 @@ func launch_fruit() -> void:
 	fruit_instance.global_position = global_position
 	
 	# Aggiungi il frutto al contenitore
-	get_parent().find_child("FruitsContainer", true, false).add_child(fruit_instance)
+	var gm = get_node("/root/GameManager")
+	if gm.fruits_container:
+		gm.fruits_container.add_child(fruit_instance)
+	else:
+		get_parent().add_child(fruit_instance)
 	
 	# Applica l'impulso iniziale
 	fruit_instance.apply_central_impulse(aim_direction * launch_force)
