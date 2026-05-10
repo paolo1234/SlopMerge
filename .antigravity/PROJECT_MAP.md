@@ -1,39 +1,35 @@
 # PROJECT MAP: Slop Merge
 
 ## Obiettivo del Gioco
-Creare un puzzle game "Suika-like" che trattenga i giocatori attraverso un gameplay fisico iper-stimolante, meccaniche "salva-vita" ad-driven, un sistema di Shake con accelerometro, un "Brainrot Meter" (combo) e un solido metagame basato sul collezionismo (Pokedex) e Gacha per skin.
+Creare un puzzle game "Inverse Shooter" (Shoot & Bounce) che trattenga i giocatori attraverso un gameplay fisico iper-stimolante, meccaniche "salva-vita" ad-driven, un "Brainrot Meter" (combo) e un solido metagame.
 
 ## Scene Principali
-- **Main/Game**: La scena principale del loop di gioco (il contenitore, il GameManager, l'Input Handler).
-- **Menu Principale**: Avvio del gioco, accesso al Gacha, al Pokedex e alle Daily Quests.
-- **Fruit**: La scena base per le entità (RigidBody2D).
-- **Gacha/Shop**: La schermata del distributore automatico.
-- **Pokedex**: La galleria dei frutti scoperti.
-- **UI Overlay**: Interfaccia di gioco (Punteggio, Brainrot Meter, Pulsanti Superpoteri).
+- **Main**: `res://scenes/levels/main/main.tscn` (Loop di gioco, Spawner, CringeLine).
+- **Fruit**: `res://scenes/entities/fruit/fruit.tscn` (Entità fisica con shader squishy).
+- **GameOver**: `res://scenes/ui/game_over/game_over.tscn` (Schermata fine partita).
+- **HUD**: `res://scenes/ui/hud/hud.tscn` (Brainrot Meter, Score).
 
 ## Autoloads (Singletons)
-- **GameManager**: Gestisce lo stato globale (Score, Highscore, Valuta, Contatore Combo).
-- **AdManager**: Sistema di intermediazione per Rewarded e Interstitial Ads.
-- **SaveSystem**: Salvataggio/Caricamento locale (gettoni, skin sbloccate, pokedex).
-- **AudioManager**: Code e canali audio per gestire il "suono caotico" senza clipping.
-- **HapticManager**: Per unificare e standardizzare la vibrazione su Android/iOS.
+- **GameManager**: `res://core/autoloads/game_manager.gd` (Score, Highscore, Logica Merge).
+- **AudioManager**: `res://core/autoloads/audio_manager.gd` (Pool di AudioStreamPlayer).
 
 ## Architettura File System (res://)
 ```text
 res://
 ├── assets/
 │   ├── audio/ (sfx, music)
-│   ├── fonts/
-│   └── sprites/ (fruits, ui, backgrounds)
+│   ├── shaders/ (squishy_fruit.gdshader)
+│   └── sprites/ (slop_merge_spritesheet.png)
 ├── core/
-│   ├── autoloads/ (GameManager, AdManager, ecc.)
-│   └── components/ (StateMachines, Juice components)
+│   └── autoloads/ (GameManager, AudioManager)
+├── resources/
+│   └── fruits/ (File .tres per ogni tier di frutto)
 ├── scenes/
-│   ├── entities/ (Fruit, Blender, ecc.)
-│   ├── levels/ (Main container)
-│   └── ui/ (HUD, MainMenu, Pokedex)
+│   ├── entities/ (fruit.tscn)
+│   ├── levels/ (main.tscn)
+│   ├── ui/ (hud.tscn, game_over.tscn)
+│   └── vfx/ (merge_particles.tscn)
 ├── scripts/
-│   ├── resources/ (CustomData per i frutti)
-│   └── systems/ (Managers interni)
-└── .antigravity/ (documentazione di design)
+│   └── resources/ (fruit_data.gd)
+└── .antigravity/ (documentazione)
 ```

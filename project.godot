@@ -9,10 +9,19 @@
 config_version=5
 
 [application]
+run/main_scene="res://scenes/ui/main_menu/main_menu.tscn"
 
 config/name="Slop Merge"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[autoload]
+AudioManager="*res://core/autoloads/audio_manager.gd"
+
+McpInteractionServer="*res://mcp_interaction_server.gd"
+
+GameManager="*res://core/autoloads/game_manager.gd"
+TransitionManager="*res://core/autoloads/transition_manager.tscn"
 
 [display]
 
@@ -23,6 +32,10 @@ window/size/window_height_override=640
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 window/handheld/orientation=1
+
+[physics]
+
+2d/default_gravity_vector=Vector2(0, -1)
 
 [rendering]
 

@@ -21,7 +21,8 @@
     - `.antigravity/PROJECT_MAP.md` → aggiungi/rimuovi file e moduli se la struttura è cambiata.
     - `.antigravity/CHANGELOG.md` → aggiungi una entry con data e descrizione della modifica.
     - `.antigravity/GDD.md` → se hai introdotto un nuovo sistema core, aggiornalo.
-
+12. **TEST THE GAME** — Testa il gioco tramite MCP o manualmente per assicurarti che tutto funzioni correttamente. Se non funziona, sistema e ricomincia da 1. Chiedi conferma all'utente che tutto funzioni come dovrebbe, prima di procedere.
+ 
 ---
 
 ## ✅ Definizione di "Task Completato"

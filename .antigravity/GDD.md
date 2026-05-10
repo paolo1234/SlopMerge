@@ -1,52 +1,101 @@
 # Game Design Document (GDD): Slop Merge
 
-## Concept del Gioco
-Il giocatore lascia cadere dall'alto frutta antropomorfa e grottesca (generata da AI) in un contenitore. Frutti identici a contatto si fondono nel frutto di livello successivo. Se i frutti superano la "Linea del Cringe", la partita finisce. Focus estremo sulla sensazione "brainrot" e stimolazione visiva.
+## 1. Scopo del Progetto & High Concept
+L'obiettivo di **Slop Merge** è catturare l'attenzione frammentata della Generazione Z e Alpha unendo le meccaniche solide e assuefacenti di un *Merge Puzzle* (stile Suika Game) con un'estetica e un sound design ispirati ai contenuti virali "brainrot". Il gioco non deve solo intrattenere, ma deve fornire un costante *feedback sensoriale e dopaminico* (tramite juice, vibrazioni aptiche, e suoni "meme") rendendo impossibile per l'utente smettere di giocare dopo una sola partita. La monetizzazione non è forzata, ma basata su un sistema "pay-with-ads-to-survive", trasformando le pubblicità in preziosi poteri strategici.
 
-## Target Platform
-- **Piattaforma**: Mobile (Android / iOS).
-- **Orientamento**: Portrait (16:9 o ratio più allungati tipici degli smartphone moderni).
-- **Risoluzione base**: 720x1280 (Expand / Canvas Items).
-- **Input**: Touch screen (swipe per mirare, rilascio per droppare, tap sui powerup) e Accelerometro (Shake).
+---
 
-## Core Loop
-1. **Drop**: Mira (swipe down) e rilascia.
-2. **Merge**: Collisione basata su fisica elastica ("squishy").
-3. **Evolve**: Animazioni succose, suoni "meme" esagerati, feedback aptico.
-4. **Combo/Meter**: Riempimento barra Brainrot e attivazione Frullatore.
-5. **Monetizzazione Act**: Guarda Ads per ottenere superpoteri (Raggio Traente, Shake extra, Salvataggi).
+## 2. Il Core Game Loop
+Il flusso vitale del giocatore si divide in tre macro-stati:
 
-## Sistemi di Gioco Principali
+1. **La Partita (Action)**: 
+   - L'utente mira trascinando il dito e rilascia per **sparare** il frutto dal basso verso l'alto.
+   - **Gravità Invertita**: I frutti "cadono" verso l'alto e si accumulano sul soffitto del contenitore.
+   - Frutti dello stesso livello si fondono, scalando in grandezza e garantendo punti e riempiendo il **Brainrot Meter**.
+   - Il giocatore utilizza poteri tattici (Laser Beam) per liberare spazio quando la pila di frutti scende troppo verso il basso.
+2. **Il Game Over (Reward)**: 
+   - Un frutto supera la "Linea del Cringe". 
+   - Viene calcolato il punteggio finale e convertito in "Gettoni Slop".
+   - Viene offerta la possibilità di moltiplicare i gettoni guadagnati guardando una Ads.
+3. **Il Metagame (Progression)**: 
+   - Nel Menu Principale, il giocatore spende i gettoni alla Macchinetta Gacha per sbloccare Skin tematiche (Zombie, Cyberpunk).
+   - Visita il Pokedex per osservare quali frutti assurdi ha sbloccato e ammirare le "silhouette oscurate" di quelli che gli mancano (FOMO).
+   - Riscuote premi per le *Daily Quests*.
 
-### 1. Sistema Fisico e Input
-- Fisica dei `RigidBody2D` per il rotolamento e incastro dei frutti.
-- **Meccanica Originale: The Shake**. Usa i sensori del telefono per smuovere il contenitore fisicamente. Limite: 3 gratuiti per partita. Altri sbloccabili via Ad.
+---
 
-### 2. Brainrot Meter
-- Una barra che si riempie con ogni fusione. Le fusioni a catena (combo) aumentano il moltiplicatore di riempimento.
-- Al 100%, evoca il **Frullatore del Caos**: distrugge automaticamente i 3 frutti più piccoli sullo schermo (o i più fastidiosi se potenziato tramite Ad).
+## 3. Schermate e Interazioni dell'Utente (Flow UI/UX)
 
-### 3. Sistema di Monetizzazione (Superpoteri)
-- **Raggio Traente** (1 Ad): Solleva e riposiziona un frutto.
-- **Preview Estesa** (1 Ad): Mostra i prossimi 3 frutti (invece di 1) per il resto della partita.
-- **Respiro di Sollievo** (1 Ad): Quando vicini al Game Over, elimina il 25% del contenitore.
-- **Moltiplicatore Punti** (1 Ad): A fine partita, x3 ai Gettoni Slop ottenuti.
+### Schermata di Avvio (Menu Principale)
+- **Visuale**: Il contenitore di gioco vuoto fa da sfondo. Il Titolo "SLOP MERGE" pulsa in alto al centro.
+- **Interazioni**:
+  - Bottone gigante centrale **"PLAY"**.
+  - Angolo in basso a sinistra: **Icona Libro** -> Apre il *Pokedex*.
+  - Angolo in basso a destra: **Icona Distributore** -> Apre lo *Shop/Gacha*.
+  - Icona laterale: **Quest Log** (con badge numerico rosso se ci sono ricompense da riscattare).
 
-### 4. Metagame e Ritenzione
-- **Pokedex Cringe**: Collezione visiva di tutti i frutti scoperti, con sagome oscurate per creare FOMO.
-- **Gacha System**: Macchinetta per scambiare "Gettoni Slop" per nuove Skin (es. Cyberpunk, Zombie).
-- **Daily Quests**: Missioni ("Fai scontrare 50 mele", "Usa lo shake 5 volte") per sbloccare bauli. Reset ogni 24h.
+### Schermata In-Game (HUD)
+- **Top Center**: Punteggio attuale, in font grandissimo e con animazione a "pop" ogni volta che sale.
+- **Top Right (Preview)**: Il box che mostra il "Prossimo Frutto". Accanto c'è un piccolo tasto "+". Se cliccato: *"Vuoi vedere i prossimi 3 frutti per sempre? Guarda 1 Spot!"*.
+- **Right Margin (Brainrot Meter)**: Una barra verticale in stile termometro. Si riempie a ogni fusione. Se brilla, il **Frullatore del Caos** è pronto all'uso.
+- **Bottom Left**: Icona del telefono che trema (Shake). Mostra un contatore (es. "2/3"). Premendo un "+" vicino, propone uno Spot per 3 Shake aggiuntivi.
+- **Bottom Right**: Icona del Magnete (Raggio Traente). Costa sempre 1 Spot per essere attivata.
 
-## Performance Budget
-- **Device Low-End**: Massimo X RigidBody attivi. I frutti fermi da troppo tempo potrebbero essere "addormentati" (Sleeping) finché non avviene un urto forte.
-- **Particelle**: Limitare emettitori attivi simultanei. Usare ParticlePooling.
-- **Audio**: Limitare i bus, massimo 2 "Vine Boom" al secondo per evitare saturazione della cassa audio.
+### Schermata di Game Over
+- Uno sfondo semi-trasparente nero oscura il disastro nel contenitore.
+- Testo centrale: **CRINGE OVER!**
+- **Scoreboard**: Punteggio attuale e Best Score.
+- **Risultato Economico**: "Hai guadagnato 150 Gettoni Slop".
+- **Bottoni**: 
+  - Bottone gigante oro: "x3 Gettoni (Guarda Video)".
+  - Bottone standard: "Rigioca".
+  - Bottone standard: "Menu".
 
-## Roadmap & Milestones
+---
 
-- [ ] **Fase 1: Prototipo Core** (Fisica, Spawning, Merging di base).
-- [ ] **Fase 2: Juiciness & Audio** (Shader squishy, particelle, suoni meme, haptic).
-- [ ] **Fase 3: Meccaniche Originali** (Shake con accelerometro, Brainrot Meter e Frullatore).
-- [ ] **Fase 4: Monetizzazione & Ads** (Superpoteri integrati con provider Ad).
-- [ ] **Fase 5: Metagame** (Gacha, Pokedex, Gettoni Slop).
-- [ ] **Fase 6: Polish & Quests** (Daily missions, ottimizzazione performance mobile).
+## 4. Meccaniche di Gioco Dettagliate
+
+### La Fisica "Squishy"
+I `RigidBody2D` non devono rimbalzare come palle da biliardo, ma come gavettoni. Questo richiede una massa che scala con il livello del frutto, attrito basso, e un sistema di "wobble" (tramite shader o tweens sullo Sprite) all'impatto.
+
+### La Meccanica Originale: "Shoot & Bounce"
+Invece di lasciar cadere i frutti verticalmente, il giocatore mira e spara i frutti nel contenitore.
+- **Mira**: Trascinando il dito, si visualizza una traiettoria.
+- **Lancio**: Rilasciando, il frutto viene sparato con un impulso.
+- **Rimbalzi**: I frutti possono rimbalzare sui muri per raggiungere angoli difficili.
+
+### Il Brainrot Meter e il Frullatore del Caos
+Ogni volta che due frutti si fondono, generano energia. Più fusioni avvengono a catena (una fusione ne causa un'altra per caduta), più il moltiplicatore combo aumenta il riempimento.
+Al 100%, l'utente tocca la barra: appare un'animazione di un frullatore al centro dello schermo che "risucchia" ed elimina istantaneamente i 3 frutti di livello più basso (tier 1 e 2), creando spazio prezioso.
+
+### La Linea del Cringe (Condizione di Sconfitta)
+Una linea tratteggiata rossa nella parte **bassa** dello schermo (vicino al lanciatore). Se la pila di frutti scende e tocca la linea per più di **3 secondi continui**, scatta il Game Over. Prima del Game Over definitivo, viene offerta la possibilità di usare un potere per pulire l'area.
+
+---
+
+## 5. Estetica, Audio e Game Feel (Juiciness)
+
+- **Suoni Meme**: Ogni livello di fusione ha un effetto sonoro distinto. 
+  - Livello 1-3: "Pop", "Squeak", "Boing".
+  - Livello 4-7: Versi esagerati, risate AI.
+  - Livello 8-11: "Vine Boom" fortissimo, screen shake intenso.
+- **Feedback Aptico (Vibrazione)**: 
+  - Toccare i bordi: Vibrazione impercettibile.
+  - Fusione piccola: *Light Impact*.
+  - Fusione enorme: *Heavy Impact* prolungato.
+- **Effetti Visivi**: Esplosioni di particelle (emoji, stelle, coriandoli) che coprono brevemente lo schermo durante le fusioni per mascherare il cambio di sprite.
+
+---
+
+## 6. Tier dei Frutti (Draft)
+1. Pisello Triste
+2. Limone Arrabbiato
+3. Kiwi Sospettoso
+4. Mela Piangente
+5. Arancia Sorridente (Maniaca)
+6. Pesca Palestrata
+7. Ananas Tattico
+8. Melone Troll
+9. Anguria Chad
+10. Zucca Demoniaca
+11. **Sole Cosmico (Vittoria/Punteggio Massimo)**

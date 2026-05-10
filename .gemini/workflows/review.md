@@ -28,6 +28,9 @@ Questo workflow guida la revisione del codice esistente senza modificarlo.
 ### ✅ Punti Positivi
 - [Cosa è fatto bene]
 
+### Grafica
+- [Come migliorare la grafica, la HUD, UI, effetti, altro se necessario in modo che sia adatto alla produzione e non sia solo un test]
+
 ### ⚠️ Problemi Trovati
 | # | Severità | File | Riga | Descrizione |
 |---|---|---|---|---|
