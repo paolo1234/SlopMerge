@@ -27,16 +27,19 @@ func _populate_slopdex() -> void:
 		slot.add_child(icon)
 		
 		# Caricamento texture (usa lo stesso metodo di fruit.gd)
-		var tex = load("res://assets/sprites/slop_merge_spritesheet.png")
-		icon.texture = tex
-		icon.region_enabled = true
+		var gm_texture = gm.shared_texture
 		
-		var tex_size = tex.get_size()
+		var atlas = AtlasTexture.new()
+		atlas.atlas = gm_texture
+		
+		var tex_size = gm_texture.get_size()
 		var frame_size = tex_size.x / 16.0
 		var fruit_index = (fruit_data.id - 1)
 		var col = (fruit_index % 4) * 4
 		var row = (fruit_index / 4) * 2
-		icon.region_rect = Rect2(col * frame_size, row * frame_size, frame_size, frame_size)
+		atlas.region = Rect2(col * frame_size, row * frame_size, frame_size, frame_size)
+		
+		icon.texture = atlas
 		
 		if gm.discovered_fruits.has(fruit_data.id):
 			icon.modulate = Color.WHITE
