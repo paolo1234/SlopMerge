@@ -36,3 +36,8 @@
 - [/] Applicazione visuale Skin sui frutti
 - [/] Pokedex (Galleria scoperte)
 - [/] Wardrobe (Selezione skin)
+
+## Fase 7: Polish & Audio 🛠️
+- [x] Menù di Pausa con settings volume
+- [ ] Integrazione audio reale (AudioManager SFX)
+- [ ] Effetto Screen Shake globale

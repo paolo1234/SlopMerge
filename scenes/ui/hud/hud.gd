@@ -32,3 +32,8 @@ func _on_combo_changed(new_combo: int) -> void:
 		# Svanisce se la combo torna a 1
 		var tween = create_tween()
 		tween.tween_property(combo_label, "modulate:a", 0.0, 0.5)
+
+func _on_pause_pressed() -> void:
+	var pause_menu_scene = load("res://scenes/ui/pause_menu/pause_menu.tscn")
+	var instance = pause_menu_scene.instantiate()
+	get_tree().root.add_child(instance)

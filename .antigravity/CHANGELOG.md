@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.4.0] - 2026-05-11
+### Added
+- **Menù di Pausa Premium**: Interfaccia con blur shader e animazioni di scala.
+- **Volume Settings**: Implementati slider per il controllo del volume Master e SFX.
+- **AudioManager Upgrade**: Aggiunta gestione dei bus audio tramite AudioServer.
+- **Pause Icon**: Nuova icona neon cyan personalizzata per il tasto in HUD.
+
+### Fixed
+- Corretto errore di parsing in `pause_menu.tscn`.
+- Ripristinato `ComboLabel` nel file `HUD.tscn`.
+
 ## [1.3.0] - 2026-05-11
 ### Added
 - **Premium GameOver**: Upgrade grafico della schermata di sconfitta con blur shader e animazioni Tween.

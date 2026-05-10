@@ -1,6 +1,7 @@
 # Stato Attuale del Progetto: Slop Merge
 
-- [x] Sistema di reazioni a catena: Refill dinamico del Brainrot Meter e feedback arcade (Floating Text).
+- [x] Premium GameOver: Refinement grafico (blur, tween) e fix stabilità (is_game_over flag).
+- [x] Menù di Pausa: Implementazione completa con blur shader, settings volume e navigazione.
 
 ## Task Completati ✅
 - [x] Setup struttura cartelle base in `res://`
