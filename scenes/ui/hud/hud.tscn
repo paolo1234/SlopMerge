@@ -3,21 +3,20 @@
 [ext_resource type="Script" path="res://scenes/ui/hud/hud.gd" id="1_bngdn"]
 [ext_resource type="Theme" uid="res://assets/themes/main_theme.tres" path="res://assets/themes/main_theme.tres" id="2_theme"]
 
-
 [sub_resource type="LabelSettings" id="LabelSettings_score"]
-font_size = 56
+font_size = 72
+outline_size = 15
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 15
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_offset = Vector2(4, 4)
+
+[sub_resource type="LabelSettings" id="LabelSettings_combo"]
+font_size = 48
+font_color = Color(1, 0.8, 0, 1)
 outline_size = 12
 outline_color = Color(0, 0, 0, 1)
 shadow_size = 10
-shadow_color = Color(0, 0, 0, 0.5)
-shadow_offset = Vector2(3, 3)
-
-[sub_resource type="LabelSettings" id="LabelSettings_combo"]
-font_size = 36
-font_color = Color(1, 0.8, 0, 1)
-outline_size = 10
-outline_color = Color(0, 0, 0, 1)
-shadow_size = 8
 shadow_color = Color(1, 0, 1, 0.3)
 
 [node name="HUD" type="Control"]
@@ -36,10 +35,10 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -120.0
-offset_top = 20.0
-offset_right = 120.0
-offset_bottom = 100.0
+offset_left = -150.0
+offset_top = 30.0
+offset_right = 150.0
+offset_bottom = 130.0
 grow_horizontal = 2
 
 [node name="ScoreLabel" type="Label" parent="ScorePanel"]
@@ -61,10 +60,10 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -150.0
-offset_top = 110.0
-offset_right = 150.0
-offset_bottom = 160.0
+offset_left = -200.0
+offset_top = 140.0
+offset_right = 200.0
+offset_bottom = 200.0
 grow_horizontal = 2
 text = "COMBO X2"
 label_settings = SubResource("LabelSettings_combo")
@@ -77,11 +76,12 @@ layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -100.0
-offset_top = 20.0
-offset_right = -20.0
-offset_bottom = 100.0
+offset_left = -130.0
+offset_top = 30.0
+offset_right = -30.0
+offset_bottom = 130.0
 grow_horizontal = 0
+theme_override_font_sizes/font_size = 56
 text = "||"
 
 [connection signal="pressed" from="PauseButton" to="." method="_on_pause_pressed"]

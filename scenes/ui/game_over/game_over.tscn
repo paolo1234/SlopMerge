@@ -17,18 +17,18 @@ shader = SubResource("Shader_blur")
 shader_parameter/lod = 2.5
 
 [sub_resource type="LabelSettings" id="LabelSettings_title"]
-font_size = 82
+font_size = 110
 font_color = Color(1, 0.2, 0.2, 1)
-outline_size = 20
+outline_size = 30
 outline_color = Color(0, 0, 0, 1)
-shadow_size = 15
+shadow_size = 25
 shadow_color = Color(1, 0, 0, 0.3)
-shadow_offset = Vector2(0, 5)
+shadow_offset = Vector2(0, 8)
 
 [sub_resource type="LabelSettings" id="LabelSettings_score"]
-font_size = 48
+font_size = 64
 font_color = Color(1, 1, 1, 1)
-outline_size = 10
+outline_size = 15
 outline_color = Color(0, 0, 0, 1)
 
 [node name="GameOver" type="CanvasLayer"]
@@ -61,10 +61,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -300.0
-offset_top = -350.0
-offset_right = 300.0
-offset_bottom = 350.0
+offset_left = -400.0
+offset_top = -500.0
+offset_right = 400.0
+offset_bottom = 500.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -73,13 +73,13 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 30.0
-offset_top = 30.0
-offset_right = -30.0
-offset_bottom = -30.0
+offset_left = 60.0
+offset_top = 60.0
+offset_right = -60.0
+offset_bottom = -60.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 40
+theme_override_constants/separation = 50
 alignment = 1
 
 [node name="Title" type="Label" parent="Control/CenterPanel/VBoxContainer"]
@@ -105,13 +105,13 @@ custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 
 [node name="RestartButton" type="Button" parent="Control/CenterPanel/VBoxContainer"]
-custom_minimum_size = Vector2(250, 90)
+custom_minimum_size = Vector2(400, 120)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "RESTART"
 
 [node name="MenuButton" type="Button" parent="Control/CenterPanel/VBoxContainer"]
-custom_minimum_size = Vector2(250, 90)
+custom_minimum_size = Vector2(400, 120)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "MAIN MENU"
