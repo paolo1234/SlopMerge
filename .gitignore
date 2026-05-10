@@ -1,0 +1,11 @@
+# Godot 4+ specific ignores
+.godot/
+!*.godot
+*.translation
+
+# Crash reports
+crash_reports/
+
+# Export folders
+export/
+export_presets.cfg
