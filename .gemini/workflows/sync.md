@@ -1,4 +1,4 @@
-﻿---
+---
 name: sync
 description: "Allineamento contesto a inizio sessione"
 ---
@@ -11,15 +11,13 @@ Questo workflow sincronizza il contesto dell'agente ad inizio sessione.
 
 ## Steps
 
-1. Leggi il file `.context/INSTRUCTIONS.md`.
-2. Leggi i file in `.antigravity/brand/` (Identity e Styling).
-3. Verifica le Skill disponibili in `.antigravity/skills/`.
-4. Leggi il file `.context/CONVENTIONS.md`.
-5. Leggi il file `.antigravity/PROJECT_MAP.md`.
-6. Leggi il file `.antigravity/TECH_STACK.md`.
-7. Leggi il file `.antigravity/STATE.md`.
-8. Leggi il file `.antigravity/CHANGELOG.md`.
-7. Fornisci un riassunto usando **esattamente** questo formato:
+1. **Git Audit**: Esegui `git status` e `git branch` per identificare il branch attivo e lo stato della working directory.
+2. **State Recovery**: Leggi `.antigravity/STATE.md` e `TASK.md` per capire quale task è attualmente attivo (🛠️).
+3. **Context Loading**: Leggi `.context/INSTRUCTIONS.md`, `.context/CONVENTIONS.md`, `.antigravity/TECH_STACK.md`.
+4. **Project Map**: Leggi `.antigravity/PROJECT_MAP.md` per la struttura file.
+5. **Brand & Identity**: Leggi `.antigravity/brand/IDENTITY.md` e `STYLING.md`.
+6. **Skill Audit**: Verifica le Skill disponibili in `.antigravity/skills/`.
+7. **Report**: Fornisci un riassunto usando **esattamente** questo formato:
 
 ## Template Output
 

@@ -1,4 +1,4 @@
-﻿---
+---
 name: refactor
 description: "Refactoring e pulizia del codice"
 ---
@@ -11,13 +11,22 @@ Questo workflow guida il refactoring e la pulizia del codice.
 
 ## Steps
 
-1. Leggi `.context/INSTRUCTIONS.md` per l'ordine operativo.
-2. Leggi `.antigravity/brand/IDENTITY.md` e `STYLING.md` per la Brand Identity (UI/Copy).
-3. Verifica le Skill in `.antigravity/skills/` (es. `ui-generator`, `perf-profiler`).
-4. Leggi `.context/CONVENTIONS.md` per le regole di codifica.
-5. Leggi `.antigravity/PROJECT_MAP.md` per la struttura.
-6. Leggi `.antigravity/TECH_STACK.md` per le tecnologie.
-7. Leggi `.antigravity/STATE.md` per lo stato.
+1. **Sincronizzazione**: Esegui `/sync` per allineare il contesto.
+2. **Analisi**: Leggi `.context/INSTRUCTIONS.md`, `.context/CONVENTIONS.md`, `.antigravity/PROJECT_MAP.md`.
+3. **Pianificazione**: 
+   - Identifica il codice da rifattorizzare.
+   - Proponi il nuovo design senza cambiare funzionalità.
+   - **Attendi conferma.**
+4. **Git Branching**: Crea un nuovo branch `refactor/descrizione` da `develop`.
+5. **Esecuzione**: Applica il refactoring mantenendo la compatibilità.
+6. **Validazione**: 
+   - Esegui `git diff`.
+   - **Avvia il gioco** e verifica che tutto funzioni esattamente come prima.
+7. **Commit Atomico**: `git add . && git commit -m "refactor(scope): descrizione del refactoring"`.
+8. **Documentazione (SYNC)**:
+   - Aggiorna `.antigravity/STATE.md`.
+   - Aggiungi entry in `.antigravity/CHANGELOG.md`.
+9. **Merge**: Ritorna su `develop` e unisci il branch.
 6. Analizza il file/cartella target: identifica code smell, duplicazioni, file sopra le 200 righe.
 7. Proponi le modifiche strutturali. **Attendi conferma dell'utente.**
 8. Esegui il refactoring rispettando `.context/CONVENTIONS.md`:

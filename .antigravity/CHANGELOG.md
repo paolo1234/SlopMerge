@@ -1,5 +1,7 @@
 # Changelog
 
+- [2026-05-11] Revamp totale dei workflow e sincronizzazione con `game-core`. Introdotti step obbligatori per branching, testing e documentazione. Creata struttura `core/` generica.
+
 ## [1.4.0] - 2026-05-11
 ### Added
 - **Menù di Pausa Premium**: Interfaccia con blur shader e animazioni di scala.

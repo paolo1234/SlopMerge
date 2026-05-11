@@ -1,52 +1,41 @@
----
-description: Inizializzazione di un nuovo progetto Godot 4 — Protocollo 5
+﻿---
+name: init
+description: "Inizializzazione di un nuovo progetto"
 ---
 
-# 🏗 Project Init (Godot 4)
+# 🏗 Project Init
 
-Questo workflow guida il setup iniziale di un nuovo progetto Godot 4 per mobile.
+Questo workflow guida il setup iniziale dei file di contesto per un nuovo progetto.
 
 ## Steps
 
-1. **Raccolta Input**:
-   - Chiedi il **Nome del gioco**.
-   - Chiedi una **Descrizione dell'idea di gioco** (genere, meccanica principale, riferimenti).
-   - Chiedi l'**orientamento** (portrait/landscape).
-   - Chiedi se l'utente ha già in mente un **genere, stile visivo o ispirazioni**, altrimenti guida un brainstorming.
-2. **Brainstorming & Analisi Architetturale**:
-   - Analizza l'idea e popola un report di brainstorming.
-   - **Obbligatorio**: Proponi **almeno 3 approcci architetturali possibili** (es: Component-based con FSM, ECS-like, Scene-based puro, etc.).
-   - Per ogni opzione, elenca chiaramente:
-     - **Punti di Forza** (perché sceglierla).
-     - **Punti di Debolezza** (potenziali colli di bottiglia o limiti).
-     - **Scene Tree consigliato** (diagramma ASCII).
-   - Identifica eventuali rischi tecnici per mobile (performance, input, risoluzione).
-3. **Scelta e Approvazione**:
-   - Discuti con l'utente per scegliere l'opzione migliore o mixare le idee.
-   - **NON procedere** alla creazione dei file senza l'approvazione esplicita.
-4. **Git Init & Branching**:
-   - Inizializza il repository Git: `git init`
-   - Crea il file `.gitignore` per Godot
-   - Crea il primo commit su `master`: `chore: initial project setup`
-   - Crea il branch `develop`: `git checkout -b develop`
-5. Inizializza `.antigravity/brand/IDENTITY.md` con genere, target, tono e riferimenti.
-6. Popola `.antigravity/PROJECT_MAP.md`:
-   - Inserisci l'obiettivo del gioco
-   - Definisci le scene principali e gli autoloads
-   - Disegna l'architettura file system `res://`
-7. Popola `.antigravity/GDD.md`:
-   - Concept del gioco
-   - Target platform (orientamento, risoluzione, input)
-   - Core loop
-   - Sistemi di gioco iniziali (anche solo pianificati)
-   - Performance budget
-   - Roadmap con milestones
-8. Popola `.antigravity/TECH_STACK.md`:
-   - Conferma Godot 4.x + GDScript
-   - Configura viewport e stretch settings
-   - Inserisci eventuali addon/plugin
-9. Inizializza `.antigravity/STATE.md`:
-   - Aggiungi i primi task dalla roadmap del GDD
-10. Crea la prima entry in `.antigravity/CHANGELOG.md`:
-    - `[data] — Inizializzazione progetto [nome]`
-11. Conferma il setup completato e riepiloga la configurazione.
+1. Chiedi all'utente:
+   - Nome del progetto
+   - Obiettivo / descrizione breve
+   - Tech stack desiderato (framework, linguaggio, styling, ecc.)
+   - Eventuali servizi esterni (database, auth, API, ecc.)
+2. **Brainstorming & Analisi Critica**:
+   - Analizza gli input ricevuti e produci un report critico.
+   - Identifica potenziali rischi tecnologici o colli di bottiglia.
+   - Proponi soluzioni alternative, pattern migliori o ottimizzazioni dello stack.
+   - **Sfida** l'utente su eventuali incongruenze (es. "Vuoi usare X per fare Y, ma Z sarebbe più efficiente perché...").
+3. **Approvazione Piano**:
+   - Attendi che l'utente approvi il piano finale o richieda modifiche basate sul brainstorming.
+   - **NON procedere** alla creazione dei file senza conferma esplicita.
+4. Inizializza `.antigravity/brand/IDENTITY.md` e `STYLING.md` se disponibili o crea placeholder.
+5. Popola `.antigravity/PROJECT_MAP.md`:
+   - Inserisci l'obiettivo del progetto
+   - Definisci i moduli core iniziali
+   - Disegna l'architettura file system prevista
+6. Popola `.antigravity/TECH_STACK.md`:
+   - Inserisci lo stack scelto con versioni
+   - Definisci le dipendenze principali
+   - Imposta le variabili d'ambiente necessarie
+7. Verifica / Crea cartelle se mancanti:
+   - `.antigravity/brand/` (IDENTITY.md, STYLING.md)
+   - `.antigravity/skills/` (scansione e setup)
+8. Inizializza `.antigravity/STATE.md`:
+   - Aggiungi il primo task: "Setup progetto iniziale"
+9. Crea la prima entry in `.antigravity/CHANGELOG.md`:
+   - `[data] — Inizializzazione progetto [nome]`
+10. Conferma il setup completato e riepiloga la configurazione.

@@ -1,4 +1,4 @@
-﻿---
+---
 name: feature
 description: "Sviluppo di una nuova feature"
 ---
@@ -11,16 +11,22 @@ Questo workflow guida lo sviluppo di una nuova feature.
 
 ## Steps
 
-1. Leggi `.context/INSTRUCTIONS.md` per l'ordine operativo.
-2. Leggi `.antigravity/brand/IDENTITY.md` e `STYLING.md` per la Brand Identity.
-3. Verifica le Skill in `.antigravity/skills/` per ottimizzare lo sviluppo.
-4. Leggi `.context/CONVENTIONS.md` per le regole di codifica.
-5. Leggi `.antigravity/PROJECT_MAP.md` per la struttura.
-6. Leggi `.antigravity/TECH_STACK.md` per le tecnologie.
-7. Leggi `.antigravity/STATE.md` per lo stato.
-6. Identifica in quali cartelle esistenti deve andare il codice o se serve una nuova cartella.
-7. Elenca tutti i file che verranno creati o modificati, con una breve descrizione delle modifiche. **Attendi conferma dell'utente.**
-8. Scrivi il codice rispettando le regole in `.context/CONVENTIONS.md`.
-9. Aggiorna `.antigravity/STATE.md` — segna il task come completato.
-10. Aggiorna `.antigravity/PROJECT_MAP.md` — aggiungi nuovi file/moduli.
-11. Aggiungi una entry in `.antigravity/CHANGELOG.md` con data e descrizione.
+1. **Sincronizzazione**: Esegui `/sync` per allineare il contesto.
+2. **Analisi**: Leggi `.context/INSTRUCTIONS.md`, `.antigravity/PROJECT_MAP.md`, `.antigravity/TECH_STACK.md`, `.antigravity/STATE.md`.
+3. **Pianificazione**: 
+   - Identifica le cartelle di destinazione.
+   - Proponi il Scene Tree (ASCII) se crei una scena.
+   - Elenca i file da creare/modificare.
+   - **Attendi conferma dell'utente.**
+4. **Git Branching**: Crea un nuovo branch `feature/nome-feature` partendo da `develop`.
+5. **Esecuzione**: Scrivi il codice seguendo le `.context/CONVENTIONS.md` e `.context/CONVENTIONS_GODOT.md`.
+6. **Validazione & Test**: 
+   - Esegui `git diff` per verificare le modifiche.
+   - **Avvia il gioco** tramite Godot/MCP e verifica che la feature funzioni e non ci siano regressioni.
+7. **Commit Atomico**: `git add . && git commit -m "feat(scope): descrizione della nuova feature"`.
+8. **Documentazione (SYNC)**:
+   - Aggiorna `.antigravity/STATE.md` (task completato).
+   - Aggiorna `TASK.md` nella root.
+   - Aggiorna `.antigravity/PROJECT_MAP.md` (nuovi file).
+   - Aggiungi entry in `.antigravity/CHANGELOG.md`.
+9. **Merge**: Ritorna su `develop` e unisci il branch (o chiedi all'utente di farlo).

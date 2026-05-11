@@ -16,12 +16,14 @@
 8. **PIANO** — Proponi una lista di modifiche (scene da creare, script da modificare/creare, risorse `.tres`) e **attendi conferma** dell'utente prima di procedere.
 9. **ESECUZIONE** — Scrivi codice seguendo le regole in `.context/CONVENTIONS.md`, `.context/CONVENTIONS_GODOT.md` e i pattern in `.antigravity/TECH_STACK.md`.
 10. **VERIFICA** — Esegui `git diff` per controllare che non hai rotto funzionalità esistenti. Usa l'MCP per testare se possibile.
-11. **SYNC** — Aggiorna i file di stato:
+11. **SYNC & DOCUMENTATION** — Aggiorna i file di stato (OBBLIGATORIO):
     - `.antigravity/STATE.md` → segna il task come completato, aggiungi nuovi task/blocchi emersi.
     - `.antigravity/PROJECT_MAP.md` → aggiungi/rimuovi file e moduli se la struttura è cambiata.
     - `.antigravity/CHANGELOG.md` → aggiungi una entry con data e descrizione della modifica.
+    - `TASK.md` (nella root) → segna il task come completato o in corso.
     - `.antigravity/GDD.md` → se hai introdotto un nuovo sistema core, aggiornalo.
-12. **TEST THE GAME** — Testa il gioco tramite MCP o manualmente per assicurarti che tutto funzioni correttamente. Se non funziona, sistema e ricomincia da 1. Chiedi conferma all'utente che tutto funzioni come dovrebbe, prima di procedere.
+12. **GIT COMMIT** — Esegui un commit descrittivo delle modifiche effettuate (`git add .` -> `git commit -m "..."`).
+13. **TEST THE GAME** — Testa il gioco tramite MCP o manualmente per assicurarti che tutto funzioni correttamente. Se non funziona, sistema e ricomincia da 1. Chiedi conferma all'utente che tutto funzioni come dovrebbe, prima di procedere.
  
 ---
 

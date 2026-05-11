@@ -25,6 +25,7 @@
 - [x] Upgrade Risoluzione: Porting a 1080x1920 (Full HD Mobile) e adattamento layout fisico
 
 ## Task Attivi (In corso) 🛠️
+- [x] **Game-Core Sync & Revamp**: Estrazione miglioramenti generici in `game-core` e rifacimento totale dei workflow per garantire disciplina (branching, commits, testing, docs).
 - [ ] **Frullatore del Caos**: Implementazione abilità speciale attiva al 100% del Meter.
 - [ ] **Power-up Magnete**: Raggio traente per riposizionare frutti (Ads rewarded).
 - [ ] **Power-up Slow Motion**: Rallentamento temporaneo del tempo.

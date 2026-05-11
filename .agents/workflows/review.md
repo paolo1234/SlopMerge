@@ -1,66 +1,51 @@
----
-description: Revisione e analisi del codice — Protocollo 6
+﻿---
+name: review
+description: "Revisione e analisi del codice"
 ---
 
-# 🔍 Code Review Flow (Godot 4)
+# 🔍 Code Review Flow
 
-Questo workflow guida la revisione del codice GDScript e delle scene esistenti senza modificarle.
+Questo workflow guida la revisione del codice esistente senza modificarlo.
 
 // turbo-all
 
 ## Steps
 
 1. Leggi `.context/INSTRUCTIONS.md` per l'ordine operativo.
-2. Leggi `.context/CONVENTIONS_GODOT.md` per le regole architetturali Godot.
-3. Verifica le Skill in `.antigravity/skills/` (es. `gdscript-patterns`, `perf-profiler`, `error-optimizer`).
+2. Leggi `.antigravity/brand/IDENTITY.md` e `STYLING.md` per la Brand Identity.
+3. Verifica le Skill in `.antigravity/skills/` (es. `security-auditor`, `accessibility-checker`).
 4. Leggi `.context/CONVENTIONS.md` per le regole di codifica.
-5. Leggi `.antigravity/PROJECT_MAP.md` per la struttura scene/autoloads.
+5. Leggi `.antigravity/PROJECT_MAP.md` per la struttura.
 6. Leggi `.antigravity/TECH_STACK.md` per le tecnologie.
-7. Usa l'MCP per leggere le scene e gli script da analizzare.
-8. **Analisi** — Esamina il file/scena indicato e verifica la conformità a `.context/CONVENTIONS.md` e `.context/CONVENTIONS_GODOT.md`.
-9. **Report** — Produci un report strutturato seguendo il template:
+7. **Analisi** — Esamina il file/cartella indicato e verifica la conformità a `.context/CONVENTIONS.md`.
+8. **Report** — Produci un report strutturato seguendo il template:
 
 ## Template Report
 
 ```markdown
-## 📊 Code Review — [Nome script/scena]
+## 📊 Code Review — [Nome file/modulo]
 
 ### ✅ Punti Positivi
 - [Cosa è fatto bene]
 
+### Grafica
+- [Come migliorare la grafica, la HUD, UI, effetti, altro se necessario in modo che sia adatto alla produzione e non sia solo un test]
+
 ### ⚠️ Problemi Trovati
 | # | Severità | File | Riga | Descrizione |
 |---|---|---|---|---|
-| 1 | 🔴 Alta | `Script.gd` | L42 | Descrizione problema |
+| 1 | 🔴 Alta | `file.ts` | L42 | Descrizione problema |
 
-### 🏗 Architettura
-- [ ] Component Pattern rispettato?
-- [ ] "Call down, signal up" rispettato?
-- [ ] Nessun `get_parent().get_node()` hardcoded?
-- [ ] FSM implementata correttamente (se presente)?
-
-### 🎮 Game Feel
-- [ ] Feedback visivi presenti per azioni utente?
-- [ ] Audio cue presenti?
-- [ ] Haptic feedback su mobile (se applicabile)?
-
-### 📱 Mobile Compliance
-- [ ] Touch input gestito (non solo mouse)?
-- [ ] Target area ≥ 44×44 dp?
-- [ ] Nessuna allocazione in _process()?
-- [ ] Texture ≤ 2048×2048?
+### 🔒 Sicurezza
+- [Vulnerabilità trovate o "Nessun problema rilevato"]
 
 ### ⚡ Performance
 - [Colli di bottiglia o "Nessun problema rilevato"]
-
-### 🔤 Type Safety
-- [ ] Tutti gli script hanno type hints?
-- [ ] Tutti i `func` hanno `-> void` o return type?
 
 ### 🧹 Suggerimenti di Refactoring
 - [Miglioramenti consigliati con priorità]
 
 ### 📋 Conformità Convenzioni
-- [Violazioni rispetto a CONVENTIONS.md e CONVENTIONS_GODOT.md]
+- [Violazioni rispetto a CONVENTIONS.md]
 ```
-10. Se richiesto dall'utente, registra i problemi critici in `.antigravity/STATE.md` come debiti tecnici.
+8. Se richiesto dall'utente, registra i problemi critici in `.antigravity/STATE.md` come debiti tecnici.
