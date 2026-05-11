@@ -19,6 +19,14 @@ func _ready() -> void:
 	EventBus.merge_occurred.connect(_on_merge_occurred)
 	EventBus.chain_event.connect(_on_chain_event)
 	EventBus.game_over.connect(_on_game_over)
+	
+	# Connetti la coda dei frutti
+	var spawner = $Spawner
+	var next_queue = $UI/HUD/%NextQueue
+	spawner.queue_updated.connect(next_queue.update_queue)
+	
+	# Inizializza visualmente la coda
+	next_queue.update_queue(spawner.fruit_queue)
 
 func _process(delta: float) -> void:
 	if shake_intensity > 0:

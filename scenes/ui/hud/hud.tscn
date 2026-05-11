@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://scenes/ui/hud/HUD.gd" id="1_script"]
 [ext_resource type="Theme" path="res://assets/themes/main_theme.tres" id="2_theme"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud/NextQueue.tscn" id="3_next_queue"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_score"]
 font_size = 72
@@ -114,6 +115,21 @@ offset_bottom = -60.0
 grow_vertical = 0
 theme_override_font_sizes/font_size = 64
 text = "⏳"
+
+[node name="NextQueue" parent="." instance=ExtResource("3_next_queue")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -140.0
+offset_top = -180.0
+offset_right = 140.0
+offset_bottom = -60.0
+grow_horizontal = 2
+grow_vertical = 0
 
 [connection signal="pressed" from="PauseButton" to="." method="_on_pause_pressed"]
 [connection signal="pressed" from="MagnetButton" to="." method="_on_magnet_pressed"]

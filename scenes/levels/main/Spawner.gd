@@ -1,9 +1,12 @@
 extends Marker2D
 
+signal queue_updated(new_queue: Array)
+
 @export var fruit_scene: PackedScene
 @export var current_fruit_data: Resource
 @export var launch_force: float = 1200.0
 
+var fruit_queue: Array[Resource] = []
 var can_drop: bool = true
 var is_aiming: bool = false
 var is_laser_mode: bool = false
@@ -17,14 +20,26 @@ func _ready() -> void:
 	if not fruit_scene:
 		fruit_scene = load("res://scenes/entities/fruit/fruit.tscn")
 	
-	if not current_fruit_data:
-		_prepare_next_fruit()
+	# Inizializza la coda se vuota
+	if fruit_queue.is_empty():
+		for i in range(3):
+			fruit_queue.append(_get_random_starter_fruit())
+	
+	_prepare_next_fruit()
+
+func _get_random_starter_fruit() -> Resource:
+	var starter_pool = GameManager.fruits_data.slice(0, 3)
+	if starter_pool.is_empty(): return null
+	return starter_pool.pick_random()
 
 func _prepare_next_fruit() -> void:
-	# Sceglie a caso tra i primi 3 frutti (Starter)
-	var starter_pool = GameManager.fruits_data.slice(0, 3)
-	if starter_pool.is_empty(): return
-	current_fruit_data = starter_pool.pick_random()
+	if fruit_queue.is_empty():
+		for i in range(3):
+			fruit_queue.append(_get_random_starter_fruit())
+	
+	current_fruit_data = fruit_queue.pop_front()
+	fruit_queue.append(_get_random_starter_fruit())
+	queue_updated.emit(fruit_queue)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not can_drop:
