@@ -41,5 +41,5 @@
 - [x] **Debug Overhead**: Debug drawing (`_draw`) in Fruit reso condizionale a `OS.is_debug_build()`.
 
 ## 🛠 In Corso
-- [/] **Hardening & Polish**: Validazione finale del refactoring e pulizia riferimenti residui.
+- [x] **Hardening & Polish**: Validazione finale del refactoring PascalCase e fix critico navigazione GameOver (loop e swap tasti).
 - [ ] **Nuova Feature**: Implementazione "Frullatore del Caos" (Meter 100%).

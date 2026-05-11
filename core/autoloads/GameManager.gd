@@ -21,6 +21,7 @@ var main_scene: Node2D
 var is_game_over: bool = false
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	load_data()
 	
 	# Initial data loading

@@ -28,7 +28,7 @@ func _process(delta: float) -> void:
 		# Notify UI via EventBus
 		EventBus.cringe_warning.emit(true, progress)
 		
-		if timer >= LIMIT:
+		if timer >= LIMIT and not GameManager.is_game_over:
 			GameManager.game_over()
 	else:
 		if is_active:

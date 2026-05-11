@@ -3,6 +3,7 @@ extends CanvasLayer
 @onready var color_rect: ColorRect = $ColorRect
 
 func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	color_rect.modulate.a = 0.0
 	color_rect.hide()
 

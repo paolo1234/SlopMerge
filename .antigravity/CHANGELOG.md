@@ -11,6 +11,8 @@
 - **PascalCase Standard**: Ridenominati tutti gli script principali in `PascalCase` (es. `GameManager.gd`, `EventBus.gd`, `Fruit.gd`) per conformità agli standard Godot.
 - **Script References**: Aggiornati tutti i file `.tscn` e le impostazioni di Autoload per riflettere i nuovi nomi dei file.
 - **Clean Code**: Sostituiti i riferimenti `get_node("/root/...")` con chiamate dirette ai Singleton per una sintassi più pulita e performante.
+### Fixed
+- **GameOver Navigation**: Risolto il bug critico per cui il tasto "Menu" ricaricava la scena e il "Restart" non funzionava correttamente. Implementata protezione contro il doppio trigger in `CringeLine` e impostato `PROCESS_MODE_ALWAYS` per i singleton di sistema (`GameManager`, `TransitionManager`).
 
 ## [1.4.0] - 2026-05-11
 ### Added

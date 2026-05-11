@@ -42,15 +42,23 @@ func _on_restart_pressed() -> void:
 	gm.is_game_over = false
 	gm.score = 0
 	get_tree().paused = false
-	get_tree().reload_current_scene()
+	
+	if has_node("/root/TransitionManager"):
+		get_node("/root/TransitionManager").transition_to("res://scenes/levels/main/main.tscn")
+	else:
+		get_tree().change_scene_to_file("res://scenes/levels/main/main.tscn")
+	
 	queue_free()
 
 func _on_menu_pressed() -> void:
 	var gm = get_node("/root/GameManager")
 	gm.is_game_over = false
+	gm.score = 0 # Reset score even when going to menu
 	get_tree().paused = false
+	
 	if has_node("/root/TransitionManager"):
 		get_node("/root/TransitionManager").transition_to("res://scenes/ui/main_menu/main_menu.tscn")
 	else:
 		get_tree().change_scene_to_file("res://scenes/ui/main_menu/main_menu.tscn")
+	
 	queue_free()
