@@ -17,6 +17,7 @@ const COMBO_RESET_TIME: float = 2.0
 
 var fruits_data: Array[Resource] = []
 var fruits_container: Node2D
+var main_scene: Node2D
 var is_game_over: bool = false
 
 func _ready() -> void:

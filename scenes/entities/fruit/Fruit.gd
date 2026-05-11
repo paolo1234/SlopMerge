@@ -1,5 +1,4 @@
 extends RigidBody2D
-class_name Fruit
 
 # Preloaded Assets
 const SQUISHY_SHADER = preload("res://assets/shaders/squishy_fruit.gdshader")
@@ -83,7 +82,7 @@ func _draw() -> void:
 		draw_arc(Vector2.ZERO, data.radius, 0, TAU, 32, Color(1, 0, 0, 0.5), 2.0)
 
 func _on_merge_area_body_entered(body: Node2D) -> void:
-	if body is Fruit and body != self:
+	if body.has_method("_on_merge_area_body_entered") and body != self:
 		if body.data.id == self.data.id:
 			# Chiediamo al GameManager di gestire la fusione
 			GameManager.request_merge(self, body)

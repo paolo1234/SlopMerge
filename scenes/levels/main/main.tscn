@@ -1,5 +1,8 @@
-[gd_scene format=3]
+[gd_scene load_steps=12 format=3]
 
+[ext_resource type="Script" path="res://scenes/levels/main/Main.gd" id="1_main"]
+[ext_resource type="Script" path="res://scenes/levels/main/Spawner.gd" id="2_spawner"]
+[ext_resource type="Script" path="res://scenes/levels/main/CringeLine.gd" id="3_cringe"]
 [ext_resource type="PackedScene" path="res://scenes/ui/brainrot_meter/brainrot_meter.tscn" id="4_brainrot_meter"]
 [ext_resource type="Theme" path="res://assets/themes/main_theme.tres" id="4_dqgss"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud/hud.tscn" id="7_hud"]
@@ -29,6 +32,7 @@ shader_parameter/line_color = Color(1, 0, 0, 0.5)
 shader_parameter/speed = null
 
 [node name="Main" type="Node2D" unique_id=417411237]
+script = ExtResource("1_main")
 
 [node name="BackgroundLayer" type="CanvasLayer" parent="." unique_id=1301950263]
 layer = -1
@@ -61,6 +65,7 @@ position = Vector2(1080, 960)
 shape = SubResource("RectangleShape2D_wall")
 
 [node name="CringeLine" type="Area2D" parent="." unique_id=1578551895]
+script = ExtResource("3_cringe")
 position = Vector2(540, 1500)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CringeLine" unique_id=300771783]
@@ -82,6 +87,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="Spawner" type="Marker2D" parent="." unique_id=1039605134]
+script = ExtResource("2_spawner")
 position = Vector2(540, 1750)
 
 [node name="FruitsContainer" type="Node2D" parent="." unique_id=23782574]

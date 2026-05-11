@@ -1,5 +1,4 @@
 extends Marker2D
-class_name Spawner
 
 @export var fruit_scene: PackedScene
 @export var current_fruit_data: Resource
