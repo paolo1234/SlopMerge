@@ -21,6 +21,7 @@
 - [x] Implementazione Juice (Screen Shake & Particles)
 - [x] Ottimizzazione Performance (Caching & Direct Refs)
 - [x] Fix raggi di collisione nei file .tres (allineamento con sprite)
+- [x] Implementazione tutti i tier di frutta (1-11) con risorse dedicate
 - [x] Sistema di Reazioni a Catena: Floating Text e Combo Multipliers
 - [x] Upgrade Risoluzione: Porting a 1080x1920 (Full HD Mobile) e adattamento layout fisico
 
@@ -33,7 +34,6 @@
 
 ## Debiti Tecnici ⚠️
 - AudioManager non ha ancora i file audio reali (usa placeholder/null).
-- Mancano i tier di frutta dal 4 all'11 (implementati solo i primi 3).
 - Segnali inutilizzati in `EventBus.gd` rilevati durante il testing.
 
 ## 📂 Archivio Debiti Tecnici Risolti

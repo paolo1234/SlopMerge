@@ -2,6 +2,13 @@
 
 - [2026-05-11] Revamp totale dei workflow e sincronizzazione con `game-core`. Introdotti step obbligatori per branching, testing e documentazione. Creata struttura `core/` generica.
 
+## [1.7.0] - 2026-05-11
+### Added
+- **Full Fruit Progression**: Implementati tutti gli 11 tier di frutta con parametri di massa e raggio bilanciati.
+- **Brainrot Naming**: Assegnati nomi a tema per tutti i nuovi frutti (es. Arancia Pazzoide, Melone Sigma, Anguria Skibidi).
+### Changed
+- **GameManager**: Sistema di caricamento dinamico per le risorse `FruitData`.
+
 ## [1.6.0] - 2026-05-11
 ### Fixed
 - **Slopdex Crash**: Risolto crash critico causato dall'accesso alla proprietà inesistente `shared_texture` in `GameManager`. Sostituito con `SPRITESHEET`.

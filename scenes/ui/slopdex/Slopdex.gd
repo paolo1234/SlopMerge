@@ -33,11 +33,14 @@ func _populate_slopdex() -> void:
 		atlas.atlas = gm_texture
 		
 		var tex_size = gm_texture.get_size()
-		var frame_size = tex_size.x / 16.0
+		var grid_size = 4.0 # 4x4 grid
+		var fruit_size = tex_size.x / grid_size
+		
 		var fruit_index = (fruit_data.id - 1)
-		var col = (fruit_index % 4) * 4
-		var row = (fruit_index / 4) * 2
-		atlas.region = Rect2(col * frame_size, row * frame_size, frame_size, frame_size)
+		var col = (fruit_index % int(grid_size))
+		var row = (fruit_index / int(grid_size))
+		
+		atlas.region = Rect2(col * fruit_size, row * fruit_size, fruit_size, fruit_size)
 		
 		icon.texture = atlas
 		
