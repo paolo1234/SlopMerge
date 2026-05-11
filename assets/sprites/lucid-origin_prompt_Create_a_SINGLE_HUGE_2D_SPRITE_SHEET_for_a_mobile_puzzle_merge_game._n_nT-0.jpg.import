@@ -3,27 +3,29 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bh1o0b83tuqyy"
-path="res://.godot/imported/lucid-origin_prompt_Create_a_SINGLE_HUGE_2D_SPRITE_SHEET_for_a_mobile_puzzle_merge_game._n_nT-0.jpg-70569b344d8017812519b3b702a65082.ctex"
+path.s3tc="res://.godot/imported/lucid-origin_prompt_Create_a_SINGLE_HUGE_2D_SPRITE_SHEET_for_a_mobile_puzzle_merge_game._n_nT-0.jpg-70569b344d8017812519b3b702a65082.s3tc.ctex"
+path.etc2="res://.godot/imported/lucid-origin_prompt_Create_a_SINGLE_HUGE_2D_SPRITE_SHEET_for_a_mobile_puzzle_merge_game._n_nT-0.jpg-70569b344d8017812519b3b702a65082.etc2.ctex"
 metadata={
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/sprites/lucid-origin_prompt_Create_a_SINGLE_HUGE_2D_SPRITE_SHEET_for_a_mobile_puzzle_merge_game._n_nT-0.jpg"
-dest_files=["res://.godot/imported/lucid-origin_prompt_Create_a_SINGLE_HUGE_2D_SPRITE_SHEET_for_a_mobile_puzzle_merge_game._n_nT-0.jpg-70569b344d8017812519b3b702a65082.ctex"]
+dest_files=["res://.godot/imported/lucid-origin_prompt_Create_a_SINGLE_HUGE_2D_SPRITE_SHEET_for_a_mobile_puzzle_merge_game._n_nT-0.jpg-70569b344d8017812519b3b702a65082.s3tc.ctex", "res://.godot/imported/lucid-origin_prompt_Create_a_SINGLE_HUGE_2D_SPRITE_SHEET_for_a_mobile_puzzle_merge_game._n_nT-0.jpg-70569b344d8017812519b3b702a65082.etc2.ctex"]
 
 [params]
 
 compress/mode=2
 compress/high_quality=false
-compress/lossy_quality=0.7
-compress/uastc_level=0
+compress/lossy_quality=0.3
+compress/uastc_level=3
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=false
+mipmaps/generate=true
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""

@@ -5,10 +5,10 @@
       "type": "local",
       "command": [
         "node",
-        "C:\\Users\\calam\\Documents\\plant-merge\\godot_mcp\\build\\index.js"
+        "C:\\Users\\paolo\\OneDrive\\Desktop\\Progetti\\godot_mcp\\build\\index.js"
       ],
       "environment": {
-        "GODOT_PATH": "C:\\Users\\calam\\Downloads\\Godot_v4.6.2-stable_win64.exe\\Godot_v4.6.2-stable_win64.exe",
+        "GODOT_PATH": "C:\\Godot_Engine\\Godot_v4.6.2-stable_win64.exe",
         "DEBUG": "true"
       },
       "enabled": true
