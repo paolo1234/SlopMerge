@@ -1,17 +1,70 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "mcp": {
-    "godot": {
-      "type": "local",
-      "command": [
-        "node",
-        "C:\\Users\\paolo\\OneDrive\\Desktop\\Progetti\\godot_mcp\\build\\index.js"
-      ],
-      "environment": {
-        "GODOT_PATH": "C:\\Godot_Engine\\Godot_v4.6.2-stable_win64.exe",
-        "DEBUG": "true"
-      },
-      "enabled": true
+  "command": {
+    "sync": {
+      "description": "Allinea il contesto a inizio sessione",
+      "template": "Esegui il workflow /sync — sincronizza il contesto leggendo:\n1. git status e git branch\n2. .antigravity/STATE.md e TASK.md\n3. .context/INSTRUCTIONS.md, .context/CONVENTIONS.md\n4. .antigravity/PROJECT_MAP.md, .antigravity/TECH_STACK.md\n5. .antigravity/brand/IDENTITY.md\nFornisci un report di sync completo.",
+      "agent": "general"
+    },
+    "feature": {
+      "description": "Sviluppa una nuova feature",
+      "template": "Esegui il workflow /feature:\n1. Esegui /sync per allineare il contesto\n2. Leggi .context/INSTRUCTIONS.md, .antigravity/PROJECT_MAP.md, .antigravity/TECH_STACK.md, .antigravity/STATE.md\n3. Pianifica la feature con Scene Tree ASCII e lista file\n4. Attendi conferma dell'utente\n5. Crea branch feature/nome-da-develop\n6. Implementa seguendo .context/CONVENTIONS.md e .context/CONVENTIONS_GODOT.md\n7. Testa con git diff e avvio gioco\n8. Commit atomico\n9. Aggiorna STATE.md, TASK.md, PROJECT_MAP.md, CHANGELOG.md\n10. Merge su develop",
+      "agent": "general"
+    },
+    "fix": {
+      "description": "Debug e fixing di un bug",
+      "template": "Esegui il workflow /fix:\n1. Esegui /sync\n2. Leggi .context/INSTRUCTIONS.md, .antigravity/STATE.md\n3. Riproduci il bug se possibile\n4. Crea branch fix/nome-bug da develop\n5. Pianifica la soluzione e attendi conferma\n6. Implementa il fix\n7. Testa con git diff e avvio gioco\n8. Commit atomico\n9. Aggiorna STATE.md, TASK.md, CHANGELOG.md\n10. Merge su develop",
+      "agent": "general"
+    },
+    "refactor": {
+      "description": "Refactoring e pulizia codice",
+      "template": "Esegui il workflow /refactor:\n1. Esegui /sync\n2. Leggi .context/CONVENTIONS.md, .antigravity/PROJECT_MAP.md\n3. Analizza il codice target (code smell, duplicazioni, file >200 righe)\n4. Proponi modifiche e attendi conferma\n5. Crea branch refactor/descrizione da develop\n6. Applica refactoring mantenendo compatibilità\n7. Testa con git diff e avvio gioco\n8. Commit atomico\n9. Aggiorna STATE.md e CHANGELOG.md\n10. Merge su develop",
+      "agent": "general"
+    },
+    "auto": {
+      "description": "Gestione autonoma della roadmap",
+      "template": "Esegui il workflow /auto:\n1. Esegui /sync\n2. Leggi STATE.md, GDD.md, PROJECT_MAP.md, TASK.md\n3. Valuta priorità: bug critici→/fix, debito tecnico→/upgrade, feature mancanti→/feature\n4. Presenta la roadmap proposta all'utente\n5. Dopo approvazione, esegui il workflow appropriato\n6. Sync finale: aggiorna STATE.md, CHANGELOG.md, TASK.md\n7. Proponi il task successivo",
+      "agent": "general"
+    },
+    "continue": {
+      "description": "Riprendi un task interrotto",
+      "template": "Esegui il workflow /continue:\n1. Esegui /sync\n2. Analisi branch: git branch --show-current, git status\n3. Leggi STATE.md per task 'In corso' (🛠️), TASK.md per sotto-task mancanti\n4. Leggi ultimi commit con git log\n5. Riassumi cosa è stato fatto e identifica il prossimo step\n6. Riprendi lo sviluppo con il workflow originale (/feature, /fix)\n7. Testa periodicamente",
+      "agent": "general"
+    },
+    "checkpoint": {
+      "description": "Salva progressi durante task lunghi",
+      "template": "Esegui il workflow /checkpoint:\n1. Verifica che il codice sia compilabile\n2. Avvia il gioco e verifica la parte implementata\n3. Commit atomico: git add . && git commit -m 'feat(scope): progress checkout - [descrizione]'\n4. Aggiorna STATE.md (sotto-task completati), TASK.md (progressi)\n5. Identifica cosa manca per completare il task\n6. Proseguilo sviluppo",
+      "agent": "general"
+    },
+    "review": {
+      "description": "Revisione e analisi del codice",
+      "template": "Esegui il workflow /review:\n1. Leggi .context/INSTRUCTIONS.md\n2. Leggi .antigravity/brand/IDENTITY.md, STYLING.md\n3. Leggi .antigravity/skills/ (security-auditor, accessibility-checker)\n4. Leggi .context/CONVENTIONS.md\n5. Leggi .antigravity/PROJECT_MAP.md, TECH_STACK.md\n6. Analizza il codice e verifica conformità a CONVENTIONS.md\n7. Produci report con template: punti positivi, grafica, problemi (severità), sicurezza, performance, refactoring, conformità\n8. Registra debiti critici in STATE.md se richiesto",
+      "agent": "plan"
+    },
+    "upgrade": {
+      "description": "Raffinamento feature esistente",
+      "template": "Esegui il workflow /upgrade:\n1. Esegui /sync\n2. Analizza la feature esistente\n3. Pianifica miglioramenti: performance, game feel, refactoring\n4. Attendi conferma\n5. Crea branch upgrade/nome-feature da develop\n6. Implementa mantenendo compatibilità\n7. Testa con git diff e avvio gioco\n8. Commit atomico\n9. Aggiorna STATE.md, TASK.md, CHANGELOG.md\n10. Merge su develop",
+      "agent": "general"
+    },
+    "init": {
+      "description": "Inizializza nuovo progetto",
+      "template": "Esegui il workflow /init:\n1. Chiedi: nome progetto, obiettivo, tech stack, servizi esterni\n2. Brainstorming & analisi critica: rischi, ottimizzazioni, incongruenze\n3. Attendi approvazione piano finale\n4. Inizializza .antigravity/brand/IDENTITY.md, STYLING.md\n5. Popola .antigravity/PROJECT_MAP.md (obiettivo, moduli, architettura)\n6. Popola .antigravity/TECH_STACK.md (stack, dipendenze, env)\n7. Crea cartelle mancanti\n8. Inizializza .antigravity/STATE.md, CHANGELOG.md\n9. Conferma setup completato",
+      "agent": "general"
+    },
+    "testing": {
+      "description": "Test mirato di una feature",
+      "template": "Esegui il workflow /testing:\n1. Identifica feature (ultima lavorata da CHANGELOG.md se non specificata)\n2. Leggi codice della feature per edge cases\n3. Prepara il gioco per il test\n4. Avvia progetto con MCP Godot\n5. Usa screenshot e debug output per verificare\n6. Verifica side-effects su componenti correlate\n7. Report esito (PASS/FAIL), se fallisce avvia /fix",
+      "agent": "general"
+    },
+    "testing_all": {
+      "description": "Test completo di tutte le feature",
+      "template": "Esegui il workflow /testing_all:\n1. Esegui /sync\n2. Genera check-list da STATE.md\n3. Smoke test: avvia progetto, verifica scena iniziale, log\n4. Gameplay: simula eventi (lanci, fusioni), transizioni scene\n5. UI/Asset: screenshot UI principali, check memory leak\n6. Crea test_report.md con esito per ogni feature (PASS/FAIL)\n7. Se bug gravi usa /fix, altrimenti /checkpoint",
+      "agent": "general"
+    },
+    "bug_hunting": {
+      "description": "Ricerca proattiva di bug",
+      "template": "Esegui il workflow /bug_hunting:\n1. Static analysis: cerca pattern pericolosi (nulli, cicli infiniti, memory leaks)\n2. Controlla log per errori silenziosi\n3. Edge cases: tasti veloci, pause durante transizioni, fusioni contemporanee\n4. UI/UX: allineamenti, sovrapposizioni, scalabilità risoluzioni\n5. Stress test save system\n6. Crea bug_report.md con problemi classificati per priorità\n7. Proponi fix all'utente",
+      "agent": "general"
     }
   }
 }
