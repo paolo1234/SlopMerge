@@ -26,9 +26,24 @@ func _ready() -> void:
 	
 	# Initial data loading
 	fruits_data.clear()
-	fruits_data.append(load("res://resources/fruits/01_pisello.tres"))
-	fruits_data.append(load("res://resources/fruits/02_limone.tres"))
-	fruits_data.append(load("res://resources/fruits/03_kiwi.tres"))
+	var paths = [
+		"res://resources/fruits/01_pisello.tres",
+		"res://resources/fruits/02_limone.tres",
+		"res://resources/fruits/03_kiwi.tres",
+		"res://resources/fruits/04_arancia.tres",
+		"res://resources/fruits/05_uva.tres",
+		"res://resources/fruits/06_fragola.tres",
+		"res://resources/fruits/07_melone.tres",
+		"res://resources/fruits/08_ananas.tres",
+		"res://resources/fruits/09_cocco.tres",
+		"res://resources/fruits/10_anguria.tres",
+		"res://resources/fruits/11_zucca.tres"
+	]
+	
+	for path in paths:
+		var res = load(path)
+		if res:
+			fruits_data.append(res)
 
 func _process(delta: float) -> void:
 	if combo_multiplier > 1:
