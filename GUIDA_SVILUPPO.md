@@ -51,6 +51,9 @@ La documentazione (`STATE.md`, `CHANGELOG.md`, `TASK.md`) non è un optional. È
 | `/refactor` | 3 | Pulizia codice |
 | `/checkpoint` | 10 | Salvare progressi intermedi |
 | `/review` | 6 | Analisi e report del codice |
+| `/testing_all` | 11 | Test completo di sistema |
+| `/testing` | 12 | Test mirato feature specifica |
+| `/bug_hunting` | 13 | Ricerca proattiva errori |
 | `/init` | 5 | Nuovo progetto |
 
 ---

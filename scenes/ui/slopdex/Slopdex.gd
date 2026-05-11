@@ -27,7 +27,7 @@ func _populate_slopdex() -> void:
 		slot.add_child(icon)
 		
 		# Caricamento texture (usa lo stesso metodo di fruit.gd)
-		var gm_texture = gm.shared_texture
+		var gm_texture = gm.SPRITESHEET
 		
 		var atlas = AtlasTexture.new()
 		atlas.atlas = gm_texture
