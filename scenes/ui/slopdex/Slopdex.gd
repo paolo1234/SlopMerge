@@ -23,8 +23,8 @@ func _populate_slopdex() -> void:
 		var icon = TextureRect.new()
 		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		icon.anchors_preset = Control.PRESET_FULL_RECT
 		slot.add_child(icon)
+		icon.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		
 		# Caricamento texture (usa lo stesso metodo di fruit.gd)
 		var gm_texture = gm.SPRITESHEET
@@ -33,14 +33,14 @@ func _populate_slopdex() -> void:
 		atlas.atlas = gm_texture
 		
 		var tex_size = gm_texture.get_size()
-		var grid_size = 4.0 # 4x4 grid
-		var fruit_size = tex_size.x / grid_size
+		var fruit_sheet_size = tex_size.x / 4.0 # 512
+		var frame_size = fruit_sheet_size / 4.0 # 128
 		
 		var fruit_index = (fruit_data.id - 1)
-		var col = (fruit_index % int(grid_size))
-		var row = (fruit_index / int(grid_size))
+		var col = (fruit_index % 4)
+		var row = (fruit_index / 4)
 		
-		atlas.region = Rect2(col * fruit_size, row * fruit_size, fruit_size, fruit_size)
+		atlas.region = Rect2(col * fruit_sheet_size, row * fruit_sheet_size, frame_size, frame_size)
 		
 		icon.texture = atlas
 		
@@ -53,7 +53,7 @@ func _populate_slopdex() -> void:
 			name_label.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_WIDE)
 			slot.add_child(name_label)
 		else:
-			icon.modulate = Color(0, 0, 0, 1.0) # Silhouette
+			icon.modulate = Color(0.1, 0.1, 0.1, 0.8) # Silhouette grigia scura semi-trasparente
 			var quest_label = Label.new()
 			quest_label.text = "???"
 			quest_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER

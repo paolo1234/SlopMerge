@@ -28,21 +28,22 @@ func _apply_data() -> void:
 	
 	sprite.region_enabled = true
 	
-	# Calcoliamo la dimensione del frame (griglia 4x4 in una texture 2048x2048)
+	# Ogni frutto occupa un blocco 512x512 (griglia 4x4)
+	# All'interno di quel blocco c'è una griglia 4x4 di animazioni (frame da 128x128)
 	var tex_size = sprite.texture.get_size()
-	var grid_size = 4.0
-	var fruit_size = tex_size.x / grid_size
+	var fruit_sheet_size = tex_size.x / 4.0 # 512
+	var frame_size = fruit_sheet_size / 4.0 # 128
 	
 	var fruit_index = (data.id - 1)
-	var col = (fruit_index % int(grid_size))
-	var row = (fruit_index / int(grid_size))
+	var col = (fruit_index % 4)
+	var row = (fruit_index / 4)
 	
-	sprite.region_rect = Rect2(col * fruit_size, row * fruit_size, fruit_size, fruit_size)
+	# Prendiamo il primo frame (0,0) del blocco del frutto
+	sprite.region_rect = Rect2(col * fruit_sheet_size, row * fruit_sheet_size, frame_size, frame_size)
 	
 	# Autoscale lo sprite per corrispondere al raggio fisico
-	# La dimensione visiva desiderata è radius * 2
 	var target_size = data.radius * 2.0
-	var scale_factor = target_size / fruit_size
+	var scale_factor = target_size / frame_size
 	sprite.scale = Vector2(scale_factor, scale_factor)
 	
 	mass = data.mass
