@@ -24,9 +24,7 @@ func _ready() -> void:
 	fruits_data.append(load("res://resources/fruits/02_limone.tres"))
 	fruits_data.append(load("res://resources/fruits/03_kiwi.tres"))
 	
-	var img = Image.load_from_file("res://assets/sprites/slop_merge_spritesheet.png")
-	if img:
-		shared_texture = ImageTexture.create_from_image(img)
+	shared_texture = load("res://assets/sprites/slop_merge_spritesheet.png")
 
 func _process(delta: float) -> void:
 	if combo_multiplier > 1:

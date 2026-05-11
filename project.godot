@@ -20,8 +20,8 @@ config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
-PowerUpManager="*res://core/autoloads/powerup_manager.gd"
 
+PowerUpManager="*res://core/autoloads/powerup_manager.gd"
 EventBus="*res://core/autoloads/event_bus.gd"
 AudioManager="*res://core/autoloads/audio_manager.gd"
 McpInteractionServer="*res://mcp_interaction_server.gd"
