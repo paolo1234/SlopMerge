@@ -1,11 +1,24 @@
 # Godot 4+ specific ignores
 .godot/
-!*.godot
+*.uid
 *.translation
 
 # Crash reports
 crash_reports/
 
-# Export folders
+# Export folders & Build artifacts
 export/
 export_presets.cfg
+*.apk
+*.exe
+*.zip
+*.dmg
+*.app
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Project local settings
+savegame.cfg
+user://
