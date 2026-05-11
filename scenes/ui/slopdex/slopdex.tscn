@@ -1,6 +1,6 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://scenes/ui/slopdex/slopdex.gd" id="1_8rx3u"]
+[ext_resource type="Script" path="res://scenes/ui/slopdex/Slopdex.gd" id="1_8rx3u"]
 
 [node name="Pokedex" type="Control" unique_id=990227143]
 layout_mode = 3

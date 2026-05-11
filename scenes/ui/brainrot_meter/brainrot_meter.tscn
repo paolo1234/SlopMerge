@@ -1,7 +1,6 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene format=3]
 
-[ext_resource type="Script" path="res://scenes/ui/brainrot_meter/brainrot_meter.gd" id="1_x8310"]
-[ext_resource type="Theme" uid="res://assets/themes/main_theme.tres" path="res://assets/themes/main_theme.tres" id="2_theme"]
+[ext_resource type="Theme" path="res://assets/themes/main_theme.tres" id="2_theme"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
 bg_color = Color(0.1, 0.1, 0.15, 0.8)
@@ -43,7 +42,7 @@ font_color = Color(1, 0.5, 1, 1)
 outline_size = 4
 outline_color = Color(0, 0, 0, 1)
 
-[node name="BrainrotMeter" type="Control"]
+[node name="BrainrotMeter" type="Control" unique_id=1648209083]
 layout_mode = 3
 anchors_preset = 1
 anchor_left = 1.0
@@ -54,9 +53,8 @@ offset_right = -85.0
 offset_bottom = 680.0
 grow_horizontal = 0
 theme = ExtResource("2_theme")
-script = ExtResource("1_x8310")
 
-[node name="ProgressBar" type="ProgressBar" parent="."]
+[node name="ProgressBar" type="ProgressBar" parent="." unique_id=965899944]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -69,7 +67,7 @@ value = 75.0
 fill_mode = 3
 show_percentage = false
 
-[node name="UltimateButton" type="Button" parent="ProgressBar"]
+[node name="UltimateButton" type="Button" parent="ProgressBar" unique_id=1925626899]
 unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0)
 layout_mode = 1
@@ -80,7 +78,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_default_cursor_shape = 2
 
-[node name="ReadyLabel" type="Label" parent="."]
+[node name="ReadyLabel" type="Label" parent="." unique_id=1540877474]
 visible = false
 layout_mode = 1
 anchors_preset = 5
@@ -95,7 +93,7 @@ text = "READY!"
 label_settings = SubResource("LabelSettings_ready")
 horizontal_alignment = 1
 
-[node name="MeterName" type="Label" parent="."]
+[node name="MeterName" type="Label" parent="." unique_id=1053179389]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5

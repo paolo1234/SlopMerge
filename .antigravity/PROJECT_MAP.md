@@ -12,9 +12,9 @@ Creare un puzzle game "Inverse Shooter" (Shoot & Bounce) che trattenga i giocato
 - **Brainrot Meter**: `res://scenes/ui/brainrot_meter/brainrot_meter.tscn` (Barra verticale energia).
 
 ## Autoloads (Singletons)
-- **GameManager**: `res://core/autoloads/game_manager.gd` (Score, Highscore, Logica Merge, Skins).
-- **AudioManager**: `res://core/autoloads/audio_manager.gd` (Pool di AudioStreamPlayer).
-- **TransitionManager**: `res://core/autoloads/transition_manager.tscn` (Gestione Fade tra scene).
+- **GameManager**: `res://core/autoloads/GameManager.gd` (Score, Highscore, Logica Merge, Skins).
+- **AudioManager**: `res://core/autoloads/AudioManager.gd` (Pool di AudioStreamPlayer).
+- **TransitionManager**: `res://core/autoloads/TransitionManager.tscn` (Gestione Fade tra scene).
 
 ## Architettura File System (res://)
 ```text

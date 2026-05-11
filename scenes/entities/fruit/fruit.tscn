@@ -1,14 +1,11 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3]
 
-[ext_resource type="Script" path="res://scenes/entities/fruit/fruit.gd" id="1_fruit"]
+[node name="Fruit" type="RigidBody2D" unique_id=415159639]
 
-[node name="Fruit" type="RigidBody2D"]
-script = ExtResource("1_fruit")
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1527824415]
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=93499510]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="MergeArea" type="Area2D" parent="." unique_id=34360453]
 
-[node name="MergeArea" type="Area2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="MergeArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MergeArea" unique_id=2084417282]

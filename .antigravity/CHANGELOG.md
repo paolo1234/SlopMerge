@@ -2,6 +2,16 @@
 
 - [2026-05-11] Revamp totale dei workflow e sincronizzazione con `game-core`. Introdotti step obbligatori per branching, testing e documentazione. Creata struttura `core/` generica.
 
+## [1.5.0] - 2026-05-11
+### Optimized
+- **Performance Mobile**: Sostituite le chiamate dinamiche a `load()` con `preload()` per le scene `Fruit` e `MergeVFX`, e per lo shader `SquishyFruit`. Ridotto drasticamente il micro-stutter durante le fusioni.
+- **Debug Cleanup**: Il debug drawing dei cerchi di collisione è ora attivo solo nelle build di debug via `OS.is_debug_build()`.
+
+### Refactored
+- **PascalCase Standard**: Ridenominati tutti gli script principali in `PascalCase` (es. `GameManager.gd`, `EventBus.gd`, `Fruit.gd`) per conformità agli standard Godot.
+- **Script References**: Aggiornati tutti i file `.tscn` e le impostazioni di Autoload per riflettere i nuovi nomi dei file.
+- **Clean Code**: Sostituiti i riferimenti `get_node("/root/...")` con chiamate dirette ai Singleton per una sintassi più pulita e performante.
+
 ## [1.4.0] - 2026-05-11
 ### Added
 - **Menù di Pausa Premium**: Interfaccia con blur shader e animazioni di scala.

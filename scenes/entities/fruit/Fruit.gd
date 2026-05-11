@@ -1,6 +1,9 @@
 extends RigidBody2D
 class_name Fruit
 
+# Preloaded Assets
+const SQUISHY_SHADER = preload("res://assets/shaders/squishy_fruit.gdshader")
+
 @export var data: Resource
 
 @onready var sprite: Sprite2D = $Sprite2D
@@ -18,12 +21,11 @@ func _ready() -> void:
 	# Inizializza lo shader
 	if sprite.material == null:
 		sprite.material = ShaderMaterial.new()
-		sprite.material.shader = load("res://assets/shaders/squishy_fruit.gdshader")
+		sprite.material.shader = SQUISHY_SHADER
 
 func _apply_data() -> void:
-	var gm = get_node("/root/GameManager")
-	if gm.shared_texture:
-		sprite.texture = gm.shared_texture
+	if GameManager.SPRITESHEET:
+		sprite.texture = GameManager.SPRITESHEET
 	
 	sprite.region_enabled = true
 	
@@ -50,8 +52,7 @@ func _apply_data() -> void:
 	_apply_skin()
 
 func _apply_skin() -> void:
-	var gm = get_node("/root/GameManager")
-	var skin = gm.current_skin
+	var skin = GameManager.current_skin
 	
 	match skin:
 		"Gold":
@@ -73,15 +74,16 @@ func _process(_delta: float) -> void:
 		var vel_strength = linear_velocity.length() / 500.0
 		sprite.material.set_shader_parameter("strength", clamp(vel_strength * 0.1, 0.0, 0.2))
 	
-	queue_redraw()
+	if OS.is_debug_build():
+		queue_redraw()
 
 func _draw() -> void:
 	# Debug visualization
-	if data:
+	if OS.is_debug_build() and data:
 		draw_arc(Vector2.ZERO, data.radius, 0, TAU, 32, Color(1, 0, 0, 0.5), 2.0)
 
 func _on_merge_area_body_entered(body: Node2D) -> void:
-	if body.has_signal("body_entered") and body != self:
+	if body is Fruit and body != self:
 		if body.data.id == self.data.id:
 			# Chiediamo al GameManager di gestire la fusione
-			get_node("/root/GameManager").request_merge(self, body)
+			GameManager.request_merge(self, body)

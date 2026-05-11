@@ -1,6 +1,6 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://scenes/ui/wardrobe/wardrobe.gd" id="1_nxjfa"]
+[ext_resource type="Script" path="res://scenes/ui/wardrobe/Wardrobe.gd" id="1_nxjfa"]
 
 [node name="Wardrobe" type="Control" unique_id=2138340402]
 layout_mode = 3

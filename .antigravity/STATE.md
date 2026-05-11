@@ -34,3 +34,12 @@
 ## Debiti Tecnici ⚠️
 - AudioManager non ha ancora i file audio reali (usa placeholder/null).
 - Mancano i tier di frutta dal 4 all'11 (implementati solo i primi 3).
+
+## 📂 Archivio Debiti Tecnici Risolti
+- [x] **Performance Mobile**: Sostituite chiamate `load()` con `preload()` in GameManager e Fruit.
+- [x] **Standard Naming**: Refactoring di tutti gli script principali in `PascalCase`.
+- [x] **Debug Overhead**: Debug drawing (`_draw`) in Fruit reso condizionale a `OS.is_debug_build()`.
+
+## 🛠 In Corso
+- [/] **Hardening & Polish**: Validazione finale del refactoring e pulizia riferimenti residui.
+- [ ] **Nuova Feature**: Implementazione "Frullatore del Caos" (Meter 100%).

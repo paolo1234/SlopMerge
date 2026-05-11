@@ -1,5 +1,10 @@
 extends Node
 
+# Preloaded Assets for Performance
+const FRUIT_SCENE = preload("res://scenes/entities/fruit/Fruit.tscn")
+const MERGE_VFX_SCENE = preload("res://scenes/vfx/merge_particles.tscn")
+const SPRITESHEET = preload("res://assets/sprites/slop_merge_spritesheet.png")
+
 var score: int = 0
 var high_score: int = 0
 var slop_tokens: int = 0
@@ -11,7 +16,6 @@ var combo_timer: float = 0.0
 const COMBO_RESET_TIME: float = 2.0
 
 var fruits_data: Array[Resource] = []
-var shared_texture: Texture2D
 var fruits_container: Node2D
 var is_game_over: bool = false
 
@@ -23,8 +27,6 @@ func _ready() -> void:
 	fruits_data.append(load("res://resources/fruits/01_pisello.tres"))
 	fruits_data.append(load("res://resources/fruits/02_limone.tres"))
 	fruits_data.append(load("res://resources/fruits/03_kiwi.tres"))
-	
-	shared_texture = load("res://assets/sprites/slop_merge_spritesheet.png")
 
 func _process(delta: float) -> void:
 	if combo_multiplier > 1:
@@ -57,8 +59,7 @@ func request_merge(fruit_a: Node2D, fruit_b: Node2D) -> void:
 	call_deferred("_spawn_merged_fruit", next_data, spawn_pos)
 
 func _spawn_merged_fruit(data: Resource, pos: Vector2) -> void:
-	var fruit_scene = load("res://scenes/entities/fruit/fruit.tscn")
-	var instance = fruit_scene.instantiate() as RigidBody2D
+	var instance = FRUIT_SCENE.instantiate() as RigidBody2D
 	instance.data = data
 	instance.global_position = pos
 	
@@ -68,8 +69,7 @@ func _spawn_merged_fruit(data: Resource, pos: Vector2) -> void:
 		get_tree().root.add_child(instance)
 	
 	# VFX
-	var vfx_scene = load("res://scenes/vfx/merge_particles.tscn")
-	var vfx = vfx_scene.instantiate()
+	var vfx = MERGE_VFX_SCENE.instantiate()
 	get_tree().root.add_child(vfx)
 	vfx.global_position = pos
 	vfx.emitting = true
@@ -93,7 +93,7 @@ func _spawn_merged_fruit(data: Resource, pos: Vector2) -> void:
 	EventBus.score_changed.emit(score)
 	
 	if has_node("/root/AudioManager"):
-		get_node("/root/AudioManager").play_sound("merge")
+		AudioManager.play_sound("merge")
 
 func game_over() -> void:
 	if is_game_over:
@@ -109,11 +109,6 @@ func game_over() -> void:
 	save_data()
 	
 	EventBus.game_over.emit()
-	
-	# UI instantiation moved to a specialized scene handler or handled by signal subscribers
-	# but for now we'll keep it here but decouple the scene path if possible.
-	# Actually, I'll move it to Main.gd or a separate GameController in the next step.
-	
 	get_tree().paused = true
 
 func save_data() -> void:

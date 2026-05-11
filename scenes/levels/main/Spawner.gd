@@ -84,7 +84,7 @@ func fire_laser() -> void:
 			tween.tween_callback(line.queue_free)
 			
 			if has_node("/root/AudioManager"):
-				get_node("/root/AudioManager").play_sound("laser")
+				AudioManager.play_sound("laser")
 	
 	is_laser_mode = false
 
@@ -105,12 +105,13 @@ func launch_fruit() -> void:
 	fruit_instance.apply_central_impulse(aim_direction * launch_force)
 	
 	if has_node("/root/AudioManager"):
-		get_node("/root/AudioManager").play_sound("launch")
+		AudioManager.play_sound("launch")
 	
 	# Recoil effect (Game Feel Tip)
 	var recoil_tween = create_tween()
 	recoil_tween.tween_property(self, "position", original_pos + Vector2(0, 30), 0.05).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	recoil_tween.tween_property(self, "position", original_pos, 0.2).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 		
-	await get_tree().create_timer(0.5).timeout
+	if is_inside_tree():
+		await get_tree().create_timer(0.5).timeout
 	can_drop = true

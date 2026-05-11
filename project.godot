@@ -21,12 +21,12 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-PowerUpManager="*res://core/autoloads/powerup_manager.gd"
-EventBus="*res://core/autoloads/event_bus.gd"
-AudioManager="*res://core/autoloads/audio_manager.gd"
+PowerUpManager="*res://core/autoloads/PowerUpManager.gd"
+EventBus="*res://core/autoloads/EventBus.gd"
+AudioManager="*res://core/autoloads/AudioManager.gd"
 McpInteractionServer="*res://mcp_interaction_server.gd"
-GameManager="*res://core/autoloads/game_manager.gd"
-TransitionManager="*res://core/autoloads/transition_manager.tscn"
+GameManager="*res://core/autoloads/GameManager.gd"
+TransitionManager="*res://core/autoloads/TransitionManager.tscn"
 
 [display]
 

@@ -1,7 +1,7 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene format=3]
 
-[ext_resource type="Script" path="res://scenes/ui/main_menu/main_menu.gd" id="1_1ch07"]
-[ext_resource type="Theme" uid="res://assets/themes/main_theme.tres" path="res://assets/themes/main_theme.tres" id="2_theme"]
+[ext_resource type="Script" path="res://scenes/ui/main_menu/MainMenu.gd" id="2_qt1dd"]
+[ext_resource type="Theme" path="res://assets/themes/main_theme.tres" id="2_theme"]
 [ext_resource type="Shader" path="res://assets/shaders/ui_background.gdshader" id="3_shader"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bg"]
@@ -19,7 +19,7 @@ shadow_size = 25
 shadow_color = Color(1, 0, 1, 0.3)
 shadow_offset = Vector2(8, 8)
 
-[node name="MainMenu" type="Control"]
+[node name="MainMenu" type="Control" unique_id=1439084022]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -27,9 +27,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_theme")
-script = ExtResource("1_1ch07")
+script = ExtResource("2_qt1dd")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=1907805059]
 material = SubResource("ShaderMaterial_bg")
 layout_mode = 1
 anchors_preset = 15
@@ -39,7 +39,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.12, 0.12, 0.14, 1)
 
-[node name="Title" type="Label" parent="."]
+[node name="Title" type="Label" parent="." unique_id=609943155]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -54,7 +54,7 @@ label_settings = SubResource("LabelSettings_title")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Subtitle" type="Label" parent="Title"]
+[node name="Subtitle" type="Label" parent="Title" unique_id=1440554342]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -67,12 +67,12 @@ offset_right = 300.0
 offset_bottom = 50.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_colors/font_color = Color(1, 0.8, 0, 1)
 theme_override_font_sizes/font_size = 32
+theme_override_colors/font_color = Color(1, 0.8, 0, 1)
 text = "SHOOT & BOUNCE EDITION"
 horizontal_alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1627069947]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -87,27 +87,27 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 30
 
-[node name="PlayButton" type="Button" parent="VBoxContainer"]
+[node name="PlayButton" type="Button" parent="VBoxContainer" unique_id=1672142796]
 custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 text = "PLAY"
 
-[node name="GachaButton" type="Button" parent="VBoxContainer"]
+[node name="GachaButton" type="Button" parent="VBoxContainer" unique_id=1886771344]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 text = "GACHA"
 
-[node name="SlopdexButton" type="Button" parent="VBoxContainer"]
+[node name="SlopdexButton" type="Button" parent="VBoxContainer" unique_id=987322660]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 text = "SLOPDEX"
 
-[node name="WardrobeButton" type="Button" parent="VBoxContainer"]
+[node name="WardrobeButton" type="Button" parent="VBoxContainer" unique_id=1052715454]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 text = "WARDROBE"
 
-[node name="QuitButton" type="Button" parent="VBoxContainer"]
+[node name="QuitButton" type="Button" parent="VBoxContainer" unique_id=1252850116]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 text = "QUIT"

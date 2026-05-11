@@ -1,6 +1,6 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://scenes/ui/gacha/gacha.gd" id="1_vlt0y"]
+[ext_resource type="Script" path="res://scenes/ui/gacha/Gacha.gd" id="1_vlt0y"]
 
 [node name="Gacha" type="Control" unique_id=1578548300]
 layout_mode = 3

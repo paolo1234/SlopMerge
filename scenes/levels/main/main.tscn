@@ -1,16 +1,9 @@
-[gd_scene load_steps=14 format=3]
+[gd_scene format=3]
 
-[ext_resource type="Script" path="res://scenes/levels/main/main.gd" id="1_osekl"]
-[ext_resource type="Script" path="res://scenes/levels/main/cringe_line.gd" id="1_sg7u5"]
-[ext_resource type="Script" path="res://scenes/levels/main/spawner.gd" id="1_spawner"]
-[ext_resource type="PackedScene" path="res://scenes/entities/fruit/fruit.tscn" id="2_fruit_scene"]
-[ext_resource type="Resource" path="res://resources/fruits/01_pisello.tres" id="3_pisello"]
 [ext_resource type="PackedScene" path="res://scenes/ui/brainrot_meter/brainrot_meter.tscn" id="4_brainrot_meter"]
-[ext_resource type="Script" path="res://scenes/ui/brainrot_meter/brainrot_meter.gd" id="6_x8310"]
+[ext_resource type="Theme" path="res://assets/themes/main_theme.tres" id="4_dqgss"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud/hud.tscn" id="7_hud"]
-[ext_resource type="Script" path="res://scenes/ui/hud/hud.gd" id="9_dwkvq"]
 [ext_resource type="Shader" path="res://assets/shaders/dashed_line.gdshader" id="10_shader"]
-
 [ext_resource type="Shader" path="res://assets/shaders/game_background.gdshader" id="11_bg_shader"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_background"]
@@ -25,22 +18,22 @@ size = Vector2(1080, 50)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
 size = Vector2(50, 1920)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cringe"]
+size = Vector2(1080, 40)
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cringe"]
 shader = ExtResource("10_shader")
 shader_parameter/dash_size = 20.0
 shader_parameter/gap_size = 10.0
 shader_parameter/line_color = Color(1, 0, 0, 0.5)
+shader_parameter/speed = null
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_cringe"]
-size = Vector2(1080, 40)
+[node name="Main" type="Node2D" unique_id=417411237]
 
-[node name="Main" type="Node2D"]
-script = ExtResource("1_osekl")
-
-[node name="BackgroundLayer" type="CanvasLayer" parent="."]
+[node name="BackgroundLayer" type="CanvasLayer" parent="." unique_id=1301950263]
 layer = -1
 
-[node name="Background" type="ColorRect" parent="BackgroundLayer"]
+[node name="Background" type="ColorRect" parent="BackgroundLayer" unique_id=282995051]
 material = SubResource("ShaderMaterial_background")
 anchors_preset = 15
 anchor_right = 1.0
@@ -50,31 +43,30 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0.05, 0.05, 0.08, 1)
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=626156142]
 anchor_mode = 0
 
-[node name="Boundaries" type="StaticBody2D" parent="."]
+[node name="Boundaries" type="StaticBody2D" parent="." unique_id=2068440125]
 
-[node name="Ceiling" type="CollisionShape2D" parent="Boundaries"]
+[node name="Ceiling" type="CollisionShape2D" parent="Boundaries" unique_id=1857843028]
 position = Vector2(540, 50)
 shape = SubResource("RectangleShape2D_floor")
 
-[node name="LeftWall" type="CollisionShape2D" parent="Boundaries"]
+[node name="LeftWall" type="CollisionShape2D" parent="Boundaries" unique_id=834102143]
 position = Vector2(0, 960)
 shape = SubResource("RectangleShape2D_wall")
 
-[node name="RightWall" type="CollisionShape2D" parent="Boundaries"]
+[node name="RightWall" type="CollisionShape2D" parent="Boundaries" unique_id=343646064]
 position = Vector2(1080, 960)
 shape = SubResource("RectangleShape2D_wall")
 
-[node name="CringeLine" type="Area2D" parent="."]
+[node name="CringeLine" type="Area2D" parent="." unique_id=1578551895]
 position = Vector2(540, 1500)
-script = ExtResource("1_sg7u5")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CringeLine"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CringeLine" unique_id=300771783]
 shape = SubResource("RectangleShape2D_cringe")
 
-[node name="Visual" type="ColorRect" parent="CringeLine"]
+[node name="Visual" type="ColorRect" parent="CringeLine" unique_id=790129246]
 material = SubResource("ShaderMaterial_cringe")
 anchors_preset = 8
 anchor_left = 0.5
@@ -89,21 +81,36 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="Spawner" type="Marker2D" parent="."]
+[node name="Spawner" type="Marker2D" parent="." unique_id=1039605134]
 position = Vector2(540, 1750)
-script = ExtResource("1_spawner")
-fruit_scene = ExtResource("2_fruit_scene")
-current_fruit_data = ExtResource("3_pisello")
 
-[node name="FruitsContainer" type="Node2D" parent="."]
+[node name="FruitsContainer" type="Node2D" parent="." unique_id=23782574]
 
-[node name="UI" type="CanvasLayer" parent="."]
+[node name="UI" type="CanvasLayer" parent="." unique_id=850622102]
 
-[node name="BrainrotMeter" parent="UI" instance=ExtResource("4_brainrot_meter")]
+[node name="BrainrotMeter" type="Control" parent="UI" unique_id=605222635 instance=ExtResource("4_brainrot_meter")]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -175.0
+offset_top = 180.0
+offset_right = -85.0
+offset_bottom = 680.0
+grow_horizontal = 0
+theme = ExtResource("4_dqgss")
 
-[node name="HUD" parent="UI" instance=ExtResource("7_hud")]
+[node name="HUD" type="Control" parent="UI" unique_id=351199084 instance=ExtResource("7_hud")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("4_dqgss")
 
-[node name="FloatingContainer" type="Control" parent="UI"]
+[node name="FloatingContainer" type="Control" parent="UI" unique_id=288667285]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
