@@ -20,6 +20,7 @@ config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
+PowerUpManager="*res://core/autoloads/powerup_manager.gd"
 
 EventBus="*res://core/autoloads/event_bus.gd"
 AudioManager="*res://core/autoloads/audio_manager.gd"
@@ -45,3 +46,4 @@ window/handheld/orientation=1
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true

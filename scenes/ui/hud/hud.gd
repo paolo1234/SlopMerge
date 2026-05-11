@@ -2,12 +2,13 @@ extends Control
 
 @onready var score_label: Label = %ScoreLabel
 @onready var combo_label: Label = %ComboLabel
+@onready var magnet_button: Button = %MagnetButton
+@onready var slow_mo_button: Button = %SlowMoButton
 
 var combo_tween: Tween
 var warning_label: Label
 
 func _ready() -> void:
-	# Use EventBus for all global notifications
 	EventBus.score_changed.connect(_on_score_changed)
 	EventBus.combo_changed.connect(_on_combo_changed)
 	EventBus.cringe_warning.connect(_on_cringe_warning)
@@ -16,6 +17,10 @@ func _ready() -> void:
 	combo_label.modulate.a = 0.0
 	
 	_setup_warning_label()
+	
+	# Initial power-up states
+	PowerUpManager.powerup_activated.connect(_on_powerup_activated)
+	PowerUpManager.powerup_deactivated.connect(_on_powerup_deactivated)
 
 func _setup_warning_label() -> void:
 	warning_label = Label.new()
@@ -42,7 +47,7 @@ func _setup_warning_label() -> void:
 	warning_label.offset_top = 400
 	warning_label.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	warning_label.scale = Vector2(1, 1)
-	warning_label.pivot_offset = Vector2(400, 50) # Approx center
+	warning_label.pivot_offset = Vector2(400, 50)
 
 func _on_score_changed(new_score: int) -> void:
 	score_label.text = str(new_score)
@@ -79,3 +84,23 @@ func _on_pause_pressed() -> void:
 	var pause_menu_scene = load("res://scenes/ui/pause_menu/pause_menu.tscn")
 	var instance = pause_menu_scene.instantiate()
 	get_tree().root.add_child(instance)
+
+func _on_magnet_pressed() -> void:
+	PowerUpManager.activate_magnet()
+
+func _on_slow_mo_pressed() -> void:
+	PowerUpManager.activate_slow_mo()
+
+func _on_powerup_activated(type: String) -> void:
+	match type:
+		"magnet":
+			magnet_button.modulate = Color.CYAN
+		"slow_mo":
+			slow_mo_button.modulate = Color.YELLOW
+
+func _on_powerup_deactivated(type: String) -> void:
+	match type:
+		"magnet":
+			magnet_button.modulate = Color.WHITE
+		"slow_mo":
+			slow_mo_button.modulate = Color.WHITE

@@ -3,16 +3,16 @@ class_name Spawner
 
 @export var fruit_scene: PackedScene
 @export var current_fruit_data: Resource
-
 @export var launch_force: float = 1200.0
 
 var can_drop: bool = true
 var is_aiming: bool = false
 var is_laser_mode: bool = false
 var aim_direction: Vector2 = Vector2.DOWN
+var original_pos: Vector2
 
 func _ready() -> void:
-	pass
+	original_pos = position
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not can_drop:
@@ -39,13 +39,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event is InputEventKey:
 		if event.pressed and event.keycode == KEY_L:
 			is_laser_mode = !is_laser_mode
-			print("Laser Mode: ", is_laser_mode)
 
 func _update_aim(target_pos: Vector2) -> void:
-	# Calcola la direzione dallo spawner al punto di tocco
 	aim_direction = (target_pos - global_position).normalized()
 	
-	# Limita la mira verso l'alto (per evitare di sparare in basso fuori dallo schermo)
 	if aim_direction.y > -0.2:
 		aim_direction.y = -0.2
 		aim_direction = aim_direction.normalized()
@@ -74,7 +71,7 @@ func fire_laser() -> void:
 		var hit_node = result.collider
 		if hit_node is RigidBody2D:
 			hit_node.queue_free()
-			# Visual effect
+			
 			var line = Line2D.new()
 			add_child(line)
 			line.add_point(Vector2.ZERO)
@@ -100,19 +97,20 @@ func launch_fruit() -> void:
 	fruit_instance.data = current_fruit_data
 	fruit_instance.global_position = global_position
 	
-	# Aggiungi il frutto al contenitore
-	var gm = get_node("/root/GameManager")
-	if gm.fruits_container:
-		gm.fruits_container.add_child(fruit_instance)
+	if GameManager.fruits_container:
+		GameManager.fruits_container.add_child(fruit_instance)
 	else:
 		get_parent().add_child(fruit_instance)
 	
-	# Applica l'impulso iniziale
 	fruit_instance.apply_central_impulse(aim_direction * launch_force)
 	
 	if has_node("/root/AudioManager"):
 		get_node("/root/AudioManager").play_sound("launch")
+	
+	# Recoil effect (Game Feel Tip)
+	var recoil_tween = create_tween()
+	recoil_tween.tween_property(self, "position", original_pos + Vector2(0, 30), 0.05).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	recoil_tween.tween_property(self, "position", original_pos, 0.2).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 		
-	# Breve cooldown
 	await get_tree().create_timer(0.5).timeout
 	can_drop = true
