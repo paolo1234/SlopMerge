@@ -2,6 +2,13 @@
 
 - [2026-05-11] Revamp totale dei workflow e sincronizzazione con `game-core`. Introdotti step obbligatori per branching, testing e documentazione. Creata struttura `core/` generica.
 
+## [1.6.0] - 2026-05-11
+### Fixed
+- **Slopdex Crash**: Risolto crash critico causato dall'accesso alla proprietà inesistente `shared_texture` in `GameManager`. Sostituito con `SPRITESHEET`.
+- **Fruit Launching**: Corretto il bug per cui la frutta non veniva spawnata dal `Spawner` a causa di proprietà non assegnate nell'inspector. Implementata inizializzazione automatica e randomizzazione del primo frutto (Starter Pool).
+### Added
+- **Fruit Randomizer**: Il `Spawner` ora seleziona casualmente il prossimo frutto tra i primi 3 tier (Pisello, Limone, Kiwi) dopo ogni lancio per variare il gameplay.
+
 ## [1.5.0] - 2026-05-11
 ### Optimized
 - **Performance Mobile**: Sostituite le chiamate dinamiche a `load()` con `preload()` per le scene `Fruit` e `MergeVFX`, e per lo shader `SquishyFruit`. Ridotto drasticamente il micro-stutter durante le fusioni.

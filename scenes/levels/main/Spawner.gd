@@ -12,6 +12,19 @@ var original_pos: Vector2
 
 func _ready() -> void:
 	original_pos = position
+	
+	# Fix: Se non settati dall'inspector, carica i default
+	if not fruit_scene:
+		fruit_scene = load("res://scenes/entities/fruit/fruit.tscn")
+	
+	if not current_fruit_data:
+		_prepare_next_fruit()
+
+func _prepare_next_fruit() -> void:
+	# Sceglie a caso tra i primi 3 frutti (Starter)
+	var starter_pool = GameManager.fruits_data.slice(0, 3)
+	if starter_pool.is_empty(): return
+	current_fruit_data = starter_pool.pick_random()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not can_drop:
@@ -102,6 +115,8 @@ func launch_fruit() -> void:
 		get_parent().add_child(fruit_instance)
 	
 	fruit_instance.apply_central_impulse(aim_direction * launch_force)
+	
+	_prepare_next_fruit()
 	
 	if has_node("/root/AudioManager"):
 		AudioManager.play_sound("launch")

@@ -34,6 +34,7 @@
 ## Debiti Tecnici ⚠️
 - AudioManager non ha ancora i file audio reali (usa placeholder/null).
 - Mancano i tier di frutta dal 4 all'11 (implementati solo i primi 3).
+- Segnali inutilizzati in `EventBus.gd` rilevati durante il testing.
 
 ## 📂 Archivio Debiti Tecnici Risolti
 - [x] **Performance Mobile**: Sostituite chiamate `load()` con `preload()` in GameManager e Fruit.
@@ -41,5 +42,5 @@
 - [x] **Debug Overhead**: Debug drawing (`_draw`) in Fruit reso condizionale a `OS.is_debug_build()`.
 
 ## 🛠 In Corso
-- [x] **Hardening & Polish**: Validazione finale del refactoring PascalCase e fix critico navigazione GameOver (loop e swap tasti).
+- [x] **Full Project Validation**: Eseguito testing completo di gameplay, UI e metagame. Risolto bug critico in Slopdex.
 - [ ] **Nuova Feature**: Implementazione "Frullatore del Caos" (Meter 100%).

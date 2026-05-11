@@ -39,5 +39,6 @@
 
 ## Fase 7: Polish & Audio 🛠️
 - [x] Menù di Pausa con settings volume
+- [x] Full Project Testing & Slopdex Fix
 - [ ] Integrazione audio reale (AudioManager SFX)
 - [ ] Effetto Screen Shake globale
