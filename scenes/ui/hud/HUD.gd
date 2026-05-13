@@ -11,7 +11,6 @@ var warning_label: Label
 func _ready() -> void:
 	EventBus.score_changed.connect(_on_score_changed)
 	EventBus.combo_changed.connect(_on_combo_changed)
-	EventBus.cringe_warning.connect(_on_cringe_warning)
 	
 	if has_node("/root/ScoreManager"):
 		score_label.text = str(ScoreManager.score)
@@ -19,38 +18,17 @@ func _ready() -> void:
 		score_label.text = "0"
 	combo_label.modulate.a = 0.0
 	
-	_setup_warning_label()
-	
 	# Initial power-up states
 	PowerUpManager.powerup_activated.connect(_on_powerup_activated)
 	PowerUpManager.powerup_deactivated.connect(_on_powerup_deactivated)
+	
+	_setup_button_juice()
 
-func _setup_warning_label() -> void:
-	warning_label = Label.new()
-	add_child(warning_label)
-	warning_label.text = "!!! CRINGE OVERLOAD !!!"
-	warning_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	warning_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	warning_label.modulate.a = 0
-	
-	var settings = LabelSettings.new()
-	settings.font_size = 72
-	settings.font_color = Color.RED
-	settings.outline_size = 18
-	settings.outline_color = Color.BLACK
-	settings.shadow_size = 20
-	settings.shadow_color = Color(0.5, 0, 0, 0.7)
-	warning_label.label_settings = settings
-	
-	warning_label.set_anchors_preset(Control.PRESET_CENTER_TOP)
-	warning_label.anchor_left = 0.5
-	warning_label.anchor_right = 0.5
-	warning_label.offset_left = -400
-	warning_label.offset_right = 400
-	warning_label.offset_top = 400
-	warning_label.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	warning_label.scale = Vector2(1, 1)
-	warning_label.pivot_offset = Vector2(400, 50)
+func _setup_button_juice() -> void:
+	for btn in [magnet_button, slow_mo_button]:
+		btn.pivot_offset = btn.size / 2
+		btn.mouse_entered.connect(func(): create_tween().tween_property(btn, "scale", Vector2(1.1, 1.1), 0.1))
+		btn.mouse_exited.connect(func(): create_tween().tween_property(btn, "scale", Vector2(1.0, 1.0), 0.1))
 
 func _on_score_changed(new_score: int) -> void:
 	score_label.text = str(new_score)
@@ -70,17 +48,6 @@ func _on_combo_changed(new_combo: int) -> void:
 	else:
 		var tween = create_tween()
 		tween.tween_property(combo_label, "modulate:a", 0.0, 0.5)
-
-func _on_cringe_warning(active: bool, _progress: float) -> void:
-	if active:
-		warning_label.visible = true
-		warning_label.modulate.a = lerp(warning_label.modulate.a, 1.0, 0.1)
-		var pulse = 1.0 + sin(Time.get_ticks_msec() * 0.02) * 0.15
-		warning_label.scale = Vector2(pulse, pulse)
-	else:
-		warning_label.modulate.a = lerp(warning_label.modulate.a, 0.0, 0.2)
-		if warning_label.modulate.a < 0.01:
-			warning_label.visible = false
 
 func _on_pause_pressed() -> void:
 	get_viewport().set_input_as_handled()
