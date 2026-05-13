@@ -39,7 +39,10 @@ func _prepare_next_fruit() -> void:
 	
 	current_fruit_data = fruit_queue.pop_front()
 	fruit_queue.append(_get_random_starter_fruit())
-	queue_updated.emit(fruit_queue)
+	
+	var display_queue: Array = [current_fruit_data]
+	display_queue.append_array(fruit_queue)
+	queue_updated.emit(display_queue)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not can_drop:

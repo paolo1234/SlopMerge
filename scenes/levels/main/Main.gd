@@ -26,7 +26,9 @@ func _ready() -> void:
 	spawner.queue_updated.connect(next_queue.update_queue)
 	
 	# Inizializza visualmente la coda
-	next_queue.update_queue(spawner.fruit_queue)
+	var initial_display: Array = [spawner.current_fruit_data]
+	initial_display.append_array(spawner.fruit_queue)
+	next_queue.update_queue(initial_display)
 
 func _process(delta: float) -> void:
 	if shake_intensity > 0:

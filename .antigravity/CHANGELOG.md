@@ -1,5 +1,11 @@
 # Changelog
 
+- [2026-05-13] Feat: Implementato `UpdateManager`, un sistema di aggiornamento in-game non invasivo tramite file `version.json` remoto, con bottone dedicato nel Main Menu.
+
+- [2026-05-13] Fix: Forzato il `compress/mode=0` (Lossless) nel file `.import` dello spritesheet per risolvere il problema delle texture invisibili nei device Android causato dalla VRAM compression.
+
+- [2026-05-13] Fix: Risolto bug visivo nella UI `NextQueue` che ometteva il frutto correntemente caricato nello Spawner, mostrando un offset nella coda dei frutti successivi.
+
 - [2026-05-11] Revamp totale dei workflow e sincronizzazione con `game-core`. Introdotti step obbligatori per branching, testing e documentazione. Creata struttura `core/` generica.
 
 ## [1.7.0] - 2026-05-11

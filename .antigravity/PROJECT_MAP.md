@@ -15,6 +15,7 @@ Creare un puzzle game "Inverse Shooter" (Shoot & Bounce) che trattenga i giocato
 - **GameManager**: `res://core/autoloads/GameManager.gd` (Score, Highscore, Logica Merge, Skins).
 - **AudioManager**: `res://core/autoloads/AudioManager.gd` (Pool di AudioStreamPlayer).
 - **TransitionManager**: `res://core/autoloads/TransitionManager.tscn` (Gestione Fade tra scene).
+- **UpdateManager**: `res://core/autoloads/UpdateManager.gd` (Controllo aggiornamenti in-game via HTTP).
 
 ## Architettura File System (res://)
 ```text

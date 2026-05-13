@@ -11,8 +11,32 @@ func _ready() -> void:
 		$VBoxContainer/WardrobeButton.pressed.connect(_on_wardrobe_pressed)
 	if not $VBoxContainer/QuitButton.pressed.is_connected(_on_quit_pressed):
 		$VBoxContainer/QuitButton.pressed.connect(_on_quit_pressed)
+		
+	var update_btn = $VBoxContainer/UpdateButton
+	if not update_btn.pressed.is_connected(_on_update_pressed):
+		update_btn.pressed.connect(_on_update_pressed)
+	
+	if UpdateManager.current_update_url != "":
+		_show_update_button(UpdateManager.current_update_url)
+	else:
+		UpdateManager.update_available.connect(_on_update_available)
 	
 	_setup_juice()
+
+func _on_update_available(_version: String, _url: String) -> void:
+	_show_update_button(_url)
+
+func _show_update_button(_url: String) -> void:
+	var update_btn = $VBoxContainer/UpdateButton
+	update_btn.visible = true
+	
+	# Animazione pulsazione per farsi notare
+	var tween = create_tween().set_loops()
+	tween.tween_property(update_btn, "modulate", Color(1, 0.5, 0.5), 0.8)
+	tween.tween_property(update_btn, "modulate", Color.WHITE, 0.8)
+
+func _on_update_pressed() -> void:
+	UpdateManager.open_update_url()
 
 func _setup_juice() -> void:
 	# Pulse title
