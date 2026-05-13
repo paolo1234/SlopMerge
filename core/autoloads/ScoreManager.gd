@@ -6,7 +6,7 @@ var combo_multiplier: int = 1
 var combo_timer: float = 0.0
 const COMBO_RESET_TIME: float = 3.0
 
-const SAVE_PATH = "user://score.save"
+const SAVE_PATH = "user://progression.cfg"
 
 func _ready() -> void:
 	load_high_score()
@@ -28,6 +28,7 @@ func _on_merge_occurred(_pos: Vector2, tier: int) -> void:
 	
 	if score > high_score:
 		high_score = score
+		save_high_score()
 	
 	EventBus.score_changed.emit(score)
 	EventBus.combo_changed.emit(combo_multiplier)
@@ -43,14 +44,14 @@ func reset_score() -> void:
 	EventBus.combo_changed.emit(combo_multiplier)
 
 func save_high_score() -> void:
-	var file = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
-	if file:
-		file.store_var(high_score)
-		file.close()
+	var config = ConfigFile.new()
+	config.load(SAVE_PATH)
+	config.set_value("progression", "high_score", high_score)
+	config.save(SAVE_PATH)
 
 func load_high_score() -> void:
 	if FileAccess.file_exists(SAVE_PATH):
-		var file = FileAccess.open(SAVE_PATH, FileAccess.READ)
-		if file:
-			high_score = file.get_var()
-			file.close()
+		var config = ConfigFile.new()
+		var err = config.load(SAVE_PATH)
+		if err == OK:
+			high_score = config.get_value("progression", "high_score", 0)
