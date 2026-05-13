@@ -43,6 +43,9 @@
 - [x] **VRAM Texture Android**: Corretto import dello spritesheet da Lossless (`compress/mode=0`) a VRAM Compressed (`compress/mode=2`). Le GPU mobile richiedono texture ETC2/ASTC.
 - [x] **Null Safety Texture**: Aggiunta protezione null su `sprite.texture` in Fruit.gd, NextQueue.gd e Slopdex.gd per prevenire crash se la texture non viene caricata.
 - [x] **FileAccess → ResourceLoader**: Sostituito `FileAccess.file_exists()` con `ResourceLoader.exists()` in AudioManager.gd per compatibilità path `res://` su Android.
+- [x] **UpdateManager**: Sistema di aggiornamento in-game completo con download diretto APK e UI overlay.
+- [x] **Android Compatibility**: Risolto bug texture invisibili (VRAM compression) e permessi di archiviazione.
+- [x] **Android Permissions**: Abilitati `WRITE_EXTERNAL_STORAGE` e `REQUEST_INSTALL_PACKAGES` per il sistema di update.
 
 ## 🛠 In Corso
 - [x] **Full Project Validation**: Eseguito testing completo di gameplay, UI e metagame. Risolto bug critico in Slopdex.

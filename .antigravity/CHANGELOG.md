@@ -2,7 +2,11 @@
 
 - [2026-05-13] **Fix (CRITICO)**: Risolto il bug delle texture invisibili su Android. La causa reale era `compress/mode=0` (Lossless) con `vram_texture: false` nel file `.import` dello spritesheet — le GPU mobile richiedono texture VRAM-compresse (ETC2/ASTC). Cambiato a `compress/mode=2` (VRAM Compressed) con `vram_texture: true`. Aggiunto null safety in Fruit.gd, NextQueue.gd e Slopdex.gd. Sostituito `FileAccess.file_exists()` con `ResourceLoader.exists()` in AudioManager.gd per compatibilità Android. Documentata la regola in CONVENTIONS_GODOT.md (§4.5 e §4.9).
 
-- [2026-05-13] Feat: Implementato `UpdateManager`, un sistema di aggiornamento in-game non invasivo tramite file `version.json` remoto, con bottone dedicato nel Main Menu.
+- [2026-05-13] **Feat**: Implementato `UpdateManager`, un sistema di aggiornamento in-game non invasivo tramite file `version.json` remoto. Include:
+  - Download diretto in-app con UI overlay (`ProgressBar` e status).
+  - Permessi Android abilitati (`WRITE_EXTERNAL_STORAGE`, `REQUEST_INSTALL_PACKAGES`).
+  - Installazione automatica su OS Android tramite intent.
+  - Documentato il workflow di versioning e deploy in `CONVENTIONS.md`.
 
 - [2026-05-13] ~~Fix: Forzato il compress/mode=0 (Lossless)~~ **REVERTED** — questa modifica era ERRATA e causava il bug delle texture invisibili su Android. La soluzione corretta è `compress/mode=2` (VRAM Compressed).
 

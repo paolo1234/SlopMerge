@@ -40,5 +40,13 @@
 ## Fase 7: Polish & Audio 🛠️
 - [x] Menù di Pausa con settings volume
 - [x] Full Project Testing & Slopdex Fix
+## Fase 8: Sviluppo & Deploy Mobile ✅
+- [x] Fix critico rendering texture Android (VRAM compression)
+- [x] Implementazione `UpdateManager` (Download in-app con progresso)
+- [x] Sistema di versioning semantico e documentazione deploy
+- [x] Abilitazione permessi Android per installazione pacchetti
+
+## Fase 9: Polish Finale & Metagame 🛠️
 - [ ] Integrazione audio reale (AudioManager SFX)
 - [ ] Effetto Screen Shake globale
+- [ ] Nuova Feature: "Frullatore del Caos" (Meter 100%)
