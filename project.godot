@@ -18,7 +18,7 @@ config/name="Slop Merge"
 run/main_scene="res://scenes/ui/main_menu/main_menu.tscn"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
-config/version="1.7.0"
+config/version="1.7.1"
 
 [autoload]
 
