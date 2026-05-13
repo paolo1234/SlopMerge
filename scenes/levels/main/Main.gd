@@ -12,6 +12,7 @@ var shake_intensity: float = 0.0
 func _ready() -> void:
 	# Registra il container nel GameManager per ottimizzare le ricerche
 	GameManager.fruits_container = fruits_container
+	print("[Main] FruitsContainer registered: ", fruits_container)
 	GameManager.score = 0
 	GameManager.is_game_over = false
 	

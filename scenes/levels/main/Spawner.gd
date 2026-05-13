@@ -16,9 +16,9 @@ var original_pos: Vector2
 func _ready() -> void:
 	original_pos = position
 	
-	# Fix: Se non settati dall'inspector, carica i default
+	# Fix: Se non settati dall'inspector, usa quelli del GameManager (precaricati)
 	if not fruit_scene:
-		fruit_scene = load("res://scenes/entities/fruit/fruit.tscn")
+		fruit_scene = GameManager.FRUIT_SCENE
 	
 	# Inizializza la coda se vuota
 	if fruit_queue.is_empty():
@@ -119,7 +119,11 @@ func fire_laser() -> void:
 	is_laser_mode = false
 
 func launch_fruit() -> void:
-	if not fruit_scene or not current_fruit_data:
+	if not fruit_scene:
+		push_error("[Spawner] Critical: fruit_scene is NULL!")
+		return
+	if not current_fruit_data:
+		push_error("[Spawner] Critical: current_fruit_data is NULL! (GameManager.fruits_data might be empty)")
 		return
 		
 	can_drop = false
@@ -127,9 +131,12 @@ func launch_fruit() -> void:
 	fruit_instance.data = current_fruit_data
 	fruit_instance.global_position = global_position
 	
+	print("[Spawner] Spawning fruit: ", current_fruit_data.fruit_name, " at ", global_position)
+	
 	if GameManager.fruits_container:
 		GameManager.fruits_container.add_child(fruit_instance)
 	else:
+		push_warning("[Spawner] GameManager.fruits_container is null, adding to parent.")
 		get_parent().add_child(fruit_instance)
 	
 	fruit_instance.apply_central_impulse(aim_direction * launch_force)

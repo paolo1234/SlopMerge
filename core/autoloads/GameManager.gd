@@ -1,7 +1,7 @@
 extends Node
 
 # Preloaded Assets for Performance
-const FRUIT_SCENE = preload("res://scenes/entities/fruit/Fruit.tscn")
+const FRUIT_SCENE = preload("res://scenes/entities/fruit/fruit.tscn")
 const MERGE_VFX_SCENE = preload("res://scenes/vfx/merge_particles.tscn")
 const SPRITESHEET = preload("res://assets/sprites/slop_merge_spritesheet.png")
 
@@ -15,7 +15,19 @@ var combo_multiplier: int = 1
 var combo_timer: float = 0.0
 const COMBO_RESET_TIME: float = 2.0
 
-var fruits_data: Array[Resource] = []
+var fruits_data: Array[Resource] = [
+	preload("res://resources/fruits/01_pisello.tres"),
+	preload("res://resources/fruits/02_limone.tres"),
+	preload("res://resources/fruits/03_kiwi.tres"),
+	preload("res://resources/fruits/04_arancia.tres"),
+	preload("res://resources/fruits/05_uva.tres"),
+	preload("res://resources/fruits/06_fragola.tres"),
+	preload("res://resources/fruits/07_melone.tres"),
+	preload("res://resources/fruits/08_ananas.tres"),
+	preload("res://resources/fruits/09_cocco.tres"),
+	preload("res://resources/fruits/10_anguria.tres"),
+	preload("res://resources/fruits/11_zucca.tres")
+]
 var fruits_container: Node2D
 var main_scene: Node2D
 var is_game_over: bool = false
@@ -24,26 +36,17 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	load_data()
 	
-	# Initial data loading
-	fruits_data.clear()
-	var paths = [
-		"res://resources/fruits/01_pisello.tres",
-		"res://resources/fruits/02_limone.tres",
-		"res://resources/fruits/03_kiwi.tres",
-		"res://resources/fruits/04_arancia.tres",
-		"res://resources/fruits/05_uva.tres",
-		"res://resources/fruits/06_fragola.tres",
-		"res://resources/fruits/07_melone.tres",
-		"res://resources/fruits/08_ananas.tres",
-		"res://resources/fruits/09_cocco.tres",
-		"res://resources/fruits/10_anguria.tres",
-		"res://resources/fruits/11_zucca.tres"
-	]
+	print("[GameManager] Initialized with ", fruits_data.size(), " fruits.")
+	for i in range(fruits_data.size()):
+		if fruits_data[i] == null:
+			push_error("[GameManager] Critical: Fruit at index " + str(i) + " is NULL!")
+		else:
+			print("[GameManager] Loaded fruit: ", fruits_data[i].fruit_name)
 	
-	for path in paths:
-		var res = load(path)
-		if res:
-			fruits_data.append(res)
+	if SPRITESHEET == null:
+		push_error("[GameManager] Critical: SPRITESHEET is NULL on load!")
+	else:
+		print("[GameManager] Spritesheet loaded, size: ", SPRITESHEET.get_size())
 
 func _process(delta: float) -> void:
 	if combo_multiplier > 1:

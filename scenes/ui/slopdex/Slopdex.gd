@@ -30,13 +30,17 @@ func _populate_slopdex() -> void:
 		var gm_texture = gm.SPRITESHEET
 		
 		if not gm_texture:
-			push_warning("Slopdex: SPRITESHEET is null — texture non caricata")
+			push_error("[Slopdex] SPRITESHEET is null! Skipping icon.")
 			continue
 		
+		var tex_size = gm_texture.get_size()
+		if tex_size.x <= 0:
+			push_warning("[Slopdex] Texture size is 0, using fallback 2048.")
+			tex_size = Vector2(2048, 2048)
+			
 		var atlas = AtlasTexture.new()
 		atlas.atlas = gm_texture
 		
-		var tex_size = gm_texture.get_size()
 		var fruit_sheet_size = tex_size.x / 4.0 # 512
 		var frame_size = fruit_sheet_size / 4.0 # 128
 		
@@ -45,8 +49,9 @@ func _populate_slopdex() -> void:
 		var row = (fruit_index / 4)
 		
 		atlas.region = Rect2(col * fruit_sheet_size, row * fruit_sheet_size, frame_size, frame_size)
-		
 		icon.texture = atlas
+		
+		print("[Slopdex] Created slot for ", fruit_data.fruit_name, " region: ", atlas.region)
 		
 		if gm.discovered_fruits.has(fruit_data.id):
 			icon.modulate = Color.WHITE

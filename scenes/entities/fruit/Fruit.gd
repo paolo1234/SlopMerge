@@ -21,22 +21,39 @@ func _ready() -> void:
 	if sprite.material == null:
 		sprite.material = ShaderMaterial.new()
 		sprite.material.shader = SQUISHY_SHADER
+		
+	# Su Android (Compatibility) gli shader che modificano VERTEX a volte causano problemi di visibilità
+	if OS.get_name() == "Android":
+		print("[Fruit] Disabling squishy shader on Android for compatibility test.")
+		sprite.material = null
+	else:
+		print("[Fruit] Shader material assigned.")
 
 func _apply_data() -> void:
+	if not data:
+		push_error("Fruit: data is NULL in _apply_data!")
+		return
+		
 	if GameManager.SPRITESHEET:
 		sprite.texture = GameManager.SPRITESHEET
 	
 	if not sprite.texture:
-		push_warning("Fruit: SPRITESHEET is null — texture non caricata (possibile problema di import VRAM)")
-		return
+		push_error("Fruit: SPRITESHEET is null! Falling back to icon.svg for visibility test.")
+		sprite.texture = load("res://icon.svg")
+		if not sprite.texture:
+			return
 	
+	var tex_size = sprite.texture.get_size()
+	# Guard: su alcuni driver mobile get_size() può essere 0 se chiamato troppo presto
+	if tex_size.x <= 0:
+		push_warning("Fruit: Texture size is 0! Using fallback size 2048.")
+		tex_size = Vector2(2048, 2048)
+		
 	sprite.region_enabled = true
 	
 	# Ogni frutto occupa un blocco 512x512 (griglia 4x4)
-	# All'interno di quel blocco c'è una griglia 4x4 di animazioni (frame da 128x128)
-	var tex_size = sprite.texture.get_size()
-	var fruit_sheet_size = tex_size.x / 4.0 # 512
-	var frame_size = fruit_sheet_size / 4.0 # 128
+	var fruit_sheet_size = tex_size.x / 4.0
+	var frame_size = fruit_sheet_size / 4.0
 	
 	var fruit_index = (data.id - 1)
 	var col = (fruit_index % 4)
@@ -48,6 +65,12 @@ func _apply_data() -> void:
 	# Autoscale lo sprite per corrispondere al raggio fisico
 	var target_size = data.radius * 2.0
 	var scale_factor = target_size / frame_size
+	
+	# Guard: scale INF o NaN fa sparire lo sprite
+	if is_inf(scale_factor) or is_nan(scale_factor) or scale_factor <= 0:
+		push_error("Fruit: Invalid scale_factor: " + str(scale_factor) + ". Setting to 1.0")
+		scale_factor = 1.0
+		
 	sprite.scale = Vector2(scale_factor, scale_factor)
 	
 	mass = data.mass
@@ -59,6 +82,8 @@ func _apply_data() -> void:
 	var merge_shape = CircleShape2D.new()
 	merge_shape.radius = data.radius * 1.1
 	merge_collision.shape = merge_shape
+	
+	print("[Fruit] Initialized: ", data.fruit_name, " ID: ", data.id, " Pos: ", global_position, " Scale: ", sprite.scale)
 	
 	_apply_skin()
 
