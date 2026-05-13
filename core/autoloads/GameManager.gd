@@ -68,7 +68,10 @@ func _spawn_merged_fruit(data: Resource, pos: Vector2) -> void:
 	
 	# VFX
 	var vfx = MERGE_VFX_SCENE.instantiate()
-	get_tree().root.add_child(vfx)
+	if fruits_container:
+		fruits_container.add_child(vfx)
+	else:
+		get_tree().root.add_child(vfx)
 	vfx.global_position = pos
 	vfx.emitting = true
 	

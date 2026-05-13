@@ -49,7 +49,10 @@ func _trigger_skibidi_blast() -> void:
 	if ResourceLoader.exists("res://scenes/vfx/skibidi_blast_vfx.tscn"):
 		var vfx_scene = load("res://scenes/vfx/skibidi_blast_vfx.tscn")
 		var vfx = vfx_scene.instantiate()
-		get_tree().root.add_child(vfx)
+		if GameManager.fruits_container:
+			GameManager.fruits_container.add_child(vfx)
+		else:
+			get_tree().root.add_child(vfx)
 		vfx.global_position = Vector2(540, 960)
 		if vfx is CPUParticles2D: vfx.emitting = true
 		
