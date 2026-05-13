@@ -123,6 +123,33 @@ signal level_completed(level_id: int)
 - Usare **sprite atlanti** per ridurre draw calls
 - Scaricare risorse non necessarie con `queue_free()` e `ResourceLoader.load()` lazy
 
+#### ⚠️ REGOLA CRITICA: Import Texture per Mobile (VRAM Compression)
+> **BUG NOTO**: Se una texture viene importata con `compress/mode=0` (Lossless) e `vram_texture: false`, su Android la GPU non riesce a caricarla → le sprite risultano **invisibili/null** e il gioco è ingiocabile. Su PC funziona perché la CPU può gestire texture non compresse.
+
+**OGNI texture visibile in-game DEVE avere queste impostazioni nel file `.import`:**
+```ini
+compress/mode=2          # VRAM Compressed (NON 0=Lossless, NON 1=Lossy)
+mipmaps/generate=true    # Necessario per rendering mobile
+detect_3d/compress_to=0  # Disabilita auto-detect 3D
+
+# Il metadata DEVE riportare:
+"vram_texture": true
+"imported_formats": ["s3tc_bptc", "etc2_astc"]
+```
+
+**Come verificare**: Apri il file `.import` della texture e controlla:
+1. `compress/mode` deve essere `2` (non `0`)
+2. `vram_texture` deve essere `true` (non `false`)
+3. Devono esistere path `.s3tc.ctex` e `.etc2.ctex` (non solo `.ctex`)
+
+**Quando aggiungere nuove texture al progetto:**
+1. Importa la texture in Godot Editor
+2. Nell'Inspector, cambia Import Mode da "Lossless" a "VRAM Compressed"
+3. Clicca "Reimport"
+4. Verifica il file `.import` generato
+
+**Null Safety**: Ogni script che accede a texture deve avere un guard `if not texture: return` prima di chiamare `.get_size()` o usarla come atlas.
+
 ### 4.6 Audio Mobile
 - Usare bus `AudioServer` per gestire categorie (music, sfx, ui)
 - Formato preferito: **OGG Vorbis** (buona qualità, bassa dimensione)
@@ -140,6 +167,13 @@ signal level_completed(level_id: int)
 - **Mai** dipendere da path assoluti
 - Usare **sempre** `user://` per i file utente
 - Gestire il salvataggio automatico quando l'app va in background (`NOTIFICATION_APPLICATION_PAUSED`)
+
+### 4.9 Compatibilità Path su Android (res://)
+> **BUG NOTO**: `FileAccess.file_exists()` **NON funziona** per path `res://` su Android, perché le risorse sono impacchettate dentro l'APK e non accessibili come file del filesystem.
+
+- Per verificare se una risorsa `res://` esiste, usare **sempre** `ResourceLoader.exists(path)` invece di `FileAccess.file_exists(path)`
+- `FileAccess` è valido SOLO per path `user://` (file salvati dall'utente)
+- `load()` e `preload()` funzionano correttamente con `res://` su tutte le piattaforme
 
 ---
 

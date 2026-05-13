@@ -20,6 +20,10 @@ func _apply_fruit_icon(target: TextureRect, data: Resource) -> void:
 	var gm = GameManager
 	var tex = gm.SPRITESHEET
 	
+	if not tex:
+		push_warning("NextQueue: SPRITESHEET is null — texture non caricata")
+		return
+	
 	var atlas = AtlasTexture.new()
 	atlas.atlas = tex
 	

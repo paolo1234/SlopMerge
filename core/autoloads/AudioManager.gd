@@ -12,7 +12,7 @@ func _ready() -> void:
 	}
 	
 	for key in sound_paths:
-		if FileAccess.file_exists(sound_paths[key]):
+		if ResourceLoader.exists(sound_paths[key]):
 			sounds[key] = load(sound_paths[key])
 	
 	# Creiamo un pool di AudioStreamPlayer

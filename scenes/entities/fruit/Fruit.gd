@@ -26,6 +26,10 @@ func _apply_data() -> void:
 	if GameManager.SPRITESHEET:
 		sprite.texture = GameManager.SPRITESHEET
 	
+	if not sprite.texture:
+		push_warning("Fruit: SPRITESHEET is null — texture non caricata (possibile problema di import VRAM)")
+		return
+	
 	sprite.region_enabled = true
 	
 	# Ogni frutto occupa un blocco 512x512 (griglia 4x4)

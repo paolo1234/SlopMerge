@@ -29,6 +29,10 @@ func _populate_slopdex() -> void:
 		# Caricamento texture (usa lo stesso metodo di fruit.gd)
 		var gm_texture = gm.SPRITESHEET
 		
+		if not gm_texture:
+			push_warning("Slopdex: SPRITESHEET is null — texture non caricata")
+			continue
+		
 		var atlas = AtlasTexture.new()
 		atlas.atlas = gm_texture
 		

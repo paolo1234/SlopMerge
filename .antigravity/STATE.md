@@ -40,6 +40,9 @@
 - [x] **Performance Mobile**: Sostituite chiamate `load()` con `preload()` in GameManager e Fruit.
 - [x] **Standard Naming**: Refactoring di tutti gli script principali in `PascalCase`.
 - [x] **Debug Overhead**: Debug drawing (`_draw`) in Fruit reso condizionale a `OS.is_debug_build()`.
+- [x] **VRAM Texture Android**: Corretto import dello spritesheet da Lossless (`compress/mode=0`) a VRAM Compressed (`compress/mode=2`). Le GPU mobile richiedono texture ETC2/ASTC.
+- [x] **Null Safety Texture**: Aggiunta protezione null su `sprite.texture` in Fruit.gd, NextQueue.gd e Slopdex.gd per prevenire crash se la texture non viene caricata.
+- [x] **FileAccess → ResourceLoader**: Sostituito `FileAccess.file_exists()` con `ResourceLoader.exists()` in AudioManager.gd per compatibilità path `res://` su Android.
 
 ## 🛠 In Corso
 - [x] **Full Project Validation**: Eseguito testing completo di gameplay, UI e metagame. Risolto bug critico in Slopdex.
