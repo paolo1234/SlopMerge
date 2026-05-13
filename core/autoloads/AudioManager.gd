@@ -33,8 +33,26 @@ func play_sound(sound_name: String) -> void:
 	for player in get_children():
 		if player is AudioStreamPlayer and not player.playing:
 			player.stream = stream
+			player.pitch_scale = randf_range(0.9, 1.1) # Varietà sonora
 			player.play()
 			return
+
+func play_tiered_sound(tier: int) -> void:
+	var sound_name: String = "merge"
+	
+	# Tiered sound logic: più alto è il tier, più il suono è "pesante"
+	if tier >= 10:
+		sound_name = "vine_boom"
+	elif tier >= 7:
+		sound_name = "heavy_pop"
+	elif tier >= 4:
+		sound_name = "mid_pop"
+	
+	# Fallback se il suono specifico non esiste
+	if not sounds.has(sound_name):
+		sound_name = "merge"
+		
+	play_sound(sound_name)
 
 func set_master_volume(value: float) -> void:
 	var bus_idx = AudioServer.get_bus_index("Master")

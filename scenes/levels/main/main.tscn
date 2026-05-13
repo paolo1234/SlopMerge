@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/hud/hud.tscn" id="7_hud"]
 [ext_resource type="Shader" path="res://assets/shaders/dashed_line.gdshader" id="10_shader"]
 [ext_resource type="Shader" path="res://assets/shaders/game_background.gdshader" id="11_bg_shader"]
+[ext_resource type="Script" path="res://core/scripts/CameraShake.gd" id="12_shake"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_background"]
 shader = ExtResource("11_bg_shader")
@@ -48,6 +49,7 @@ mouse_filter = 2
 color = Color(0.05, 0.05, 0.08, 1)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=626156142]
+script = ExtResource("12_shake")
 anchor_mode = 0
 
 [node name="Boundaries" type="StaticBody2D" parent="." unique_id=2068440125]

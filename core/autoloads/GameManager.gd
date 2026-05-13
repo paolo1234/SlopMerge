@@ -78,6 +78,9 @@ func request_merge(fruit_a: Node2D, fruit_b: Node2D) -> void:
 	
 	call_deferred("_spawn_merged_fruit", next_data, spawn_pos)
 
+var brainrot_energy: float = 0.0
+const MAX_BRAINROT: float = 100.0
+
 func _spawn_merged_fruit(data: Resource, pos: Vector2) -> void:
 	var instance = FRUIT_SCENE.instantiate() as RigidBody2D
 	instance.data = data
@@ -101,19 +104,28 @@ func _spawn_merged_fruit(data: Resource, pos: Vector2) -> void:
 	
 	EventBus.merge_occurred.emit(pos, data.id)
 	
+	# Juice & Audio
+	EventBus.screen_shake_requested.emit(float(data.id) * 1.5)
+	if has_node("/root/AudioManager"):
+		AudioManager.play_tiered_sound(data.id)
+	
 	# Combo & Chain logic
 	combo_multiplier += 1
 	combo_timer = COMBO_RESET_TIME
 	EventBus.combo_changed.emit(combo_multiplier)
+	
+	# Brainrot Meter
+	var energy_gain = float(data.id) * (1.0 + (combo_multiplier * 0.2))
+	brainrot_energy = min(brainrot_energy + energy_gain, MAX_BRAINROT)
+	EventBus.brainrot_meter_updated.emit(brainrot_energy)
+	if brainrot_energy >= MAX_BRAINROT:
+		EventBus.brainrot_ready.emit()
 	
 	var bonus_refill = float(data.id * 2.0) + (combo_multiplier * 1.5)
 	EventBus.chain_event.emit(pos, combo_multiplier, bonus_refill)
 	
 	score += (data.id * 10) * combo_multiplier
 	EventBus.score_changed.emit(score)
-	
-	if has_node("/root/AudioManager"):
-		AudioManager.play_sound("merge")
 
 func game_over() -> void:
 	if is_game_over:

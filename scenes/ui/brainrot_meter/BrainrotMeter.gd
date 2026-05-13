@@ -8,28 +8,18 @@ var is_ready: bool = false
 var pulse_tween: Tween
 
 func _ready() -> void:
-	EventBus.chain_event.connect(_on_chain_event)
+	EventBus.brainrot_meter_updated.connect(_on_meter_updated)
+	EventBus.brainrot_ready.connect(_trigger_ready_effect)
 	progress_bar.value = 0
 	ready_label.visible = false
 
-func _on_chain_event(_pos: Vector2, count: int, bonus: float) -> void:
-	current_value = clamp(current_value + bonus, 0.0, 100.0)
-	
+func _on_meter_updated(value: float) -> void:
+	current_value = value
 	var tween = create_tween()
 	tween.tween_property(progress_bar, "value", current_value, 0.3).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
 	
-	if current_value >= 100.0 and not is_ready:
-		_trigger_ready_effect()
-	elif current_value < 100.0 and is_ready:
+	if current_value < 100.0 and is_ready:
 		_reset_ready_effect()
-	
-	# Shake effect
-	var intensity = clamp(count * 2.0, 5.0, 20.0)
-	var original_pos = position
-	var shake_tween = create_tween()
-	for i in 4:
-		shake_tween.tween_property(self, "position", original_pos + Vector2(randf_range(-intensity, intensity), randf_range(-intensity, intensity)), 0.05)
-	shake_tween.tween_property(self, "position", original_pos, 0.05)
 
 func _trigger_ready_effect() -> void:
 	is_ready = true
@@ -60,6 +50,7 @@ func _trigger_skibidi_blast() -> void:
 	print("SKIBIDI BLAST ACTIVATED!")
 	current_value = 0.0
 	progress_bar.value = 0.0
+	GameManager.brainrot_energy = 0.0 # Sync back to manager
 	_reset_ready_effect()
 	
 	# Access fruits via GameManager's cached container
@@ -67,14 +58,13 @@ func _trigger_skibidi_blast() -> void:
 	var count = 0
 	if fruits_container:
 		for fruit in fruits_container.get_children():
-			if fruit.has_method("get_rank") and fruit.get_rank() <= 2:
+			# Verifichiamo il tier tramite data.id
+			if fruit.get("data") and fruit.data.id <= 2:
 				fruit.queue_free()
 				count += 1
 	
-	# Shake effect via viewport camera
-	var cam = get_viewport().get_camera_2d()
-	if cam and cam.has_method("shake"):
-		cam.shake(30.0, 0.5)
+	# Shake effect via EventBus
+	EventBus.screen_shake_requested.emit(30.0)
 	
 	# VFX
 	var vfx_scene = load("res://scenes/vfx/skibidi_blast_vfx.tscn")

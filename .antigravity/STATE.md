@@ -8,18 +8,18 @@
 - [x] Creazione risorsa Custom `FruitData` per i parametri dei frutti
 - [x] Prototipo scena `Fruit` (RigidBody2D + Shader Squishy + Region Sprite)
 - [x] Implementazione Spawner (Mira direzionale, Lancio dal basso)
-- [x] Pivot Meccanico: Gravità invertita (Upward Physics)
-- [x] UI Brainrot Meter (Base) e sistema di combo dinamico
-- [x] AudioManager e integrazione suoni (pool di player)
+- [x] Fix Rendering Android: Risolto bug case-sensitivity (Fruit.tscn) e ripristinata compressione VRAM (mode=2).
+- [x] Update System: Corretto branch URL (master) e attivato sistema di download diretto.)
 - [x] Logica di Game Over (Cringe Line) e High Score persistente
-- [x] Transizioni tra scene (TransitionManager Fade)
-- [x] Sistema Gacha base (Estrazione Skin)
-- [x] Persistenza Skin e Valuta (savegame.cfg)
-- [x] UI Main Menu aggiornata con Gacha
-- [x] Sistema Slopdex (Galleria scoperte)
-- [x] Sistema Wardrobe (Selezione Skin)
-- [x] Implementazione Juice (Screen Shake & Particles)
-- [x] Ottimizzazione Performance (Caching & Direct Refs)
+- [x] Fase 8: Mobile Deployment & In-Game Update
+    - [x] Implementare UpdateManager (Check version.json su GitHub)
+    - [x] Download APK asincrono con progress bar
+    - [x] Integrazione installazione nativa Android
+    - [x] Fix rendering frutti su Android (Case-sensitivity & VRAM)
+- [ ] Fase 9: Metagame & Audio
+    - [ ] Integrazione SFX (AudioManager)
+    - [ ] Screen Shake globale
+    - [ ] Feature "Frullatore del Caos"rmance (Caching & Direct Refs)
 - [x] Fix raggi di collisione nei file .tres (allineamento con sprite)
 - [x] Implementazione tutti i tier di frutta (1-11) con risorse dedicate
 - [x] Sistema di Reazioni a Catena: Floating Text e Combo Multipliers
@@ -43,8 +43,12 @@
 - [x] **VRAM Texture Android**: Corretto import dello spritesheet da Lossless (`compress/mode=0`) a VRAM Compressed (`compress/mode=2`). Le GPU mobile richiedono texture ETC2/ASTC.
 - [x] **Null Safety Texture**: Aggiunta protezione null su `sprite.texture` in Fruit.gd, NextQueue.gd e Slopdex.gd per prevenire crash se la texture non viene caricata.
 - [x] **FileAccess → ResourceLoader**: Sostituito `FileAccess.file_exists()` con `ResourceLoader.exists()` in AudioManager.gd per compatibilità path `res://` su Android.
-- [x] **UpdateManager**: Sistema di aggiornamento in-game completo con download diretto APK e UI overlay.
-- [x] **Android Compatibility**: Risolto bug texture invisibili (VRAM compression) e permessi di archiviazione.
+### [1.7.4] - 2026-05-13
+- **Fix**: Ripristinata compressione VRAM (modalità 2) per compatibilità ottimale Android.
+- **Fix**: Risolto bug critico case-sensitivity `Fruit.tscn` -> `fruit.tscn`.
+- **Fix**: Corretto URL UpdateManager per puntare al branch `master`.
+- **Cleanup**: Rimossi asset corrotti (`pause_icon.png`).
+- **Build**: Versione 1.7.4 disponibile per update in-game.bili (VRAM compression) e permessi di archiviazione.
 - [x] **Android Permissions**: Abilitati `WRITE_EXTERNAL_STORAGE` e `REQUEST_INSTALL_PACKAGES` per il sistema di update.
 
 ## 🛠 In Corso

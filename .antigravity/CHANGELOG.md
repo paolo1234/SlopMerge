@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.7.4] - 2026-05-13
+- **Fix**: Ripristinata compressione VRAM (modalità 2) per compatibilità ottimale Android.
+- **Fix**: Risolto bug critico case-sensitivity `Fruit.tscn` -> `fruit.tscn`.
+- **Fix**: Corretto URL UpdateManager per puntare al branch `master`.
+- **Cleanup**: Rimossi asset corrotti (`pause_icon.png`).
+- **Build**: Versione 1.7.4 disponibile per update in-game.
+
 - [2026-05-13] **Fix (CRITICO)**: Risolto il bug delle texture invisibili su Android. La causa reale era `compress/mode=0` (Lossless) con `vram_texture: false` nel file `.import` dello spritesheet — le GPU mobile richiedono texture VRAM-compresse (ETC2/ASTC). Cambiato a `compress/mode=2` (VRAM Compressed) con `vram_texture: true`. Aggiunto null safety in Fruit.gd, NextQueue.gd e Slopdex.gd. Sostituito `FileAccess.file_exists()` con `ResourceLoader.exists()` in AudioManager.gd per compatibilità Android. Documentata la regola in CONVENTIONS_GODOT.md (§4.5 e §4.9).
 
 - [2026-05-13] **Feat**: Implementato `UpdateManager`, un sistema di aggiornamento in-game non invasivo tramite file `version.json` remoto. Include:
