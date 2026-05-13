@@ -21,6 +21,10 @@ func _ready() -> void:
 	EventBus.chain_event.connect(_on_chain_event)
 	EventBus.game_over.connect(_on_game_over)
 	
+	# Responsive Layout
+	_adjust_layout()
+	get_viewport().size_changed.connect(_adjust_layout)
+	
 	# Connetti la coda dei frutti
 	var spawner = $Spawner
 	var next_queue = $UI/HUD/%NextQueue
@@ -55,3 +59,43 @@ func _on_chain_event(pos: Vector2, count: int, _bonus: float) -> void:
 			msg = "BRAINROT X%d!!!" % count
 			
 		text_inst.setup(msg, color)
+
+func _adjust_layout() -> void:
+	var size = get_viewport_rect().size
+	var center_x = size.x / 2.0
+	
+	print("[Main] Adjusting layout for size: ", size)
+	
+	# 1. Boundaries
+	if has_node("Boundaries"):
+		var boundaries = $Boundaries
+		if boundaries.has_node("LeftWall"):
+			boundaries.get_node("LeftWall").global_position.x = 0
+		if boundaries.has_node("RightWall"):
+			boundaries.get_node("RightWall").global_position.x = size.x
+		if boundaries.has_node("Ceiling"):
+			var ceiling = boundaries.get_node("Ceiling")
+			ceiling.global_position.x = center_x
+			if ceiling is CollisionShape2D and ceiling.shape is RectangleShape2D:
+				ceiling.shape = ceiling.shape.duplicate() # Make unique
+				ceiling.shape.size.x = size.x
+		if boundaries.has_node("Floor"):
+			var floor_node = boundaries.get_node("Floor")
+			floor_node.global_position.x = center_x
+			if floor_node is CollisionShape2D and floor_node.shape is RectangleShape2D:
+				floor_node.shape = floor_node.shape.duplicate() # Make unique
+				floor_node.shape.size.x = size.x
+
+	# 2. Spawner
+	if has_node("Spawner"):
+		$Spawner.global_position.x = center_x
+		
+	# 3. CringeLine
+	if has_node("CringeLine"):
+		var cl = $CringeLine
+		cl.global_position.x = center_x
+		var visual = cl.get_node_or_null("Visual")
+		if visual:
+			visual.set_anchors_preset(Control.PRESET_CENTER)
+			visual.size.x = size.x
+			visual.position.x = -center_x

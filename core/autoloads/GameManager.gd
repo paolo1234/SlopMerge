@@ -72,8 +72,11 @@ func _spawn_merged_fruit(data: Resource, pos: Vector2) -> void:
 		fruits_container.add_child(vfx)
 	else:
 		get_tree().root.add_child(vfx)
+	
 	vfx.global_position = pos
 	vfx.emitting = true
+	if vfx.has_method("restart"):
+		vfx.restart()
 	
 	# Discovery
 	if not discovered_fruits.has(data.id):

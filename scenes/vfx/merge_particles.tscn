@@ -11,6 +11,7 @@ _data = [Vector2(0, 0), 0.0, 5.0, 0, 0, Vector2(0.2, 1), 0.0, 0.0, 0, 0, Vector2
 point_count = 3
 
 [node name="MergeParticles" type="CPUParticles2D"]
+top_level = true
 script = ExtResource("1_script")
 emitting = false
 amount = 20
