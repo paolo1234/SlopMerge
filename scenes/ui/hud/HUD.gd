@@ -13,7 +13,10 @@ func _ready() -> void:
 	EventBus.combo_changed.connect(_on_combo_changed)
 	EventBus.cringe_warning.connect(_on_cringe_warning)
 	
-	score_label.text = str(GameManager.score)
+	if has_node("/root/ScoreManager"):
+		score_label.text = str(ScoreManager.score)
+	else:
+		score_label.text = "0"
 	combo_label.modulate.a = 0.0
 	
 	_setup_warning_label()

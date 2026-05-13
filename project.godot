@@ -28,6 +28,7 @@ EventBus="*res://core/autoloads/EventBus.gd"
 AudioManager="*res://core/autoloads/AudioManager.gd"
 McpInteractionServer="*res://mcp_interaction_server.gd"
 GameManager="*res://core/autoloads/GameManager.gd"
+ScoreManager="*res://core/autoloads/ScoreManager.gd"
 TransitionManager="*res://core/autoloads/TransitionManager.tscn"
 
 [display]

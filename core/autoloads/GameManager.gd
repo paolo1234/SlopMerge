@@ -5,15 +5,10 @@ const FRUIT_SCENE = preload("res://scenes/entities/fruit/fruit.tscn")
 const MERGE_VFX_SCENE = preload("res://scenes/vfx/merge_particles.tscn")
 const SPRITESHEET = preload("res://assets/sprites/slop_merge_spritesheet.png")
 
-var score: int = 0
-var high_score: int = 0
 var slop_tokens: int = 0
 var current_skin: String = "default"
 var unlocked_skins: Array = ["default"]
 var discovered_fruits: Array = [1]
-var combo_multiplier: int = 1
-var combo_timer: float = 0.0
-const COMBO_RESET_TIME: float = 2.0
 
 var fruits_data: Array[Resource] = [
 	preload("res://resources/fruits/01_pisello.tres"),
@@ -36,24 +31,7 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	load_data()
 	
-	print("[GameManager] Initialized with ", fruits_data.size(), " fruits.")
-	for i in range(fruits_data.size()):
-		if fruits_data[i] == null:
-			push_error("[GameManager] Critical: Fruit at index " + str(i) + " is NULL!")
-		else:
-			print("[GameManager] Loaded fruit: ", fruits_data[i].fruit_name)
-	
-	if SPRITESHEET == null:
-		push_error("[GameManager] Critical: SPRITESHEET is NULL on load!")
-	else:
-		print("[GameManager] Spritesheet loaded, size: ", SPRITESHEET.get_size())
-
-func _process(delta: float) -> void:
-	if combo_multiplier > 1:
-		combo_timer -= delta
-		if combo_timer <= 0:
-			combo_multiplier = 1
-			EventBus.combo_changed.emit(combo_multiplier)
+	print("[GameManager] Initialized.")
 
 func get_next_tier_data(current_id: int) -> Resource:
 	if current_id < fruits_data.size():
@@ -78,9 +56,6 @@ func request_merge(fruit_a: Node2D, fruit_b: Node2D) -> void:
 	
 	call_deferred("_spawn_merged_fruit", next_data, spawn_pos)
 
-var brainrot_energy: float = 0.0
-const MAX_BRAINROT: float = 100.0
-
 func _spawn_merged_fruit(data: Resource, pos: Vector2) -> void:
 	var instance = FRUIT_SCENE.instantiate() as RigidBody2D
 	instance.data = data
@@ -102,61 +77,40 @@ func _spawn_merged_fruit(data: Resource, pos: Vector2) -> void:
 		discovered_fruits.append(data.id)
 		save_data()
 	
+	# Signal for other managers (Score, Juice, etc)
 	EventBus.merge_occurred.emit(pos, data.id)
 	
-	# Juice & Audio
+	# Basic Feedback (Managed here for now, or moved to JuiceManager later)
 	EventBus.screen_shake_requested.emit(float(data.id) * 1.5)
 	if has_node("/root/AudioManager"):
 		AudioManager.play_tiered_sound(data.id)
-	
-	# Combo & Chain logic
-	combo_multiplier += 1
-	combo_timer = COMBO_RESET_TIME
-	EventBus.combo_changed.emit(combo_multiplier)
-	
-	# Brainrot Meter
-	var energy_gain = float(data.id) * (1.0 + (combo_multiplier * 0.2))
-	brainrot_energy = min(brainrot_energy + energy_gain, MAX_BRAINROT)
-	EventBus.brainrot_meter_updated.emit(brainrot_energy)
-	if brainrot_energy >= MAX_BRAINROT:
-		EventBus.brainrot_ready.emit()
-	
-	var bonus_refill = float(data.id * 2.0) + (combo_multiplier * 1.5)
-	EventBus.chain_event.emit(pos, combo_multiplier, bonus_refill)
-	
-	score += (data.id * 10) * combo_multiplier
-	EventBus.score_changed.emit(score)
 
 func game_over() -> void:
 	if is_game_over:
 		return
 	is_game_over = true
 	
-	if score > high_score:
-		high_score = score
-		save_data()
+	# Tokens calculation (based on score from ScoreManager)
+	if has_node("/root/ScoreManager"):
+		var score = get_node("/root/ScoreManager").score
+		slop_tokens += score / 10
 	
-	var earned_tokens = score / 10
-	slop_tokens += earned_tokens
 	save_data()
-	
 	EventBus.game_over.emit()
 	get_tree().paused = true
 
 func save_data() -> void:
 	var config = ConfigFile.new()
-	config.set_value("progression", "high_score", high_score)
 	config.set_value("progression", "slop_tokens", slop_tokens)
 	config.set_value("progression", "current_skin", current_skin)
 	config.set_value("progression", "unlocked_skins", unlocked_skins)
 	config.set_value("progression", "discovered_fruits", discovered_fruits)
-	config.save("user://savegame.cfg")
+	config.save("user://progression.cfg")
 
 func load_data() -> void:
 	var config = ConfigFile.new()
-	var err = config.load("user://savegame.cfg")
+	var err = config.load("user://progression.cfg")
 	if err == OK:
-		high_score = config.get_value("progression", "high_score", 0)
 		slop_tokens = config.get_value("progression", "slop_tokens", 0)
 		current_skin = config.get_value("progression", "current_skin", "default")
 		unlocked_skins = config.get_value("progression", "unlocked_skins", ["default"])

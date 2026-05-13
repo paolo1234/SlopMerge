@@ -13,11 +13,11 @@ func _ready() -> void:
 	# Registra il container nel GameManager per ottimizzare le ricerche
 	GameManager.fruits_container = fruits_container
 	print("[Main] FruitsContainer registered: ", fruits_container)
-	GameManager.score = 0
+	if has_node("/root/ScoreManager"):
+		ScoreManager.reset_score()
 	GameManager.is_game_over = false
 	
 	# Connect to EventBus signals
-	EventBus.merge_occurred.connect(_on_merge_occurred)
 	EventBus.chain_event.connect(_on_chain_event)
 	EventBus.game_over.connect(_on_game_over)
 	
@@ -31,24 +31,11 @@ func _ready() -> void:
 	initial_display.append_array(spawner.fruit_queue)
 	next_queue.update_queue(initial_display)
 
-func _process(delta: float) -> void:
-	if shake_intensity > 0:
-		camera.offset = Vector2(randf_range(-1, 1), randf_range(-1, 1)) * shake_intensity
-		shake_intensity = lerp(shake_intensity, 0.0, delta * 10.0)
-	else:
-		camera.offset = Vector2.ZERO
-
-func shake(intensity: float, _duration: float = 0.5) -> void:
-	shake_intensity = intensity
-
 func _on_game_over() -> void:
 	var instance = GAME_OVER_SCENE.instantiate()
 	$UI.add_child(instance) # Add to UI layer
 
-func _on_merge_occurred(_pos: Vector2, power: int) -> void:
-	shake(5.0 + (power * 2.0))
-
-func _on_chain_event(pos: Vector2, count: int, bonus: float) -> void:
+func _on_chain_event(pos: Vector2, count: int, _bonus: float) -> void:
 	if count > 1:
 		var text_inst = FLOATING_TEXT_SCENE.instantiate()
 		floating_container.add_child(text_inst)

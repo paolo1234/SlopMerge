@@ -44,39 +44,6 @@ func _reset_ready_effect() -> void:
 
 func _on_ultimate_pressed() -> void:
 	if is_ready:
-		_trigger_skibidi_blast()
+		PowerUpManager.activate_ultimate()
 
-func _trigger_skibidi_blast() -> void:
-	print("SKIBIDI BLAST ACTIVATED!")
-	current_value = 0.0
-	progress_bar.value = 0.0
-	GameManager.brainrot_energy = 0.0 # Sync back to manager
-	_reset_ready_effect()
-	
-	# Access fruits via GameManager's cached container
-	var fruits_container = GameManager.fruits_container
-	var count = 0
-	if fruits_container:
-		for fruit in fruits_container.get_children():
-			# Verifichiamo il tier tramite data.id
-			if fruit.get("data") and fruit.data.id <= 2:
-				fruit.queue_free()
-				count += 1
-	
-	# Shake effect via EventBus
-	EventBus.screen_shake_requested.emit(30.0)
-	
-	# VFX
-	var vfx_scene = load("res://scenes/vfx/skibidi_blast_vfx.tscn")
-	var vfx = vfx_scene.instantiate() as CPUParticles2D
-	get_tree().root.add_child(vfx)
-	vfx.global_position = Vector2(540, 960)
-	vfx.emitting = true
-	
-	if has_node("/root/AudioManager"):
-		get_node("/root/AudioManager").play_sound("explosion") 
-	
-	EventBus.special_ability_triggered.emit("blast", count)
-	
-	await get_tree().create_timer(2.0).timeout
-	vfx.queue_free()
+# Skibidi Blast logic moved to PowerUpManager for better separation of concerns
