@@ -7,7 +7,7 @@ signal download_completed(file_path: String)
 signal download_failed(reason: String)
 
 ## Configurazione
-const VERSION_CHECK_URL: String = "https://raw.githubusercontent.com/paolo1234/SlopMerge/main/version.json"
+const VERSION_CHECK_URL: String = "https://raw.githubusercontent.com/paolo1234/SlopMerge/master/version.json"
 const DOWNLOAD_PATH: String = "user://update.apk"
 const CHECK_TIMEOUT: float = 8.0
 const DOWNLOAD_TIMEOUT: float = 300.0  # 5 minuti per APK grandi

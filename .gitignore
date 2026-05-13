@@ -9,7 +9,7 @@ crash_reports/
 # Export folders & Build artifacts
 export/
 export_presets.cfg
-*.apk
+# *.apk (Removed to allow in-game updates via GitHub)
 *.exe
 *.zip
 *.dmg
