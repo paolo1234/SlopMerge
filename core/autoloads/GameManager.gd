@@ -101,6 +101,9 @@ func game_over() -> void:
 
 func save_data() -> void:
 	var config = ConfigFile.new()
+	# Carichiamo i dati esistenti per non sovrascrivere sezioni gestite da altri manager (es: high_score)
+	config.load("user://progression.cfg")
+	
 	config.set_value("progression", "slop_tokens", slop_tokens)
 	config.set_value("progression", "current_skin", current_skin)
 	config.set_value("progression", "unlocked_skins", unlocked_skins)

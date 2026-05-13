@@ -9,6 +9,7 @@ const COMBO_RESET_TIME: float = 3.0
 const SAVE_PATH = "user://progression.cfg"
 
 func _ready() -> void:
+	_migrate_old_save()
 	load_high_score()
 	EventBus.merge_occurred.connect(_on_merge_occurred)
 	EventBus.game_over.connect(save_high_score)
@@ -55,3 +56,20 @@ func load_high_score() -> void:
 		var err = config.load(SAVE_PATH)
 		if err == OK:
 			high_score = config.get_value("progression", "high_score", 0)
+
+func _migrate_old_save() -> void:
+	var old_path = "user://score.save"
+	if FileAccess.file_exists(old_path):
+		var file = FileAccess.open(old_path, FileAccess.READ)
+		if file:
+			var old_score = file.get_var()
+			file.close()
+			
+			# Se il nuovo record è 0 o inferiore al vecchio, migra
+			if high_score < old_score:
+				high_score = old_score
+				save_high_score()
+				print("[ScoreManager] Migrated old score: ", old_score)
+			
+			# Rimuovi il vecchio file per evitare loop
+			DirAccess.remove_absolute(old_path)
