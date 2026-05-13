@@ -204,3 +204,63 @@ Corpo opzionale per dettagli aggiuntivi.
 - Separare la logica di business dai nodi di scena per facilitare il testing con GUT.
 - Usare Custom Resources (`.tres`) per iniettare dati testabili.
 - Nominare i test in modo descrittivo: `test_should_[expected]_when_[condition]`.
+
+---
+
+## 🚀 Versioning & Deployment (Android)
+
+### Schema Versione: Semantic Versioning
+```
+MAJOR.MINOR.PATCH
+  │      │     └── Bug fix, hotfix
+  │      └── Nuova feature, contenuto
+  └── Cambio architetturale, breaking change
+```
+Esempio: `1.7.2` → `1.8.0` (nuova feature) → `2.0.0` (refactor totale)
+
+### File che gestiscono la versione
+
+| File | Campo | Descrizione |
+|------|-------|-------------|
+| `project.godot` | `application/config/version` | Versione visualizzata nel gioco |
+| `export_presets.cfg` | `version/code` | Codice numerico Android (incrementa +1 ad ogni release) |
+| `export_presets.cfg` | `version/name` | Stringa versione nel manifest Android |
+| `version.json` (remoto) | `latest_version` | Versione più recente disponibile per download |
+
+### Checklist Pre-Release (OBBLIGATORIA)
+```
+1. [ ] Aggiorna `application/config/version` in project.godot
+2. [ ] Incrementa `version/code` (+1) e `version/name` in export_presets.cfg
+3. [ ] Esporta l'APK da Godot Editor
+4. [ ] Upload APK su GitHub Releases (tag: v1.X.X)
+5. [ ] Aggiorna `version.json` nella root del repo:
+       - `latest_version` = nuova versione
+       - `direct_apk` = URL diretto al download dell'APK
+       - `changelog` = breve descrizione novità
+6. [ ] Commit e push `version.json` su main/develop
+7. [ ] Verifica: installa l'APK vecchio → il bottone Update deve apparire
+```
+
+### Formato `version.json`
+```json
+{
+  "latest_version": "1.8.0",
+  "direct_apk": "https://github.com/USER/REPO/releases/download/v1.8.0/SlopMerge.apk",
+  "changelog": "Nuovo sistema di aggiornamento in-app"
+}
+```
+
+> [!IMPORTANT]
+> Il campo `direct_apk` deve essere un **link diretto** al file `.apk`, non una pagina HTML.
+> Per GitHub Releases: `https://github.com/USER/REPO/releases/download/TAG/FILENAME.apk`
+
+### Deploy Rapido (Workflow)
+```
+1. Esporta APK → salva in /builds/SlopMerge.apk
+2. Crea GitHub Release con tag vX.Y.Z, allega APK
+3. Copia URL diretto dell'APK
+4. Aggiorna version.json con la nuova versione e URL
+5. git add version.json && git commit -m "chore: bump version vX.Y.Z"
+6. git push
+```
+
