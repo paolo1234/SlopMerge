@@ -25,9 +25,11 @@ res://
 │   ├── shaders/ (squishy_fruit.gdshader)
 │   └── sprites/ (slop_merge_spritesheet.png)
 ├── core/
-│   └── autoloads/ (GameManager, AudioManager, TransitionManager)
+│   ├── autoloads/ (GameManager, AudioManager, TransitionManager)
+│   └── resources/ (sprite_sheet_layout.gd)
 ├── resources/
-│   └── fruits/ (File .tres per ogni tier di frutto)
+│   ├── fruits/ (File .tres per ogni tier di frutto)
+│   └── layouts/ (default_spritesheet.tres)
 ├── scenes/
 │   ├── entities/ (fruit.tscn)
 │   ├── levels/ (main.tscn)

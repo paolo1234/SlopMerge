@@ -1,9 +1,16 @@
 extends Node
 
 # Preloaded Assets for Performance
-const FRUIT_SCENE = preload("res://scenes/entities/fruit/fruit.tscn")
-const MERGE_VFX_SCENE = preload("res://scenes/vfx/merge_particles.tscn")
-const SPRITESHEET = preload("res://assets/sprites/slop_merge_spritesheet.png")
+const FRUIT_SCENE_PATH = "res://scenes/entities/fruit/fruit.tscn"
+const MERGE_VFX_SCENE_PATH = "res://scenes/vfx/merge_particles.tscn"
+
+var active_layout: Resource = preload("res://resources/layouts/default_spritesheet.tres")
+# Fallback for older scripts using GameManager.SPRITESHEET
+var SPRITESHEET: Texture2D:
+	get: return active_layout.texture if active_layout else null
+
+var FRUIT_SCENE = load(FRUIT_SCENE_PATH)
+var MERGE_VFX_SCENE = load(MERGE_VFX_SCENE_PATH)
 
 var slop_tokens: int = 0
 var current_skin: String = "default"

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SpriteSheetLayout" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://core/resources/sprite_sheet_layout.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://cb3n7j7v5v8v2" path="res://assets/sprites/slop_merge_spritesheet.png" id="2_texture"]
+
+[resource]
+script = ExtResource("1_script")
+texture = ExtResource("2_texture")
+type = 1
+columns = 4
+rows = 4
+sub_columns = 4
+sub_rows = 4
+regions = {}

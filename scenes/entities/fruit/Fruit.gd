@@ -34,33 +34,18 @@ func _apply_data() -> void:
 		push_error("Fruit: data is NULL in _apply_data!")
 		return
 		
-	if GameManager.SPRITESHEET:
-		sprite.texture = GameManager.SPRITESHEET
-	
-	if not sprite.texture:
-		push_error("Fruit: SPRITESHEET is null! Falling back to icon.svg for visibility test.")
-		sprite.texture = load("res://icon.svg")
-		if not sprite.texture:
-			return
-	
-	var tex_size = sprite.texture.get_size()
-	# Guard: su alcuni driver mobile get_size() può essere 0 se chiamato troppo presto
-	if tex_size.x <= 0:
-		push_warning("Fruit: Texture size is 0! Using fallback size 2048.")
-		tex_size = Vector2(2048, 2048)
+	var layout = GameManager.active_layout
+	if not layout:
+		push_error("Fruit: active_layout is null!")
+		return
 		
+	sprite.texture = layout.texture
 	sprite.region_enabled = true
 	
-	# Ogni frutto occupa un blocco 512x512 (griglia 4x4)
-	var fruit_sheet_size = tex_size.x / 4.0
-	var frame_size = fruit_sheet_size / 4.0
+	# Mapping via layout (index = id - 1, sub_index = 0 for default face)
+	sprite.region_rect = layout.get_region(data.id - 1, 0)
 	
-	var fruit_index = (data.id - 1)
-	var col = (fruit_index % 4)
-	var row = (fruit_index / 4)
-	
-	# Prendiamo il primo frame (0,0) del blocco del frutto
-	sprite.region_rect = Rect2(col * fruit_sheet_size, row * fruit_sheet_size, frame_size, frame_size)
+	var frame_size = layout.get_frame_size().x
 	
 	# Autoscale lo sprite per corrispondere al raggio fisico
 	var target_size = data.radius * 2.0

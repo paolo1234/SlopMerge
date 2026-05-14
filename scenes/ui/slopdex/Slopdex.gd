@@ -26,29 +26,14 @@ func _populate_slopdex() -> void:
 		slot.add_child(icon)
 		icon.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		
-		# Caricamento texture (usa lo stesso metodo di fruit.gd)
-		var gm_texture = gm.SPRITESHEET
-		
-		if not gm_texture:
-			push_error("[Slopdex] SPRITESHEET is null! Skipping icon.")
+		var layout = gm.active_layout
+		if not layout or not layout.texture:
+			push_error("[Slopdex] SpriteSheetLayout or texture is null! Skipping icon.")
 			continue
-		
-		var tex_size = gm_texture.get_size()
-		if tex_size.x <= 0:
-			push_warning("[Slopdex] Texture size is 0, using fallback 2048.")
-			tex_size = Vector2(2048, 2048)
 			
 		var atlas = AtlasTexture.new()
-		atlas.atlas = gm_texture
-		
-		var fruit_sheet_size = tex_size.x / 4.0 # 512
-		var frame_size = fruit_sheet_size / 4.0 # 128
-		
-		var fruit_index = (fruit_data.id - 1)
-		var col = (fruit_index % 4)
-		var row = (fruit_index / 4)
-		
-		atlas.region = Rect2(col * fruit_sheet_size, row * fruit_sheet_size, frame_size, frame_size)
+		atlas.atlas = layout.texture
+		atlas.region = layout.get_region(fruit_data.id - 1, 0)
 		icon.texture = atlas
 		
 		print("[Slopdex] Created slot for ", fruit_data.fruit_name, " region: ", atlas.region)

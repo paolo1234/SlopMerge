@@ -1,5 +1,17 @@
 # Changelog
 
+### [1.8.1] - 2026-05-14
+- **Feat**: Introdotto sistema `SpriteSheetLayout` per la gestione centralizzata e dinamica degli atlanti. Supporta griglie semplici, nidificate e mappature esplicite.
+- **Refactor**: Rimosso calcolo manuale dei Rect2 da tutti i componenti UI e gameplay.
+- **Easy-Swap**: Ora è possibile cambiare l'intero set grafico del gioco semplicemente sostituendo una risorsa `.tres` nel `GameManager`.
+
+### [1.8.0] - 2026-05-14
+- **Fix**: Ripristinata compressione VRAM (modalità 2) per compatibilità ottimale Android.
+- **Fix**: Risolto bug critico case-sensitivity `Fruit.tscn` -> `fruit.tscn`.
+- **Fix**: Corretto URL UpdateManager per puntare al branch `master`.
+- **Cleanup**: Rimossi asset corrotti (`pause_icon.png`).
+- **Build**: Versione 1.7.4 disponibile per update in-game.
+
 ### [1.7.4] - 2026-05-13
 - **Fix**: Ripristinata compressione VRAM (modalità 2) per compatibilità ottimale Android.
 - **Fix**: Risolto bug critico case-sensitivity `Fruit.tscn` -> `fruit.tscn`.

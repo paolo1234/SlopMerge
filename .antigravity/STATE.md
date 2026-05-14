@@ -24,6 +24,7 @@
 - [x] Implementazione tutti i tier di frutta (1-11) con risorse dedicate
 - [x] Sistema di Reazioni a Catena: Floating Text e Combo Multipliers
 - [x] Upgrade Risoluzione: Porting a 1080x1920 (Full HD Mobile) e adattamento layout fisico
+- [x] **Gestione Spritesheet**: Implementato `SpriteSheetLayout` (sistema a risorse centralizzato).
 
 ## Task Attivi (In corso) 🛠️
 - [x] **Game-Core Sync & Revamp**: Estrazione miglioramenti generici in `game-core` e rifacimento totale dei workflow per garantire disciplina (branching, commits, testing, docs).
