@@ -69,27 +69,8 @@ func _prepare_next_fruit() -> void:
 func _update_preview_visual() -> void:
 	if not preview_sprite or not current_fruit_data: return
 	
-	var layout = GameManager.active_layout
-	if not layout: return
-	
-	preview_sprite.texture = layout.texture
-	preview_sprite.region_enabled = true
-	
-	var sprite_key = layout.get_sprite_for_fruit(current_fruit_data.id)
-	if sprite_key == "":
-		sprite_key = current_fruit_data.sprite_key
-		
-	if sprite_key != "":
-		preview_sprite.region_rect = layout.get_region_by_name(sprite_key)
-	else:
-		preview_sprite.region_rect = layout.get_region(current_fruit_data.id - 1, 0)
-		
-	# Calcola la scala per farlo corrispondere alla dimensione reale
-	var target_size = current_fruit_data.radius * 2.0
-	var actual_w = preview_sprite.region_rect.size.x
-	if actual_w > 0:
-		var s = target_size / actual_w
-		preview_sprite.scale = Vector2(s, s)
+	FruitVisuals.setup_sprite(preview_sprite, current_fruit_data.id, current_fruit_data.radius)
+	FruitVisuals.apply_skin(preview_sprite, GameManager.current_skin)
 	
 	preview_sprite.visible = true
 	preview_sprite.modulate.a = 1.0

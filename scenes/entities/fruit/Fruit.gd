@@ -39,41 +39,15 @@ func _apply_data() -> void:
 		push_error("Fruit: active_layout is null!")
 		return
 		
-	sprite.texture = layout.texture
-	sprite.region_enabled = true
+	FruitVisuals.setup_sprite(sprite, data.id, data.radius)
 	
 	# Priority: 1. Mapping from Editor, 2. Manual key in .tres, 3. Fallback index
 	var sprite_key = layout.get_sprite_for_fruit(data.id)
-	if sprite_key == "":
-		sprite_key = data.sprite_key
-		
-	if sprite_key != "":
-		sprite.region_rect = layout.get_region_by_name(sprite_key)
-	else:
-		sprite.region_rect = layout.get_region(data.id - 1, 0)
-		
-	# Update collision data based on the resolved key
 	var col_data = {}
-	var custom_scale = 1.0
+	var scale_factor = sprite.scale.x
+	
 	if sprite_key != "":
 		col_data = layout.get_collision_data(sprite_key)
-		custom_scale = layout.get_custom_scale(sprite_key)
-	
-	# Autoscale lo sprite per corrispondere al raggio fisico
-	var target_size = data.radius * 2.0 * custom_scale
-	var actual_sprite_w = sprite.region_rect.size.x
-	
-	if actual_sprite_w <= 0:
-		actual_sprite_w = layout.get_frame_size().x
-		
-	var scale_factor = target_size / actual_sprite_w
-	
-	# Guard: scale INF o NaN fa sparire lo sprite
-	if is_inf(scale_factor) or is_nan(scale_factor) or scale_factor <= 0:
-		push_error("Fruit: Invalid scale_factor for " + data.fruit_name + ". Setting to 1.0")
-		scale_factor = 1.0
-		
-	sprite.scale = Vector2(scale_factor, scale_factor)
 	
 	mass = data.mass
 	
@@ -117,21 +91,7 @@ func _apply_data() -> void:
 	_apply_skin()
 
 func _apply_skin() -> void:
-	var skin = GameManager.current_skin
-	
-	match skin:
-		"Gold":
-			sprite.modulate = Color(1.2, 1.1, 0.2, 1.0) # Oro brillante
-		"Zombie":
-			sprite.modulate = Color(0.5, 0.8, 0.5, 1.0) # Verde marcio
-		"Cyber":
-			sprite.modulate = Color(0.2, 1.0, 1.2, 1.0) # Ciano neon
-		"Kawaii":
-			sprite.modulate = Color(1.2, 0.6, 0.8, 1.0) # Rosa pastello
-		"Edge":
-			sprite.modulate = Color(0.3, 0.3, 0.3, 1.0) # Oscuro
-		_:
-			sprite.modulate = Color.WHITE # Default
+	FruitVisuals.apply_skin(sprite, GameManager.current_skin)
 
 func _process(_delta: float) -> void:
 	# Aggiorna lo shader in base alla velocità lineare

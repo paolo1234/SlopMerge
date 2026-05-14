@@ -12,10 +12,19 @@ var SPRITESHEET: Texture2D:
 var FRUIT_SCENE = load(FRUIT_SCENE_PATH)
 var MERGE_VFX_SCENE = load(MERGE_VFX_SCENE_PATH)
 
-var slop_tokens: int = 0
-var current_skin: String = "default"
-var unlocked_skins: Array = ["default"]
-var discovered_fruits: Array = [1]
+var slop_tokens: int:
+	get: return SaveManager.slop_tokens
+	set(v): SaveManager.slop_tokens = v
+
+var current_skin: String:
+	get: return SaveManager.current_skin
+	set(v): SaveManager.current_skin = v
+
+var unlocked_skins: Array:
+	get: return SaveManager.unlocked_skins
+
+var discovered_fruits: Array:
+	get: return SaveManager.discovered_fruits
 
 var fruits_data: Array[Resource] = [
 	preload("res://resources/fruits/01_pisello.tres"),
@@ -36,8 +45,6 @@ var is_game_over: bool = false
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	load_data()
-	
 	print("[GameManager] Initialized.")
 
 func get_next_tier_data(current_id: int) -> Resource:
@@ -66,12 +73,12 @@ func request_merge(fruit_a: Node2D, fruit_b: Node2D) -> void:
 func _spawn_merged_fruit(data: Resource, pos: Vector2) -> void:
 	var instance = FRUIT_SCENE.instantiate() as RigidBody2D
 	instance.data = data
-	instance.global_position = pos
-	
 	if fruits_container:
 		fruits_container.add_child(instance)
 	else:
 		get_tree().root.add_child(instance)
+	
+	instance.global_position = pos
 	
 	# VFX
 	var vfx = MERGE_VFX_SCENE.instantiate()
@@ -88,7 +95,7 @@ func _spawn_merged_fruit(data: Resource, pos: Vector2) -> void:
 	# Discovery
 	if not discovered_fruits.has(data.id):
 		discovered_fruits.append(data.id)
-		save_data()
+		SaveManager.save_data()
 	
 	# Signal for other managers (Score, Juice, etc)
 	EventBus.merge_occurred.emit(pos, data.id)
@@ -108,26 +115,7 @@ func game_over() -> void:
 		var score = get_node("/root/ScoreManager").score
 		slop_tokens += score / 10
 	
-	save_data()
+	SaveManager.save_data()
 	EventBus.game_over.emit()
 	get_tree().paused = true
 
-func save_data() -> void:
-	var config = ConfigFile.new()
-	# Carichiamo i dati esistenti per non sovrascrivere sezioni gestite da altri manager (es: high_score)
-	config.load("user://progression.cfg")
-	
-	config.set_value("progression", "slop_tokens", slop_tokens)
-	config.set_value("progression", "current_skin", current_skin)
-	config.set_value("progression", "unlocked_skins", unlocked_skins)
-	config.set_value("progression", "discovered_fruits", discovered_fruits)
-	config.save("user://progression.cfg")
-
-func load_data() -> void:
-	var config = ConfigFile.new()
-	var err = config.load("user://progression.cfg")
-	if err == OK:
-		slop_tokens = config.get_value("progression", "slop_tokens", 0)
-		current_skin = config.get_value("progression", "current_skin", "default")
-		unlocked_skins = config.get_value("progression", "unlocked_skins", ["default"])
-		discovered_fruits = config.get_value("progression", "discovered_fruits", [1])

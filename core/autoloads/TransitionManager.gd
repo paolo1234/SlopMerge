@@ -7,7 +7,13 @@ func _ready() -> void:
 	color_rect.modulate.a = 0.0
 	color_rect.hide()
 
+var is_transitioning: bool = false
+
 func transition_to(scene_path: String) -> void:
+	if is_transitioning:
+		return
+	is_transitioning = true
+	
 	color_rect.show()
 	var tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
 	
@@ -28,3 +34,4 @@ func transition_to(scene_path: String) -> void:
 	await tween_in.finished
 	
 	color_rect.hide()
+	is_transitioning = false

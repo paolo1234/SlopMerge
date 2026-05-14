@@ -1,7 +1,9 @@
 extends Node
 
 var score: int = 0
-var high_score: int = 0
+var high_score: int:
+	get: return SaveManager.high_score
+	set(v): SaveManager.high_score = v
 var combo_multiplier: int = 1
 var combo_timer: float = 0.0
 const COMBO_RESET_TIME: float = 3.0
@@ -9,10 +11,8 @@ const COMBO_RESET_TIME: float = 3.0
 const SAVE_PATH = "user://progression.cfg"
 
 func _ready() -> void:
-	_migrate_old_save()
-	load_high_score()
 	EventBus.merge_occurred.connect(_on_merge_occurred)
-	EventBus.game_over.connect(save_high_score)
+	EventBus.game_over.connect(SaveManager.save_data)
 
 func _process(delta: float) -> void:
 	if combo_timer > 0:
@@ -29,7 +29,7 @@ func _on_merge_occurred(_pos: Vector2, tier: int) -> void:
 	
 	if score > high_score:
 		high_score = score
-		save_high_score()
+		SaveManager.save_data()
 	
 	EventBus.score_changed.emit(score)
 	EventBus.combo_changed.emit(combo_multiplier)
@@ -44,32 +44,3 @@ func reset_score() -> void:
 	EventBus.score_changed.emit(score)
 	EventBus.combo_changed.emit(combo_multiplier)
 
-func save_high_score() -> void:
-	var config = ConfigFile.new()
-	config.load(SAVE_PATH)
-	config.set_value("progression", "high_score", high_score)
-	config.save(SAVE_PATH)
-
-func load_high_score() -> void:
-	if FileAccess.file_exists(SAVE_PATH):
-		var config = ConfigFile.new()
-		var err = config.load(SAVE_PATH)
-		if err == OK:
-			high_score = config.get_value("progression", "high_score", 0)
-
-func _migrate_old_save() -> void:
-	var old_path = "user://score.save"
-	if FileAccess.file_exists(old_path):
-		var file = FileAccess.open(old_path, FileAccess.READ)
-		if file:
-			var old_score = file.get_var()
-			file.close()
-			
-			# Se il nuovo record è 0 o inferiore al vecchio, migra
-			if high_score < old_score:
-				high_score = old_score
-				save_high_score()
-				print("[ScoreManager] Migrated old score: ", old_score)
-			
-			# Rimuovi il vecchio file per evitare loop
-			DirAccess.remove_absolute(old_path)
