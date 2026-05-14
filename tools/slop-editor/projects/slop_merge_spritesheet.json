@@ -1,0 +1,25 @@
+{
+  "name": "slop_merge_spritesheet",
+  "spritesheet": "slop_merge_spritesheet.png",
+  "layout": {
+    "type": "NESTED_GRID",
+    "columns": 4,
+    "rows": 4,
+    "sub_columns": 4,
+    "sub_rows": 4
+  },
+  "sprites": [
+    { "id": "s01", "name": "pisello_triste",    "blockIndex": 0,  "frameIndex": 0, "region": {"x":0,    "y":0,    "w":128, "h":128}, "pivot": {"x":0.5,"y":0.5}, "tags": ["fruit","tier_1"] },
+    { "id": "s02", "name": "limone_arrabbiato", "blockIndex": 1,  "frameIndex": 0, "region": {"x":512,  "y":0,    "w":128, "h":128}, "pivot": {"x":0.5,"y":0.5}, "tags": ["fruit","tier_2"] },
+    { "id": "s03", "name": "kiwi_sospettoso",   "blockIndex": 2,  "frameIndex": 0, "region": {"x":1024, "y":0,    "w":128, "h":128}, "pivot": {"x":0.5,"y":0.5}, "tags": ["fruit","tier_3"] },
+    { "id": "s04", "name": "arancia_pazzoide",  "blockIndex": 3,  "frameIndex": 0, "region": {"x":1536, "y":0,    "w":128, "h":128}, "pivot": {"x":0.5,"y":0.5}, "tags": ["fruit","tier_4"] },
+    { "id": "s05", "name": "uva_ansiosa",       "blockIndex": 4,  "frameIndex": 0, "region": {"x":0,    "y":512,  "w":128, "h":128}, "pivot": {"x":0.5,"y":0.5}, "tags": ["fruit","tier_5"] },
+    { "id": "s06", "name": "fragola_sus",        "blockIndex": 5,  "frameIndex": 0, "region": {"x":512,  "y":512,  "w":128, "h":128}, "pivot": {"x":0.5,"y":0.5}, "tags": ["fruit","tier_6"] },
+    { "id": "s07", "name": "melone_sigma",       "blockIndex": 6,  "frameIndex": 0, "region": {"x":1024, "y":512,  "w":128, "h":128}, "pivot": {"x":0.5,"y":0.5}, "tags": ["fruit","tier_7"] },
+    { "id": "s08", "name": "ananas_gigachad",    "blockIndex": 7,  "frameIndex": 0, "region": {"x":1536, "y":512,  "w":128, "h":128}, "pivot": {"x":0.5,"y":0.5}, "tags": ["fruit","tier_8"] },
+    { "id": "s09", "name": "cocco_longe",        "blockIndex": 8,  "frameIndex": 0, "region": {"x":0,    "y":1024, "w":128, "h":128}, "pivot": {"x":0.5,"y":0.5}, "tags": ["fruit","tier_9"] },
+    { "id": "s10", "name": "anguria_skibidi",    "blockIndex": 9,  "frameIndex": 0, "region": {"x":512,  "y":1024, "w":128, "h":128}, "pivot": {"x":0.5,"y":0.5}, "tags": ["fruit","tier_10"] },
+    { "id": "s11", "name": "zucca_finale",       "blockIndex": 10, "frameIndex": 0, "region": {"x":1024, "y":1024, "w":128, "h":128}, "pivot": {"x":0.5,"y":0.5}, "tags": ["fruit","tier_11"] }
+  ],
+  "animations": []
+}
