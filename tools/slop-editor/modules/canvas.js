@@ -49,6 +49,11 @@ const CanvasModule = (() => {
     fitToView();
   }
 
+  function clearImage() {
+    image = null;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
   function fitToView() {
     if (!image) return;
     const margin = 40;
@@ -327,12 +332,50 @@ const CanvasModule = (() => {
   function setSnapToGrid(v) { snapToGrid = v; }
   function getSelectedCell() { return selectedCell; }
   function getFreeRect() { return freeRect; }
+  function findTightBounds(rect) {
+    if (!image) return null;
+    const { x, y, w, h } = rect;
+    
+    // Create a temporary canvas to read pixels
+    const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = w;
+    tempCanvas.height = h;
+    const tCtx = tempCanvas.getContext('2d', { willReadFrequently: true });
+    tCtx.drawImage(image, x, y, w, h, 0, 0, w, h);
+    
+    const data = tCtx.getImageData(0, 0, w, h).data;
+    let minX = w, minY = h, maxX = 0, maxY = 0;
+    let found = false;
+
+    for (let cy = 0; cy < h; cy++) {
+      for (let cx = 0; cx < w; cx++) {
+        const alpha = data[(cy * w + cx) * 4 + 3];
+        if (alpha > 10) { // Threshold for "not transparent"
+          if (cx < minX) minX = cx;
+          if (cy < minY) minY = cy;
+          if (cx > maxX) maxX = cx;
+          if (cy > maxY) maxY = cy;
+          found = true;
+        }
+      }
+    }
+
+    if (!found) return null;
+
+    return {
+      x: x + minX,
+      y: y + minY,
+      w: (maxX - minX) + 1,
+      h: (maxY - minY) + 1
+    };
+  }
+
   function getImage() { return image; }
 
   return {
-    init, loadImage, fitToView, setZoom, getZoom,
+    init, loadImage, clearImage, fitToView, setZoom, getZoom,
     setGridColor, setGridOpacity, setShowGrid, setSnapToGrid,
     clearSelection, getSelectedCell, getFreeRect, getImage,
-    canvasToImage, imageToCanvas
+    canvasToImage, imageToCanvas, findTightBounds
   };
 })();

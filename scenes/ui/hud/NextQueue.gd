@@ -25,7 +25,16 @@ func _apply_fruit_icon(target: TextureRect, data: Resource) -> void:
 	
 	var atlas = AtlasTexture.new()
 	atlas.atlas = layout.texture
-	atlas.region = layout.get_region(data.id - 1, 0)
+	
+	var sprite_key = layout.get_sprite_for_fruit(data.id)
+	if sprite_key == "":
+		sprite_key = data.sprite_key
+		
+	if sprite_key != "":
+		atlas.region = layout.get_region_by_name(sprite_key)
+	else:
+		atlas.region = layout.get_region(data.id - 1, 0)
+		
 	target.texture = atlas
 	
 	print("[NextQueue] Applied icon for ", data.fruit_name, " region: ", atlas.region)

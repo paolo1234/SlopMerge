@@ -9,21 +9,21 @@ const TimelineModule = (() => {
   let animInterval = null;
   let previewCtx = null;
 
-  const $ = id => document.getElementById(id);
+  const $ = sel => document.querySelector(sel);
 
   function init() {
-    previewCtx = $('anim-preview-canvas').getContext('2d');
-    $('tl-play').addEventListener('click', play);
-    $('tl-stop').addEventListener('click', stop);
-    $('tl-prev').addEventListener('click', prevFrame);
-    $('tl-next').addEventListener('click', nextFrame);
-    $('btn-close-preview').addEventListener('click', () => {
-      $('anim-preview-overlay').style.display = 'none';
+    previewCtx = $('#anim-preview-canvas').getContext('2d');
+    $('#tl-play').addEventListener('click', play);
+    $('#tl-stop').addEventListener('click', stop);
+    $('#tl-prev').addEventListener('click', prevFrame);
+    $('#tl-next').addEventListener('click', nextFrame);
+    $('#btn-close-preview').addEventListener('click', () => {
+      $('#anim-preview-overlay').style.display = 'none';
       stop();
     });
-    $('btn-preview-anim').addEventListener('click', () => {
+    $('#btn-preview-anim').addEventListener('click', () => {
       if (!currentAnim) return;
-      $('anim-preview-overlay').style.display = '';
+      $('#anim-preview-overlay').style.display = '';
       play();
     });
   }
@@ -33,22 +33,22 @@ const TimelineModule = (() => {
     currentAnim = anim;
     currentFrame = 0;
     render();
-    $('tl-fps-display').textContent = anim ? `${anim.fps} fps` : '— fps';
-    $('tl-frame-display').textContent = `frame 0/${anim ? anim.frames.length : 0}`;
+    $('#tl-fps-display').textContent = anim ? `${anim.fps} fps` : '— fps';
+    $('#tl-frame-display').textContent = `frame 0/${anim ? anim.frames.length : 0}`;
 
     if (anim) {
-      $('anim-inspector-section').style.display = '';
-      $('anim-insp-title').textContent = `ANIMATION: ${anim.name}`;
-      $('anim-fps').value  = anim.fps;
-      $('anim-loop').checked = anim.loop;
+      $('#anim-inspector-section').style.display = '';
+      $('#anim-insp-title').textContent = `ANIMATION: ${anim.name}`;
+      $('#anim-fps').value  = anim.fps;
+      $('#anim-loop').checked = anim.loop;
       renderFrameList(anim);
     } else {
-      $('anim-inspector-section').style.display = 'none';
+      $('#anim-inspector-section').style.display = 'none';
     }
   }
 
   function render() {
-    const track = $('timeline-frames');
+    const track = $('#timeline-frames');
     track.innerHTML = '';
     if (!currentAnim || currentAnim.frames.length === 0) {
       track.innerHTML = '<div class="tl-empty">No frames — add sprites from the inspector</div>';
@@ -67,11 +67,11 @@ const TimelineModule = (() => {
       div.addEventListener('click', () => { currentFrame = i; render(); _drawPreview(i); });
       track.appendChild(div);
     });
-    $('tl-frame-display').textContent = `frame ${currentFrame}/${currentAnim.frames.length}`;
+    $('#tl-frame-display').textContent = `frame ${currentFrame}/${currentAnim.frames.length}`;
   }
 
   function renderFrameList(anim) {
-    const list = $('anim-frames-list');
+    const list = $('#anim-frames-list');
     list.innerHTML = '';
     if (!anim) return;
     anim.frames.forEach((f, i) => {
@@ -118,7 +118,7 @@ const TimelineModule = (() => {
   }
 
   function _drawPreview(frameIdx) {
-    const c = $('anim-preview-canvas');
+    const c = $('#anim-preview-canvas');
     const pCtx = previewCtx;
     pCtx.clearRect(0, 0, c.width, c.height);
     // Checker
@@ -152,13 +152,13 @@ const TimelineModule = (() => {
       render();
       _drawPreview(currentFrame);
     }, ms);
-    $('tl-play').textContent = '⏸';
+    $('#tl-play').textContent = '⏸';
   }
 
   function stop() {
     clearInterval(animInterval);
     isPlaying = false;
-    $('tl-play').textContent = '▶';
+    $('#tl-play').textContent = '▶';
   }
 
   function prevFrame() {

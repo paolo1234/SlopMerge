@@ -10,10 +10,25 @@ const App = (() => {
   let loadedImageSrc = null; // data URL of the image
   let currentExportTab = 'json';
 
+  const FRUIT_TIERS = {
+    1: "Pisello",
+    2: "Limone",
+    3: "Kiwi",
+    4: "Arancia",
+    5: "Uva",
+    6: "Fragola",
+    7: "Melone",
+    8: "Ananas",
+    9: "Cocco",
+    10: "Anguria",
+    11: "Zucca"
+  };
+
   function _defaultProject() {
     return {
       name: 'untitled',
       spritesheet: '',
+      imageData: null, // Base64 of the image
       layout: {
         type: 'NESTED_GRID',
         columns: 4,
@@ -22,8 +37,63 @@ const App = (() => {
         sub_rows: 4
       },
       sprites: [],
-      animations: []
+      animations: [],
+      fruitMapping: [
+        { id: 1, name: "Pisello", sprite: "" },
+        { id: 2, name: "Limone", sprite: "" },
+        { id: 3, name: "Kiwi", sprite: "" },
+        { id: 4, name: "Arancia", sprite: "" },
+        { id: 5, name: "Uva", sprite: "" },
+        { id: 6, name: "Fragola", sprite: "" },
+        { id: 7, name: "Melone", sprite: "" },
+        { id: 8, name: "Ananas", sprite: "" },
+        { id: 9, name: "Cocco", sprite: "" },
+        { id: 10, name: "Anguria", sprite: "" },
+        { id: 11, name: "Zucca", sprite: "" }
+      ]
     };
+  }
+
+  // ── Persistence ─────────────────────────────
+  function _autoSave() {
+    try {
+      localStorage.setItem('slop_editor_autosave', JSON.stringify(state));
+    } catch(e) {
+      // Might fail if image data is too large for localStorage
+      console.warn('Autosave failed (likely storage limit):', e);
+    }
+  }
+
+  function _autoLoad() {
+    const saved = localStorage.getItem('slop_editor_autosave');
+    if (saved) {
+      try {
+        const loaded = JSON.parse(saved);
+        state = { ..._defaultProject(), ...loaded };
+        
+        if (state.imageData) {
+          const img = new Image();
+          img.onload = () => {
+            loadedImageSrc = state.imageData;
+            CanvasModule.loadImage(img);
+            $('#canvas-drop-hint').classList.add('hidden');
+            $('#info-image').textContent = state.spritesheet ? state.spritesheet.split('/').pop() : 'Restored';
+            $('#info-size').textContent = `${img.width}×${img.height}`;
+            _renderSpriteList();
+          };
+          img.src = state.imageData;
+        }
+        
+        _syncGridUI();
+        _renderSpriteList();
+        _renderAnimList();
+        _renderMappingList();
+        _updateInfoBar();
+        _updateTitle();
+      } catch(e) {
+        console.error('Failed to load autosave:', e);
+      }
+    }
   }
 
   // ── Getters ──────────────────────────────────
@@ -41,7 +111,7 @@ const App = (() => {
   function getAnimations()       { return state.animations; }
   function getSpriteById(id)     { return state.sprites.find(s => s.id === id) || null; }
   function getSpriteByBlock(idx) { return state.sprites.find(s => s.blockIndex === idx) || null; }
-  function markDirty()           { isDirty = true; _updateTitle(); }
+  function markDirty()           { isDirty = true; _updateTitle(); _autoSave(); }
   function updateZoomDisplay()   { $('#zoom-display').textContent = Math.round(CanvasModule.getZoom() * 100) + '%'; }
 
   // ── Project CRUD ─────────────────────────────
@@ -50,16 +120,21 @@ const App = (() => {
     state = _defaultProject();
     isDirty = false;
     loadedImageSrc = null;
+    CanvasModule.clearImage();
     CanvasModule.clearSelection();
     _syncGridUI();
     _renderSpriteList();
     _renderAnimList();
+    _renderMappingList();
     _updateInfoBar();
     _updateTitle();
     $('#canvas-drop-hint').classList.remove('hidden');
+    $('#info-image').textContent = 'None';
+    $('#info-size').textContent  = '0×0';
   }
 
-  function saveProject() {
+  function saveProject(e) {
+    if (e) e.preventDefault();
     const json = ExporterModule.toJSON(state);
     ExporterModule.download(`${state.name}.json`, json);
     isDirty = false;
@@ -70,14 +145,44 @@ const App = (() => {
     const reader = new FileReader();
     reader.onload = e => {
       try {
-        state = JSON.parse(e.target.result);
+        const loaded = JSON.parse(e.target.result);
+        // Merge with defaults to handle missing fields (like imageData or fruitMapping)
+        state = { ..._defaultProject(), ...loaded };
+        
+        // Migrate old dictionary mapping to array mapping if needed
+        if (loaded.fruitMapping && !Array.isArray(loaded.fruitMapping)) {
+          state.fruitMapping = Object.keys(loaded.fruitMapping).map(key => ({
+            id: parseInt(key) || key,
+            name: FRUIT_TIERS[key] || `Tier ${key}`,
+            sprite: loaded.fruitMapping[key]
+          }));
+        }
+        
         isDirty = false;
+        
+        // Restore image if present in JSON
+        if (state.imageData) {
+          const img = new Image();
+          img.onload = () => {
+            loadedImageSrc = state.imageData;
+            CanvasModule.loadImage(img);
+            $('#canvas-drop-hint').classList.add('hidden');
+            $('#info-size').textContent = `${img.width}×${img.height}`;
+            _renderSpriteList(); // Re-render to show thumbnails if needed
+          };
+          img.src = state.imageData;
+        } else if (state.spritesheet) {
+          // Old format: image was not embedded
+          alert(`This project does not have the image embedded. Please load "${state.spritesheet}" manually and save the project to embed it.`);
+        }
+
         _syncGridUI();
         _renderSpriteList();
         _renderAnimList();
         _updateInfoBar();
         _updateTitle();
-        // If a spritesheet path is stored, user must reload image manually
+        _autoSave();
+        
         if (state.spritesheet) {
           $('#info-image').textContent = state.spritesheet.split('/').pop();
         }
@@ -94,8 +199,9 @@ const App = (() => {
       const img = new Image();
       img.onload = () => {
         loadedImageSrc = e.target.result;
-        CanvasModule.loadImage(img);
+        state.imageData = e.target.result; // Store for JSON
         state.spritesheet = file.name;
+        CanvasModule.loadImage(img);
         $('#canvas-drop-hint').classList.add('hidden');
         $('#info-image').textContent = file.name;
         $('#info-size').textContent  = `${img.width}×${img.height}`;
@@ -130,14 +236,24 @@ const App = (() => {
     const name = $('#insp-name').value.trim() || `sprite_${inspData.blockIndex}`;
     const pivot = { x: parseFloat($('#insp-pivot-x').value), y: parseFloat($('#insp-pivot-y').value) };
     const tags = $('#insp-tags').value.split(',').map(t => t.trim()).filter(Boolean);
+    const scale = parseFloat($('#insp-scale').value) || 1.0;
 
-    // Check for existing sprite with same blockIndex (update)
-    const existing = getSpriteByBlock(inspData.blockIndex);
+    // Check for existing sprite to update
+    const currentId = InspectorModule.getCurrentSpriteId();
+    let existing = state.sprites.find(s => s.id === currentId);
+    
+    // Fallback: check by blockIndex if it's a grid cell
+    if (!existing && inspData.blockIndex !== -1) {
+      existing = getSpriteByBlock(inspData.blockIndex);
+    }
+
     if (existing) {
       existing.name = name;
       existing.region = { ...inspData.region };
       existing.pivot = pivot;
       existing.tags  = tags;
+      existing.scale = scale;
+      existing.collision = { ...inspData.collision };
     } else {
       state.sprites.push({
         id:         _uid(),
@@ -146,7 +262,9 @@ const App = (() => {
         frameIndex: inspData.frameIndex,
         region:     { ...inspData.region },
         pivot,
-        tags
+        tags,
+        scale,
+        collision:  { ...inspData.collision }
       });
     }
 
@@ -167,9 +285,86 @@ const App = (() => {
     _updateInfoBar();
   }
 
+  function _renderMappingList() {
+    const list = $('#fruit-mapping-list');
+    if (!list) return;
+    list.innerHTML = '';
+    
+    // Header & Add Button
+    const header = document.createElement('div');
+    header.className = 'section-header';
+    header.style.padding = '0 0 10px 0';
+    header.innerHTML = `<span>Registry</span> <button class="btn-full small" id="btn-add-fruit-slot">+ Add</button>`;
+    list.appendChild(header);
+    header.querySelector('#btn-add-fruit-slot').onclick = () => {
+      const nextId = state.fruitMapping.length > 0 ? Math.max(...state.fruitMapping.map(f => parseInt(f.id)||0)) + 1 : 1;
+      state.fruitMapping.push({ id: nextId, name: `Fruit ${nextId}`, sprite: "" });
+      markDirty();
+      _renderMappingList();
+    };
+
+    if (!state.fruitMapping || !Array.isArray(state.fruitMapping)) state.fruitMapping = [];
+
+    state.fruitMapping.forEach((item, index) => {
+      const row = document.createElement('div');
+      row.className = 'mapping-row dynamic';
+      
+      const idInp = document.createElement('input');
+      idInp.type = 'number';
+      idInp.className = 'tier-id-inp';
+      idInp.value = item.id;
+      idInp.title = "Internal ID (used in Godot)";
+      idInp.onchange = (e) => { item.id = parseInt(e.target.value); markDirty(); };
+      row.appendChild(idInp);
+
+      const nameInp = document.createElement('input');
+      nameInp.type = 'text';
+      nameInp.className = 'tier-name-inp';
+      nameInp.value = item.name;
+      nameInp.placeholder = "Fruit Name";
+      nameInp.onchange = (e) => { item.name = e.target.value; markDirty(); };
+      row.appendChild(nameInp);
+      
+      const sel = document.createElement('select');
+      const optNone = document.createElement('option');
+      optNone.value = ''; optNone.textContent = '— Sprite —';
+      sel.appendChild(optNone);
+      
+      state.sprites.forEach(sp => {
+        const opt = document.createElement('option');
+        opt.value = sp.name;
+        opt.textContent = sp.name;
+        if (item.sprite === sp.name) opt.selected = true;
+        sel.appendChild(opt);
+      });
+      
+      sel.onchange = (e) => {
+        item.sprite = e.target.value;
+        markDirty();
+      };
+      row.appendChild(sel);
+
+      const del = document.createElement('button');
+      del.className = 'btn-icon small';
+      del.textContent = '✕';
+      del.onclick = () => {
+        state.fruitMapping.splice(index, 1);
+        markDirty();
+        _renderMappingList();
+      };
+      row.appendChild(del);
+
+      list.appendChild(row);
+    });
+  }
+
   function _renderSpriteList() {
     const list = $('#sprite-list');
     list.innerHTML = '';
+    
+    // Also refresh mapping list if it's visible
+    if ($('#tab-mapping').style.display !== 'none') _renderMappingList();
+
     if (state.sprites.length === 0) {
       list.innerHTML = '<div class="empty-state">No sprites saved yet</div>';
       return;
@@ -203,13 +398,7 @@ const App = (() => {
 
       item.addEventListener('click', () => {
         // Show in inspector
-        InspectorModule.showFreeRect(sp.region);
-        $('#insp-name').value    = sp.name;
-        $('#insp-pivot-x').value = sp.pivot.x;
-        $('#insp-pivot-y').value = sp.pivot.y;
-        $('#insp-tags').value    = sp.tags.join(', ');
-        $('#insp-block').value   = sp.blockIndex;
-        $('#insp-frame').value   = sp.frameIndex;
+        InspectorModule.showSprite(sp, CanvasModule.getImage());
       });
 
       list.appendChild(item);
@@ -335,7 +524,8 @@ const App = (() => {
     $('#modal-preview').textContent = text;
   }
 
-  function _downloadExport() {
+  function _downloadExport(e) {
+    if (e) e.preventDefault();
     const ext  = currentExportTab === 'json' ? '.json' : currentExportTab === 'tres' ? '.tres' : '.gd';
     let text = '';
     if (currentExportTab === 'json')  text = ExporterModule.toJSON(state);
@@ -358,20 +548,23 @@ const App = (() => {
   // ── Boot & Event Wiring ───────────────────────
   function init() {
     // Canvas
-    CanvasModule.init(document.getElementById('main-canvas'), {
+    CanvasModule.init($('#main-canvas'), {
       onCellSelect: (cell, img) => { /* inspector already updated inside module */ },
       onFreeSelect: (rect)      => { /* inspector already updated inside module */ }
     });
 
     // Timeline
     TimelineModule.init();
+    
+    // Inspector UI logic
+    InspectorModule.initUI();
 
     // Toolbar buttons
-    $('#btn-new').addEventListener('click', newProject);
+    $('#btn-new').addEventListener('click', e => { e.preventDefault(); newProject(); });
     $('#btn-save').addEventListener('click', saveProject);
-    $('#btn-open').addEventListener('click', () => $('#file-input-json').click());
-    $('#btn-load-img').addEventListener('click', () => $('#file-input-img').click());
-    $('#btn-export').addEventListener('click', openExportModal);
+    $('#btn-open').addEventListener('click', e => { e.preventDefault(); $('#file-input-json').click(); });
+    $('#btn-load-img').addEventListener('click', e => { e.preventDefault(); $('#file-input-img').click(); });
+    $('#btn-export').addEventListener('click', e => { e.preventDefault(); openExportModal(); });
 
     $('#file-input-img').addEventListener('change',  e => { if (e.target.files[0]) loadImageFile(e.target.files[0]); });
     $('#file-input-json').addEventListener('change', e => { if (e.target.files[0]) openProject(e.target.files[0]); });
@@ -442,6 +635,33 @@ const App = (() => {
         .then(() => { $('#btn-copy').textContent = '✅ Copied!'; setTimeout(() => $('#btn-copy').textContent = '📋 Copy to Clipboard', 1500); });
     });
 
+    // Panel Tabs (Right Sidebar)
+    document.querySelectorAll('.panel-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const target = tab.dataset.tab;
+        document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        
+        document.querySelectorAll('.panel-tab-content').forEach(c => c.style.display = 'none');
+        $(`#tab-${target}`).style.display = 'block';
+        
+        if (target === 'mapping') _renderMappingList();
+      });
+    });
+
+    _renderMappingList();
+
+    // Adjustment Tools
+    $('#tool-auto-fit').addEventListener('click', () => InspectorModule.autoFit());
+    $('#tool-nudge-u').addEventListener('click',  () => InspectorModule.nudge(0, -1));
+    $('#tool-nudge-d').addEventListener('click',  () => InspectorModule.nudge(0, 1));
+    $('#tool-nudge-l').addEventListener('click',  () => InspectorModule.nudge(-1, 0));
+    $('#tool-nudge-r').addEventListener('click',  () => InspectorModule.nudge(1, 0));
+    $('#tool-nudge-ul').addEventListener('click', () => InspectorModule.nudge(-1, -1));
+    $('#tool-nudge-ur').addEventListener('click', () => InspectorModule.nudge(1, -1));
+    $('#tool-nudge-dl').addEventListener('click', () => InspectorModule.nudge(-1, 1));
+    $('#tool-nudge-dr').addEventListener('click', () => InspectorModule.nudge(1, 1));
+
     // Close modals on overlay click
     $('#modal-overlay').addEventListener('click', e => { if (e.target === $('#modal-overlay')) $('#modal-overlay').style.display = 'none'; });
     $('#modal-anim-overlay').addEventListener('click', e => { if (e.target === $('#modal-anim-overlay')) $('#modal-anim-overlay').style.display = 'none'; });
@@ -455,13 +675,35 @@ const App = (() => {
         $('#modal-overlay').style.display = 'none';
         $('#modal-anim-overlay').style.display = 'none';
       }
+      
+      // Nudge with arrows
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+        if (document.activeElement.tagName !== 'INPUT') {
+          e.preventDefault();
+          const dx = e.key === 'ArrowLeft' ? -1 : (e.key === 'ArrowRight' ? 1 : 0);
+          const dy = e.key === 'ArrowUp' ? -1 : (e.key === 'ArrowDown' ? 1 : 0);
+          const mult = e.shiftKey ? 5 : 1;
+          InspectorModule.nudge(dx * mult, dy * mult);
+        }
+      }
     });
 
     _updateTitle();
     _syncGridUI();
+    
+    // Recovery
+    _autoLoad();
+
+    // Prevent accidental navigation
+    window.onbeforeunload = (e) => {
+      if (isDirty) {
+        e.preventDefault();
+        return (e.returnValue = 'You have unsaved changes. Are you sure you want to leave?');
+      }
+    };
   }
 
-  const $ = id => document.getElementById(id);
+  const $ = sel => document.querySelector(sel);
 
   return {
     init, newProject, saveProject, openProject, loadImageFile,

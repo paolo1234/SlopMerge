@@ -42,31 +42,75 @@ func _apply_data() -> void:
 	sprite.texture = layout.texture
 	sprite.region_enabled = true
 	
-	# Mapping via layout (index = id - 1, sub_index = 0 for default face)
-	sprite.region_rect = layout.get_region(data.id - 1, 0)
-	
-	var frame_size = layout.get_frame_size().x
+	# Priority: 1. Mapping from Editor, 2. Manual key in .tres, 3. Fallback index
+	var sprite_key = layout.get_sprite_for_fruit(data.id)
+	if sprite_key == "":
+		sprite_key = data.sprite_key
+		
+	if sprite_key != "":
+		sprite.region_rect = layout.get_region_by_name(sprite_key)
+	else:
+		sprite.region_rect = layout.get_region(data.id - 1, 0)
+		
+	# Update collision data based on the resolved key
+	var col_data = {}
+	var custom_scale = 1.0
+	if sprite_key != "":
+		col_data = layout.get_collision_data(sprite_key)
+		custom_scale = layout.get_custom_scale(sprite_key)
 	
 	# Autoscale lo sprite per corrispondere al raggio fisico
-	var target_size = data.radius * 2.0
-	var scale_factor = target_size / frame_size
+	var target_size = data.radius * 2.0 * custom_scale
+	var actual_sprite_w = sprite.region_rect.size.x
+	
+	if actual_sprite_w <= 0:
+		actual_sprite_w = layout.get_frame_size().x
+		
+	var scale_factor = target_size / actual_sprite_w
 	
 	# Guard: scale INF o NaN fa sparire lo sprite
 	if is_inf(scale_factor) or is_nan(scale_factor) or scale_factor <= 0:
-		push_error("Fruit: Invalid scale_factor: " + str(scale_factor) + ". Setting to 1.0")
+		push_error("Fruit: Invalid scale_factor for " + data.fruit_name + ". Setting to 1.0")
 		scale_factor = 1.0
 		
 	sprite.scale = Vector2(scale_factor, scale_factor)
 	
 	mass = data.mass
 	
-	var shape = CircleShape2D.new()
-	shape.radius = data.radius
+	# Physics / Collision
+	var shape: Shape2D
+	
+	if col_data.get("type") == "circle":
+		shape = CircleShape2D.new()
+		var raw_rad = col_data.get("radius", 0.0)
+		if raw_rad > 0:
+			shape.radius = raw_rad * scale_factor
+		else:
+			shape.radius = data.radius
+		collision_shape.position = Vector2(col_data.get("ox", 0), col_data.get("oy", 0)) * scale_factor
+	elif col_data.get("type") == "rect":
+		shape = RectangleShape2D.new()
+		var rw = col_data.get("w", 64) * scale_factor
+		var rh = col_data.get("h", 64) * scale_factor
+		shape.size = Vector2(rw, rh)
+		collision_shape.position = Vector2(col_data.get("ox", 0), col_data.get("oy", 0)) * scale_factor
+	else:
+		# Fallback to default radius
+		shape = CircleShape2D.new()
+		shape.radius = data.radius
+		collision_shape.position = Vector2.ZERO
+		
 	collision_shape.shape = shape
 	
+	# Merge Area (slightly larger than collision)
 	var merge_shape = CircleShape2D.new()
-	merge_shape.radius = data.radius * 1.1
+	if shape is CircleShape2D:
+		merge_shape.radius = shape.radius * 1.1
+	else:
+		merge_shape.radius = data.radius * 1.1
+		
 	merge_collision.shape = merge_shape
+	merge_collision.position = collision_shape.position
 	
 	print("[Fruit] Initialized: ", data.fruit_name, " ID: ", data.id, " Pos: ", global_position, " Scale: ", sprite.scale)
 	

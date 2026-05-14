@@ -4,7 +4,7 @@ extends Node
 const FRUIT_SCENE_PATH = "res://scenes/entities/fruit/fruit.tscn"
 const MERGE_VFX_SCENE_PATH = "res://scenes/vfx/merge_particles.tscn"
 
-var active_layout: Resource = preload("res://resources/layouts/default_spritesheet.tres")
+var active_layout: Resource = preload("res://resources/layouts/slop_merge_spritesheet.tres")
 # Fallback for older scripts using GameManager.SPRITESHEET
 var SPRITESHEET: Texture2D:
 	get: return active_layout.texture if active_layout else null

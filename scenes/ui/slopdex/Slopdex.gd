@@ -33,7 +33,16 @@ func _populate_slopdex() -> void:
 			
 		var atlas = AtlasTexture.new()
 		atlas.atlas = layout.texture
-		atlas.region = layout.get_region(fruit_data.id - 1, 0)
+
+		var sprite_key = layout.get_sprite_for_fruit(fruit_data.id)
+		if sprite_key == "":
+			sprite_key = fruit_data.sprite_key
+			
+		if sprite_key != "":
+			atlas.region = layout.get_region_by_name(sprite_key)
+		else:
+			atlas.region = layout.get_region(fruit_data.id - 1, 0)
+			
 		icon.texture = atlas
 		
 		print("[Slopdex] Created slot for ", fruit_data.fruit_name, " region: ", atlas.region)

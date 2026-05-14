@@ -31,18 +31,31 @@ const ExporterModule = (() => {
       out += `sub_columns = ${layout.sub_columns}\n`;
       out += `sub_rows = ${layout.sub_rows}\n`;
     }
-    out += `regions = {}\n`;
-    out += `\n`;
-    out += `; ── Sprites Defined ──────────────────────────────────\n`;
+    out += `regions = {\n`;
     project.sprites.forEach(sp => {
-      out += `; "${sp.name}" → block:${sp.blockIndex} region:[${sp.region.x}, ${sp.region.y}, ${sp.region.w}, ${sp.region.h}]\n`;
+      out += `"${sp.name}": { "rect": Rect2(${sp.region.x}, ${sp.region.y}, ${sp.region.w}, ${sp.region.h}), "pivot": Vector2(${sp.pivot.x}, ${sp.pivot.y}), "scale": ${sp.scale || 1.0}, "collision": ${JSON.stringify(sp.collision || {type:'none'})} },\n`;
     });
-    if (project.animations.length > 0) {
-      out += `\n; ── Animations ───────────────────────────────────────\n`;
-      project.animations.forEach(anim => {
-        const frameIds = anim.frames.map(f => `${f.sprite_id}[${f.sub_index ?? 0}]`).join(', ');
-        out += `; "${anim.name}" fps:${anim.fps} loop:${anim.loop} frames:[${frameIds}]\n`;
+    out += `}\n`;
+
+    let fruitMap = {};
+    if (Array.isArray(project.fruitMapping)) {
+      project.fruitMapping.forEach(m => {
+        if (m.id !== undefined && m.id !== null) fruitMap[m.id] = m.sprite;
       });
+    } else {
+      fruitMap = project.fruitMapping || {};
+    }
+    out += `fruit_map = ${JSON.stringify(fruitMap)}\n`;
+    if (project.animations.length > 0) {
+      out += `\nanims = {\n`;
+      project.animations.forEach(anim => {
+        const frameData = anim.frames.map(f => {
+          const sp = project.sprites.find(s => s.id === f.sprite_id);
+          return sp ? `"${sp.name}"` : `"null"`;
+        }).join(', ');
+        out += `"${anim.name}": { "fps": ${anim.fps}, "loop": ${anim.loop}, "frames": [${frameData}] },\n`;
+      });
+      out += `}\n`;
     }
     return out;
   }
@@ -91,11 +104,13 @@ const ExporterModule = (() => {
 
   function download(filename, content) {
     const blob = new Blob([content], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
+    a.href = url;
     a.download = filename;
     a.click();
-    URL.revokeObjectURL(a.href);
+    // Delay revocation to ensure browser handles the large file correctly
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
 
   return { toJSON, toTRES, toGDScript, download };

@@ -19,9 +19,41 @@ enum LayoutType {
 @export var sub_rows: int = 4
 
 @export_group("Explicit Settings")
-@export var regions: Dictionary = {} # Name -> Rect2
+@export var regions: Dictionary = {} # Name -> { rect, pivot, collision }
+@export var fruit_map: Dictionary = {} # TierID -> SpriteName
+@export var anims: Dictionary = {}   # Name -> { fps, loop, frames: [name, ...] }
 
-func get_region(index: int, sub_index: int = 0) -> Rect2:
+func get_sprite_for_fruit(tier_id: int) -> String:
+	return fruit_map.get(str(tier_id), "")
+
+func get_region_by_name(region_name: String) -> Rect2:
+	var data = regions.get(region_name)
+	if data is Dictionary:
+		return data.get("rect", Rect2())
+	if data is Rect2:
+		return data
+	return Rect2()
+
+func get_collision_data(region_name: String) -> Dictionary:
+	var data = regions.get(region_name)
+	if data is Dictionary:
+		return data.get("collision", { "type": "none" })
+	return { "type": "none" }
+
+func get_custom_scale(region_name: String) -> float:
+	var data = regions.get(region_name)
+	if data is Dictionary:
+		return data.get("scale", 1.0)
+	return 1.0
+
+func get_anim_data(anim_name: String) -> Dictionary:
+	return anims.get(anim_name, {})
+
+func get_region(index: Variant, sub_index: int = 0) -> Rect2:
+	# If index is a String, use dictionary lookup
+	if index is String:
+		return get_region_by_name(index)
+		
 	if not texture:
 		return Rect2()
 		
@@ -29,26 +61,26 @@ func get_region(index: int, sub_index: int = 0) -> Rect2:
 	
 	match type:
 		LayoutType.SIMPLE_GRID:
-			var cell_w = tex_size.x / columns
-			var cell_h = tex_size.y / rows
-			var col = index % columns
-			var row = index / columns
+			var cell_w: float = tex_size.x / float(columns)
+			var cell_h: float = tex_size.y / float(rows)
+			var col: int = index % columns
+			var row: int = floori(float(index) / columns)
 			return Rect2(col * cell_w, row * cell_h, cell_w, cell_h)
 			
 		LayoutType.NESTED_GRID:
-			var block_w = tex_size.x / columns
-			var block_h = tex_size.y / rows
-			var b_col = index % columns
-			var b_row = index / columns
+			var block_w: float = tex_size.x / float(columns)
+			var block_h: float = tex_size.y / float(rows)
+			var b_col: int = index % columns
+			var b_row: int = floori(float(index) / columns)
 			
-			var frame_w = block_w / sub_columns
-			var frame_h = block_h / sub_rows
-			var f_col = sub_index % sub_columns
-			var f_row = sub_index / sub_columns
+			var frame_w: float = block_w / float(sub_columns)
+			var frame_h: float = block_h / float(sub_rows)
+			var f_col: int = sub_index % sub_columns
+			var f_row: int = floori(float(sub_index) / sub_columns)
 			
 			return Rect2(
-				(b_col * block_w) + (f_col * frame_w),
-				(b_row * block_h) + (f_row * frame_h),
+				(float(b_col) * block_w) + (float(f_col) * frame_w),
+				(float(b_row) * block_h) + (float(f_row) * frame_h),
 				frame_w,
 				frame_h
 			)

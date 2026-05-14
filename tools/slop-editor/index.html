@@ -127,10 +127,15 @@
 
   <!-- RIGHT PANEL — INSPECTOR -->
   <aside id="right-panel">
-    <div class="panel-section">
-      <div class="section-header"><span>INSPECTOR</span></div>
-      <div id="inspector-empty" class="empty-state">Select a cell or sprite</div>
-      <div id="inspector-content" style="display:none">
+    <div class="panel-tabs">
+      <button class="panel-tab active" data-tab="inspector">Inspector</button>
+      <button class="panel-tab" data-tab="mapping">Fruit Mapping</button>
+    </div>
+
+    <div id="tab-inspector" class="panel-tab-content">
+      <div class="panel-section">
+        <div id="inspector-empty" class="empty-state">Select a cell or sprite</div>
+        <div id="inspector-content" style="display:none">
         <div class="form-row">
           <label>Name</label>
           <input type="text" id="insp-name" placeholder="sprite_name"/>
@@ -149,9 +154,15 @@
           <div class="form-col"><label>X</label><input type="number" id="insp-pivot-x" value="0.5" step="0.1" min="0" max="1"/></div>
           <div class="form-col"><label>Y</label><input type="number" id="insp-pivot-y" value="0.5" step="0.1" min="0" max="1"/></div>
         </div>
-        <div class="form-row">
-          <label>Tags</label>
-          <input type="text" id="insp-tags" placeholder="tag1, tag2"/>
+        <div class="form-row-2">
+          <div class="form-col">
+            <label>Tags</label>
+            <input type="text" id="insp-tags" placeholder="tag1, tag2"/>
+          </div>
+          <div class="form-col" style="flex:0.4">
+            <label>Scale</label>
+            <input type="number" id="insp-scale" value="1.0" step="0.1" min="0.1" max="10"/>
+          </div>
         </div>
         <div class="section-subheader">Block Index</div>
         <div class="form-row-2">
@@ -159,26 +170,80 @@
           <div class="form-col"><label>Frame</label><input type="number" id="insp-frame" readonly/></div>
         </div>
 
+        <div class="section-subheader">Adjustment Tools</div>
+        <div class="tool-grid">
+          <button id="tool-nudge-ul" class="tool-btn" title="Nudge Up-Left">↖</button>
+          <button id="tool-nudge-u"  class="tool-btn" title="Nudge Up">↑</button>
+          <button id="tool-nudge-ur" class="tool-btn" title="Nudge Up-Right">↗</button>
+          <button id="tool-nudge-l"  class="tool-btn" title="Nudge Left">←</button>
+          <button id="tool-auto-fit" class="tool-btn accent" title="Auto-center sprite in cell">✨</button>
+          <button id="tool-nudge-r"  class="tool-btn" title="Nudge Right">→</button>
+          <button id="tool-nudge-dl" class="tool-btn" title="Nudge Down-Left">↙</button>
+          <button id="tool-nudge-d"  class="tool-btn" title="Nudge Down">↓</button>
+          <button id="tool-nudge-dr" class="tool-btn" title="Nudge Down-Right">↘</button>
+        </div>
+
+        <div class="section-subheader">Collision Hitbox</div>
+        <div class="form-row">
+          <label>Shape</label>
+          <select id="insp-col-type">
+            <option value="none">None</option>
+            <option value="circle">Circle</option>
+            <option value="rect">Rectangle</option>
+          </select>
+        </div>
+        <div id="col-params-circle" style="display:none">
+          <div class="form-row">
+            <label>Radius</label>
+            <input type="number" id="insp-col-radius" value="32" step="1"/>
+          </div>
+        </div>
+        <div id="col-params-rect" style="display:none">
+          <div class="form-row-2">
+            <div class="form-col"><label>W</label><input type="number" id="insp-col-w" value="64" step="1"/></div>
+            <div class="form-col"><label>H</label><input type="number" id="insp-col-h" value="64" step="1"/></div>
+          </div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-col"><label>Off X</label><input type="number" id="insp-col-ox" value="0" step="1"/></div>
+          <div class="form-col"><label>Off Y</label><input type="number" id="insp-col-oy" value="0" step="1"/></div>
+        </div>
+
         <div id="insp-preview-box">
+          <div class="preview-controls">
+            <button id="btn-preview-guides" class="tb-btn small" title="Toggle Guides">🌐</button>
+            <button id="btn-preview-center" class="tb-btn small" title="Toggle Center Cross">🎯</button>
+          </div>
           <canvas id="preview-canvas" width="128" height="128"></canvas>
         </div>
 
         <button class="btn-full accent" id="btn-save-sprite">💾 Save Sprite</button>
         <button class="btn-full" id="btn-add-to-anim">＋ Add to Animation</button>
       </div>
-    </div>
-
-    <div class="panel-section" id="anim-inspector-section" style="display:none">
-      <div class="section-header"><span id="anim-insp-title">ANIMATION: —</span></div>
-      <div class="form-row">
-        <label>FPS</label>
-        <input type="number" id="anim-fps" value="8" min="1" max="60"/>
       </div>
-      <label class="tb-toggle" style="margin:8px 0"><input type="checkbox" id="anim-loop" checked /> Loop</label>
-      <div class="section-subheader">Frames</div>
-      <div id="anim-frames-list" class="frame-list"></div>
-      <button class="btn-full accent" id="btn-preview-anim">▶ Preview</button>
-      <button class="btn-full danger" id="btn-delete-anim">🗑 Delete Animation</button>
+
+      <div class="panel-section" id="anim-inspector-section" style="display:none">
+        <div class="section-header"><span id="anim-insp-title">ANIMATION: —</span></div>
+        <div class="form-row">
+          <label>FPS</label>
+          <input type="number" id="anim-fps" value="8" min="1" max="60"/>
+        </div>
+        <label class="tb-toggle" style="margin:8px 0"><input type="checkbox" id="anim-loop" checked /> Loop</label>
+        <div class="section-subheader">Frames</div>
+        <div id="anim-frames-list" class="frame-list"></div>
+        <button class="btn-full accent" id="btn-preview-anim">▶ Preview</button>
+        <button class="btn-full danger" id="btn-delete-anim">🗑 Delete Animation</button>
+      </div>
+    </div> <!-- End tab-inspector -->
+
+    <div id="tab-mapping" class="panel-tab-content" style="display:none">
+      <div class="panel-section">
+        <div class="section-header"><span>FRUIT MAPPING</span></div>
+        <p class="text-dim" style="font-size:11px; margin: 10px;">Associate each fruit tier with a saved sprite. Tiers 1-11 are standard.</p>
+        <div id="fruit-mapping-list" class="mapping-list">
+          <!-- Populated by JS -->
+        </div>
+      </div>
     </div>
   </aside>
 </div>
@@ -216,6 +281,16 @@
       <button class="modal-tab active" data-tab="json">JSON Project</button>
       <button class="modal-tab" data-tab="tres">Godot .tres</button>
       <button class="modal-tab" data-tab="gd">GDScript</button>
+      <button class="modal-tab" data-tab="mapping">Fruit Mapping</button>
+    </div>
+
+    <!-- Tab: Fruit Mapping -->
+    <div id="tab-mapping" class="tab-content" style="display:none">
+      <div class="section-title">Merge Game Mapping</div>
+      <p class="text-dim" style="font-size:11px; margin-bottom:10px;">Link fruit tiers to saved sprites. This will be automatically applied in-game.</p>
+      <div id="fruit-mapping-list" class="mapping-grid">
+        <!-- Populated by JS -->
+      </div>
     </div>
     <pre id="modal-preview" class="code-preview"></pre>
     <div class="modal-footer">

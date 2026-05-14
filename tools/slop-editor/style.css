@@ -293,6 +293,82 @@ input[type="range"] {
 }
 
 /* ── RIGHT PANEL ──────────────────────────── */
+.panel-tabs {
+  display: flex;
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border);
+}
+.panel-tab {
+  flex: 1;
+  padding: 10px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: 0.2s;
+}
+.panel-tab:hover { color: var(--text); background: var(--bg-hover); }
+.panel-tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  background: var(--bg-hover);
+}
+
+.mapping-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 10px;
+}
+.mapping-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+.mapping-row label { 
+  width: 100px; 
+  color: var(--text); 
+  display: flex; 
+  align-items: center; 
+  gap: 6px; 
+}
+.tier-badge {
+  background: var(--bg-card);
+  color: var(--accent);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0 4px;
+  font-size: 9px;
+  min-width: 18px;
+  text-align: center;
+}
+.mapping-row.dynamic {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+.tier-id-inp {
+  width: 45px;
+  text-align: center;
+}
+.tier-name-inp {
+  flex: 1;
+  min-width: 0;
+}
+.mapping-row select {
+  width: 100px;
+}
+.btn-icon.small {
+  padding: 2px 6px;
+  font-size: 10px;
+}
+
 #right-panel {
   width: var(--right-w);
   min-width: var(--right-w);
@@ -311,8 +387,15 @@ input[type="range"] {
   border-radius: var(--radius-sm);
   border: 1px solid var(--border);
   padding: 4px;
+  position: relative;
 }
-#preview-canvas { image-rendering: pixelated; border-radius: 2px; }
+.preview-controls {
+  position: absolute;
+  top: 4px; right: 4px;
+  display: flex; gap: 4px;
+  z-index: 5;
+}
+#preview-canvas { image-rendering: pixelated; border-radius: 2px; width: 100%; height: auto; }
 
 .btn-full {
   display: block; width: 100%;
@@ -521,3 +604,35 @@ input[type="range"] {
 .checker-bg {
   background: repeating-conic-gradient(#1c2128 0% 25%, #161b22 0% 50%) 0 0 / 16px 16px;
 }
+
+/* ── ADJUSTMENT TOOLS ───────────────────────── */
+.tool-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  margin: 12px 0 20px 0;
+}
+.tool-btn {
+  background: var(--bg-panel2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 14px;
+}
+.tool-btn:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-light);
+}
+.tool-btn.accent {
+  background: rgba(0, 212, 255, 0.08);
+  border-color: rgba(0, 212, 255, 0.3);
+  color: var(--accent);
+}
+.tool-btn.accent:hover {
+  background: var(--accent);
+  color: #000;
+}
+
