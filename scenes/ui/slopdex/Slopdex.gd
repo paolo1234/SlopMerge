@@ -26,39 +26,23 @@ func _populate_slopdex() -> void:
 		slot.add_child(icon)
 		icon.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		
-		# Caricamento texture (usa lo stesso metodo di fruit.gd)
-		var gm_texture = gm.SPRITESHEET
-		
-		if not gm_texture:
-			push_error("[Slopdex] SPRITESHEET is null! Skipping icon.")
+		var layout = gm.active_layout
+		if not layout or not layout.texture:
+			push_error("[Slopdex] SpriteSheetLayout or texture is null! Skipping icon.")
 			continue
-		
-		var tex_size = gm_texture.get_size()
-		if tex_size.x <= 0:
-			push_warning("[Slopdex] Texture size is 0, using fallback 2048.")
-			tex_size = Vector2(2048, 2048)
 			
 		var atlas = AtlasTexture.new()
-		atlas.atlas = gm_texture
-		
-		var block_size = tex_size.x / 4.0 # 512
-		var frame_size = block_size / 4.0 # 128
-		
-		var b_col = fruit_data.sheet_col
-		var b_row = fruit_data.sheet_row
-		
-		if (b_col == 0 and b_row == 0) or b_row > 2:
-			var fruit_index = (fruit_data.id - 1)
-			b_col = (fruit_index % 4)
-			b_row = (fruit_index / 4)
-		
-		var f_col = fruit_data.frame_col
-		var f_row = fruit_data.frame_row
-		
-		var rect_x = (b_col * block_size) + (f_col * frame_size)
-		var rect_y = (b_row * block_size) + (f_row * frame_size)
-		
-		atlas.region = Rect2(rect_x, rect_y, frame_size, frame_size)
+		atlas.atlas = layout.texture
+
+		var sprite_key = layout.get_sprite_for_fruit(fruit_data.id)
+		if sprite_key == "":
+			sprite_key = fruit_data.sprite_key
+			
+		if sprite_key != "":
+			atlas.region = layout.get_region_by_name(sprite_key)
+		else:
+			atlas.region = layout.get_region(fruit_data.id - 1, 0)
+			
 		icon.texture = atlas
 		
 		print("[Slopdex] Created slot for ", fruit_data.fruit_name, " region: ", atlas.region)

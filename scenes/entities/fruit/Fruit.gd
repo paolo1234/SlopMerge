@@ -16,6 +16,7 @@ func _ready() -> void:
 	merge_area.body_entered.connect(_on_merge_area_body_entered)
 	if data:
 		_apply_data()
+	
 	# Inizializza lo shader
 	if sprite.material == null:
 		sprite.material = ShaderMaterial.new()
@@ -27,103 +28,89 @@ func _ready() -> void:
 		sprite.material = null
 	else:
 		print("[Fruit] Shader material assigned.")
-	
-
-func _setup_debug_label() -> void:
-	if not OS.is_debug_build():
-		return
-		
-	var debug_container = Node2D.new()
-	debug_container.name = "DebugContainer"
-	add_child(debug_container)
-	
-	var label = Label.new()
-	label.name = "DebugLabel"
-	label.text = data.fruit_name if data else "Unknown"
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	
-	# Stile semplice per visibilità
-	label.add_theme_font_size_override("font_size", 20)
-	label.add_theme_color_override("font_color", Color.YELLOW)
-	label.add_theme_color_override("font_outline_color", Color.BLACK)
-	label.add_theme_constant_override("outline_size", 6)
-	
-	# Posizionamento al centro
-	label.position = Vector2(-100, -20) # Centro approssimativo
-	label.custom_minimum_size = Vector2(200, 40)
-	
-	debug_container.add_child(label)
 
 func _apply_data() -> void:
 	if not data:
 		push_error("Fruit: data is NULL in _apply_data!")
 		return
 		
-	if GameManager.SPRITESHEET:
-		sprite.texture = GameManager.SPRITESHEET
-	
-	if not sprite.texture:
-		push_error("Fruit: SPRITESHEET is null! Falling back to icon.svg for visibility test.")
-		sprite.texture = load("res://icon.svg")
-		if not sprite.texture:
-			return
-	
-	var tex_size = sprite.texture.get_size()
-	# Guard: su alcuni driver mobile get_size() può essere 0 se chiamato troppo presto
-	if tex_size.x <= 0:
-		push_warning("Fruit: Texture size is 0! Using fallback size 2048.")
-		tex_size = Vector2(2048, 2048)
+	var layout = GameManager.active_layout
+	if not layout:
+		push_error("Fruit: active_layout is null!")
+		return
 		
+	sprite.texture = layout.texture
 	sprite.region_enabled = true
-	# Revert to default filtering (Linear)
-	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_PARENT_NODE
 	
-	# Ogni frutto occupa un blocco 512x512 (griglia 4x4)
-	# Ogni blocco contiene 16 frame (faccine) in griglia 4x4 (solo le prime 2 righe usate)
-	var block_size = tex_size.x / 4.0 # 512
-	var frame_size = block_size / 4.0 # 128
-	
-	# Determiniamo la posizione del blocco (frutto)
-	var b_col = data.sheet_col
-	var b_row = data.sheet_row
-	
-	# Se sono a 0 (default), usiamo l'ID come fallback per il blocco
-	# NOTA: sheet_row = 3 era un errore nei .tres, forziamo il ricalcolo se fuori griglia 4x4
-	if (b_col == 0 and b_row == 0) or b_row > 2:
-		var fruit_index = (data.id - 1)
-		b_col = (fruit_index % 4)
-		b_row = (fruit_index / 4)
-	
-	# Determiniamo il frame specifico (faccina)
-	var f_col = data.frame_col
-	var f_row = data.frame_row
-	
-	# Calcolo region_rect finale (con padding per evitare tagli dovuti al disallineamento della spritesheet)
-	var base_rect_x = (b_col * block_size) + (f_col * frame_size)
-	var base_rect_y = (b_row * block_size) + (f_row * frame_size)
-	sprite.region_rect = Rect2(base_rect_x, base_rect_y, frame_size, frame_size)
+	# Priority: 1. Mapping from Editor, 2. Manual key in .tres, 3. Fallback index
+	var sprite_key = layout.get_sprite_for_fruit(data.id)
+	if sprite_key == "":
+		sprite_key = data.sprite_key
+		
+	if sprite_key != "":
+		sprite.region_rect = layout.get_region_by_name(sprite_key)
+	else:
+		sprite.region_rect = layout.get_region(data.id - 1, 0)
+		
+	# Update collision data based on the resolved key
+	var col_data = {}
+	var custom_scale = 1.0
+	if sprite_key != "":
+		col_data = layout.get_collision_data(sprite_key)
+		custom_scale = layout.get_custom_scale(sprite_key)
 	
 	# Autoscale lo sprite per corrispondere al raggio fisico
-	var target_size = data.radius * 2.0
-	var scale_factor = target_size / frame_size
+	var target_size = data.radius * 2.0 * custom_scale
+	var actual_sprite_w = sprite.region_rect.size.x
+	
+	if actual_sprite_w <= 0:
+		actual_sprite_w = layout.get_frame_size().x
+		
+	var scale_factor = target_size / actual_sprite_w
 	
 	# Guard: scale INF o NaN fa sparire lo sprite
 	if is_inf(scale_factor) or is_nan(scale_factor) or scale_factor <= 0:
-		push_error("Fruit: Invalid scale_factor: " + str(scale_factor) + ". Setting to 1.0")
+		push_error("Fruit: Invalid scale_factor for " + data.fruit_name + ". Setting to 1.0")
 		scale_factor = 1.0
 		
 	sprite.scale = Vector2(scale_factor, scale_factor)
 	
 	mass = data.mass
 	
-	var shape = CircleShape2D.new()
-	shape.radius = data.radius
+	# Physics / Collision
+	var shape: Shape2D
+	
+	if col_data.get("type") == "circle":
+		shape = CircleShape2D.new()
+		var raw_rad = col_data.get("radius", 0.0)
+		if raw_rad > 0:
+			shape.radius = raw_rad * scale_factor
+		else:
+			shape.radius = data.radius
+		collision_shape.position = Vector2(col_data.get("ox", 0), col_data.get("oy", 0)) * scale_factor
+	elif col_data.get("type") == "rect":
+		shape = RectangleShape2D.new()
+		var rw = col_data.get("w", 64) * scale_factor
+		var rh = col_data.get("h", 64) * scale_factor
+		shape.size = Vector2(rw, rh)
+		collision_shape.position = Vector2(col_data.get("ox", 0), col_data.get("oy", 0)) * scale_factor
+	else:
+		# Fallback to default radius
+		shape = CircleShape2D.new()
+		shape.radius = data.radius
+		collision_shape.position = Vector2.ZERO
+		
 	collision_shape.shape = shape
 	
+	# Merge Area (slightly larger than collision)
 	var merge_shape = CircleShape2D.new()
-	merge_shape.radius = data.radius * 1.1
+	if shape is CircleShape2D:
+		merge_shape.radius = shape.radius * 1.1
+	else:
+		merge_shape.radius = data.radius * 1.1
+		
 	merge_collision.shape = merge_shape
+	merge_collision.position = collision_shape.position
 	
 	print("[Fruit] Initialized: ", data.fruit_name, " ID: ", data.id, " Pos: ", global_position, " Scale: ", sprite.scale)
 	
@@ -154,8 +141,6 @@ func _process(_delta: float) -> void:
 	
 	if OS.is_debug_build():
 		queue_redraw()
-		if has_node("DebugContainer"):
-			get_node("DebugContainer").global_rotation = 0
 
 func _draw() -> void:
 	# Debug visualization

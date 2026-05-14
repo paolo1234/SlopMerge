@@ -1,12 +1,24 @@
 # Changelog
 
-### [1.8.0] - 2026-05-14
-- **Fix**: Risolto errore di parsing "Could not resolve external class member SPRITESHEET" tramite rimozione circular dependency in `GameManager.gd`.
-- **Fix**: Corretto percorso spritesheet in `GameManager.gd` (rimosso suffisso `_clean`).
-- **Build**: Incrementata versione a 1.8.0 (Build 10) e generata APK.
-- **Testing**: Verificato corretto caricamento Main Menu e Gameplay post-fix.
+### [1.8.2] - 2026-05-14
+- **Added**: SlopEditor (v1.0) - Strumento web-based per la gestione degli asset.
+- **Added**: "Zero-Step" Asset Workflow - Esportazione diretta in Godot senza modifiche al codice.
+- **Added**: Supporto a mappatura frutti dinamica (infiniti tier supportati).
+- **Added**: Supporto a "Visual Scale" per sprite indipendenti dal raggio di collisione.
+- **Fixed**: Hitbox scaling in `Fruit.gd` (corretto allineamento visivo/fisico).
+- **Refactor**: `NextQueue.gd` e `Slopdex.gd` ora utilizzano il sistema di mapping centralizzato.
 
-- [2026-05-13] **Fix**: Risolto bug critico della mappatura spritesheet in `Fruit.gd`, `Slopdex.gd` e `NextQueue.gd`. Il sistema ora utilizza l'intero blocco 512x512 per ogni frutto invece di ritagliarlo erroneamente a 128x128. I frutti sono ora pienamente visibili e centrati.
+### [1.8.1] - 2026-05-14
+- **Feat**: Introdotto sistema `SpriteSheetLayout` per la gestione centralizzata e dinamica degli atlanti. Supporta griglie semplici, nidificate e mappature esplicite.
+- **Refactor**: Rimosso calcolo manuale dei Rect2 da tutti i componenti UI e gameplay.
+- **Easy-Swap**: Ora è possibile cambiare l'intero set grafico del gioco semplicemente sostituendo una risorsa `.tres` nel `GameManager`.
+
+### [1.8.0] - 2026-05-14
+- **Fix**: Ripristinata compressione VRAM (modalità 2) per compatibilità ottimale Android.
+- **Fix**: Risolto bug critico case-sensitivity `Fruit.tscn` -> `fruit.tscn`.
+- **Fix**: Corretto URL UpdateManager per puntare al branch `master`.
+- **Cleanup**: Rimossi asset corrotti (`pause_icon.png`).
+- **Build**: Versione 1.7.4 disponibile per update in-game.
 
 ### [1.7.4] - 2026-05-13
 - **Fix**: Ripristinata compressione VRAM (modalità 2) per compatibilità ottimale Android.
