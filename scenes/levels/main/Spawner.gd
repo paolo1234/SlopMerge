@@ -12,19 +12,36 @@ var is_aiming: bool = false
 var is_laser_mode: bool = false
 var aim_direction: Vector2 = Vector2.DOWN
 var original_pos: Vector2
+var preview_sprite: Sprite2D
+
+func _process(delta: float) -> void:
+	# Floating animation for preview
+	if preview_sprite and preview_sprite.visible:
+		var time = Time.get_ticks_msec() / 1000.0
+		preview_sprite.position.y = sin(time * 4.0) * 10.0
+		preview_sprite.rotation = sin(time * 2.0) * 0.1
+	
+	# Fade in preview when ready
+	if can_drop and preview_sprite and not preview_sprite.visible:
+		preview_sprite.visible = true
+		preview_sprite.modulate.a = 0.0
+		
+	if preview_sprite and preview_sprite.visible and preview_sprite.modulate.a < 1.0:
+		preview_sprite.modulate.a = move_toward(preview_sprite.modulate.a, 1.0, delta * 5.0)
 
 func _ready() -> void:
 	original_pos = position
+	
+	# Crea lo sprite di preview dinamicamente
+	preview_sprite = Sprite2D.new()
+	preview_sprite.name = "PreviewSprite"
+	add_child(preview_sprite)
 	
 	# Fix: Se non settati dall'inspector, usa quelli del GameManager (precaricati)
 	if not fruit_scene:
 		fruit_scene = GameManager.FRUIT_SCENE
 	
-	# Inizializza la coda se vuota
-	if fruit_queue.is_empty():
-		for i in range(3):
-			fruit_queue.append(_get_random_starter_fruit())
-	
+	# Inizializza la coda con abbastanza frutti
 	_prepare_next_fruit()
 
 func _get_random_starter_fruit() -> Resource:
@@ -33,16 +50,49 @@ func _get_random_starter_fruit() -> Resource:
 	return starter_pool.pick_random()
 
 func _prepare_next_fruit() -> void:
-	if fruit_queue.is_empty():
-		for i in range(3):
-			fruit_queue.append(_get_random_starter_fruit())
+	# Garantisce di avere almeno 4 frutti totali nel sistema
+	while fruit_queue.size() < 4:
+		fruit_queue.append(_get_random_starter_fruit())
 	
+	# Preleva il prossimo frutto per la mano (preview)
 	current_fruit_data = fruit_queue.pop_front()
-	fruit_queue.append(_get_random_starter_fruit())
 	
-	var display_queue: Array = [current_fruit_data]
-	display_queue.append_array(fruit_queue)
-	queue_updated.emit(display_queue)
+	# Assicura di avere sempre 3 frutti pronti per la HUD dopo il pop
+	while fruit_queue.size() < 3:
+		fruit_queue.append(_get_random_starter_fruit())
+		
+	# Invia alla UI esattamente i 3 frutti che verranno DOPO quello in mano
+	queue_updated.emit(fruit_queue.slice(0, 3))
+	
+	_update_preview_visual()
+
+func _update_preview_visual() -> void:
+	if not preview_sprite or not current_fruit_data: return
+	
+	var layout = GameManager.active_layout
+	if not layout: return
+	
+	preview_sprite.texture = layout.texture
+	preview_sprite.region_enabled = true
+	
+	var sprite_key = layout.get_sprite_for_fruit(current_fruit_data.id)
+	if sprite_key == "":
+		sprite_key = current_fruit_data.sprite_key
+		
+	if sprite_key != "":
+		preview_sprite.region_rect = layout.get_region_by_name(sprite_key)
+	else:
+		preview_sprite.region_rect = layout.get_region(current_fruit_data.id - 1, 0)
+		
+	# Calcola la scala per farlo corrispondere alla dimensione reale
+	var target_size = current_fruit_data.radius * 2.0
+	var actual_w = preview_sprite.region_rect.size.x
+	if actual_w > 0:
+		var s = target_size / actual_w
+		preview_sprite.scale = Vector2(s, s)
+	
+	preview_sprite.visible = true
+	preview_sprite.modulate.a = 1.0
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not can_drop:
@@ -144,16 +194,14 @@ func launch_fruit() -> void:
 	
 	fruit_instance.apply_central_impulse(aim_direction * launch_force)
 	
+	# Hide preview while reloading
+	if preview_sprite:
+		preview_sprite.visible = false
+	
 	_prepare_next_fruit()
 	
 	if has_node("/root/AudioManager"):
 		AudioManager.play_sound("launch")
-	
-	# Recoil effect (Game Feel Tip)
-	var recoil_tween = create_tween()
-	var target_y = position.y
-	recoil_tween.tween_property(self, "position:y", target_y + 30, 0.05).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	recoil_tween.tween_property(self, "position:y", target_y, 0.2).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 		
 	if is_inside_tree():
 		await get_tree().create_timer(0.5).timeout

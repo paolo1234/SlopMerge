@@ -46,7 +46,14 @@
     - [x] Download APK asincrono con progress bar
     - [x] Integrazione installazione nativa Android
     - [x] Fix rendering frutti su Android (Case-sensitivity & VRAM)
-- [ ] Fase 9: Metagame & Audio
+- [x] Fase 10: Hardening & Visual Polish
+    - [x] Fix SlopEditor persistence (Migrate state & UI refresh)
+    - [x] Implement Fruit Hand Preview (Floating sprite at spawner)
+    - [x] Disable debug collider visuals for clean gameplay
+    - [x] Fix SpriteSheetLayout resource path issues
+    - [x] Revert Spawner movement & recoil (Back to fixed shooter)
+    - [x] Fix HUD Overlap & Queue Duplication (v1.8.4)
+- [ ] Fase 11: Metagame & Audio
     - [ ] Integrazione SFX (AudioManager)
     - [ ] Screen Shake globale
     - [ ] Feature "Frullatore del Caos" (Meter 100%)

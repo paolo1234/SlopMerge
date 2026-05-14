@@ -139,13 +139,13 @@ func _process(_delta: float) -> void:
 		var vel_strength = linear_velocity.length() / 500.0
 		sprite.material.set_shader_parameter("strength", clamp(vel_strength * 0.1, 0.0, 0.2))
 	
-	if OS.is_debug_build():
-		queue_redraw()
+	# if OS.is_debug_build():
+	# 	queue_redraw()
 
-func _draw() -> void:
-	# Debug visualization
-	if OS.is_debug_build() and data:
-		draw_arc(Vector2.ZERO, data.radius, 0, TAU, 32, Color(1, 0, 0, 0.5), 2.0)
+# func _draw() -> void:
+# 	# Debug visualization
+# 	if OS.is_debug_build() and data:
+# 		draw_arc(Vector2.ZERO, data.radius, 0, TAU, 32, Color(1, 0, 0, 0.5), 2.0)
 
 func _on_merge_area_body_entered(body: Node2D) -> void:
 	if body.has_method("_on_merge_area_body_entered") and body != self:

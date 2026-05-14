@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.8.4] - 2026-05-14
+### Fixed
+- Spawner position moved back below CringeLine (dead line) but above HUD to avoid overlaps.
+- Fruit Queue in HUD now correctly excludes the fruit currently in "hand" (preview).
+- Reverted Spawner movement and recoil to return to original launch behavior.
+### Added
+- Dynamic Fruit Preview Sprite on the Spawner.
+
+
+### [1.8.3] - 2026-05-14
+- **Reverted**: Rimosso il movimento orizzontale dello Spawner durante la mira.
+- **Reverted**: Rimosso l'effetto di rinculo (recoil) durante il lancio.
+- **Fixed**: Ripristinato il comportamento originale della mira fissa dal centro/basso, mantenendo la nuova preview del frutto.
+
 ### [1.8.2] - 2026-05-14
 - **Added**: SlopEditor (v1.0) - Strumento web-based per la gestione degli asset.
 - **Added**: "Zero-Step" Asset Workflow - Esportazione diretta in Godot senza modifiche al codice.

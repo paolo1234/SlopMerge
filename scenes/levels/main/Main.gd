@@ -30,10 +30,8 @@ func _ready() -> void:
 	var next_queue = $UI/HUD/%NextQueue
 	spawner.queue_updated.connect(next_queue.update_queue)
 	
-	# Inizializza visualmente la coda
-	var initial_display: Array = [spawner.current_fruit_data]
-	initial_display.append_array(spawner.fruit_queue)
-	next_queue.update_queue(initial_display)
+	# Inizializza visualmente la coda (solo i frutti successivi, escluso quello in mano)
+	next_queue.update_queue(spawner.fruit_queue.slice(0, 3))
 
 func _on_game_over() -> void:
 	var instance = GAME_OVER_SCENE.instantiate()
@@ -86,10 +84,9 @@ func _adjust_layout() -> void:
 				floor_node.shape = floor_node.shape.duplicate() # Make unique
 				floor_node.shape.size.x = size.x
 
-	# 2. Spawner
 	if has_node("Spawner"):
 		$Spawner.global_position.x = center_x
-		$Spawner.global_position.y = size.y - 300 # Position at the bottom
+		$Spawner.global_position.y = size.y - 340 # Riportato sotto la CringeLine ma sopra la HUD
 		
 	# 3. CringeLine
 	if has_node("CringeLine"):

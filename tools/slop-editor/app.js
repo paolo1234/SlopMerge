@@ -54,6 +54,26 @@ const App = (() => {
     };
   }
 
+  function _migrateState(loaded) {
+    const s = { ..._defaultProject(), ...loaded };
+    
+    // Migrate old dictionary mapping to array mapping if needed
+    if (loaded.fruitMapping && !Array.isArray(loaded.fruitMapping)) {
+      s.fruitMapping = Object.keys(loaded.fruitMapping).map(key => ({
+        id: parseInt(key) || key,
+        name: FRUIT_TIERS[key] || `Tier ${key}`,
+        sprite: loaded.fruitMapping[key]
+      }));
+    }
+    
+    // If mapping is empty array but we have sprites, maybe it's an old project that needs defaults
+    if (Array.isArray(s.fruitMapping) && s.fruitMapping.length === 0 && s.sprites.length > 0) {
+      s.fruitMapping = _defaultProject().fruitMapping;
+    }
+
+    return s;
+  }
+
   // ── Persistence ─────────────────────────────
   function _autoSave() {
     try {
@@ -69,7 +89,7 @@ const App = (() => {
     if (saved) {
       try {
         const loaded = JSON.parse(saved);
-        state = { ..._defaultProject(), ...loaded };
+        state = _migrateState(loaded);
         
         if (state.imageData) {
           const img = new Image();
@@ -146,17 +166,7 @@ const App = (() => {
     reader.onload = e => {
       try {
         const loaded = JSON.parse(e.target.result);
-        // Merge with defaults to handle missing fields (like imageData or fruitMapping)
-        state = { ..._defaultProject(), ...loaded };
-        
-        // Migrate old dictionary mapping to array mapping if needed
-        if (loaded.fruitMapping && !Array.isArray(loaded.fruitMapping)) {
-          state.fruitMapping = Object.keys(loaded.fruitMapping).map(key => ({
-            id: parseInt(key) || key,
-            name: FRUIT_TIERS[key] || `Tier ${key}`,
-            sprite: loaded.fruitMapping[key]
-          }));
-        }
+        state = _migrateState(loaded);
         
         isDirty = false;
         
@@ -179,6 +189,7 @@ const App = (() => {
         _syncGridUI();
         _renderSpriteList();
         _renderAnimList();
+        _renderMappingList();
         _updateInfoBar();
         _updateTitle();
         _autoSave();
