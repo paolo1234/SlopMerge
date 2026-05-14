@@ -1,5 +1,5 @@
 {
-  "latest_version": "1.8.4",
+  "latest_version": "1.8.6",
   "direct_apk": "https://github.com/paolo1234/SlopMerge/raw/master/slop_merge.apk",
-  "changelog": "v1.8.4: Spawner UI Polish. Moved spawner to safer height, fixed fruit queue duplication, and restored classic launch behavior."
+  "changelog": "v1.8.6: Architecture Refactor & UI Polish. Centralized visuals, persistence, and UI juice. Optimized audio engine with pooling."
 }

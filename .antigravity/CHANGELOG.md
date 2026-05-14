@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.6] - 2026-05-14
+### Refactor
+- **UIUtils**: Added unified utility for button interactions (hover/click) and pop-in animations.
+- **AudioManager**: Implemented AudioStreamPlayer pooling (12 channels) for high-frequency SFX.
+- **Menu Consistency**: Refactored `MainMenu`, `PauseMenu`, and `GameOver` to use centralized UI logic.
+- **Clean Architecture**: Decoupled UI "juice" from business logic in menu scripts.
+
 ## [1.8.5] - 2026-05-14
 ### Refactor
 - **FruitVisuals**: Centralized sprite mapping and scaling logic into a dedicated Autoload.

@@ -1,9 +1,11 @@
 # Stato Attuale del Progetto: Slop Merge
 
-**Versione Corrente**: v1.8.5 (Refactor Branch)
+**Versione Corrente**: v1.8.6 (Architecture Polish)
 **Stato**: Fase 10 - Polish & Release (Completata)
 
 ## Milestone Recenti 🚀
+- [x] **Unified UI Utility**: Tutte le animazioni bottoni centralizzate in `UIUtils`.
+- [x] **Robust Audio Pooling**: Sistema a 12 canali per evitare tagli sonori durante i merge rapidi.
 - [x] **Refactor Clean Architecture**: Creazione di `FruitVisuals` e `SaveManager`.
 - [x] **Zero-Duplication Logic**: Rimozione di 150+ righe di codice ridondante.
 - [x] **Bug Hunting v1.8.4**: Risolti glitch di transizione e ordine di spawn.
