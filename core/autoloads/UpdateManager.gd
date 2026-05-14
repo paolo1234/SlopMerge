@@ -34,7 +34,9 @@ func _check_for_updates() -> void:
 	http.timeout = CHECK_TIMEOUT
 	http.request_completed.connect(_on_version_check_completed.bind(http))
 
-	var err := http.request(VERSION_CHECK_URL)
+	var timestamp := str(Time.get_unix_time_from_system())
+	var url_with_cache_bust := VERSION_CHECK_URL + "?t=" + timestamp
+	var err := http.request(url_with_cache_bust)
 	if err != OK:
 		push_warning("UpdateManager: Impossibile avviare version check (err=%d)" % err)
 		http.queue_free()
