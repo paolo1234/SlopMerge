@@ -8,3 +8,5 @@ id = 11
 fruit_name = "Zucca Finale"
 mass = 10.0
 radius = 520.0
+sheet_col = 2
+sheet_row = 2

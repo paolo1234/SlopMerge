@@ -71,8 +71,11 @@ func _unhandled_input(event: InputEvent) -> void:
 			is_laser_mode = !is_laser_mode
 
 func _update_aim(target_pos: Vector2) -> void:
-	aim_direction = (target_pos - global_position).normalized()
+	# Convert viewport position to world position for accurate aiming
+	var world_target = get_viewport().get_canvas_transform().affine_inverse() * target_pos
+	aim_direction = (world_target - global_position).normalized()
 	
+	# Force aiming UPWARDS (negative Y)
 	if aim_direction.y > -0.2:
 		aim_direction.y = -0.2
 		aim_direction = aim_direction.normalized()
@@ -148,8 +151,9 @@ func launch_fruit() -> void:
 	
 	# Recoil effect (Game Feel Tip)
 	var recoil_tween = create_tween()
-	recoil_tween.tween_property(self, "position", original_pos + Vector2(0, 30), 0.05).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	recoil_tween.tween_property(self, "position", original_pos, 0.2).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	var target_y = position.y
+	recoil_tween.tween_property(self, "position:y", target_y + 30, 0.05).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	recoil_tween.tween_property(self, "position:y", target_y, 0.2).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 		
 	if is_inside_tree():
 		await get_tree().create_timer(0.5).timeout

@@ -8,3 +8,5 @@ id = 2
 fruit_name = "Limone Arrabbiato"
 mass = 1.2
 radius = 115.0
+sheet_col = 1
+sheet_row = 0

@@ -66,12 +66,14 @@ func _on_button_unhover(btn: Button) -> void:
 	create_tween().tween_property(btn, "scale", Vector2(1.0, 1.0), 0.1).set_trans(Tween.TRANS_BACK)
 
 func _on_play_pressed() -> void:
+	print("[MainMenu] Play pressed")
 	TransitionManager.transition_to("res://scenes/levels/main/main.tscn")
 
 func _on_gacha_pressed() -> void:
 	TransitionManager.transition_to("res://scenes/ui/gacha/gacha.tscn")
 
 func _on_slopdex_pressed() -> void:
+	print("[MainMenu] Slopdex pressed")
 	TransitionManager.transition_to("res://scenes/ui/slopdex/slopdex.tscn")
 
 func _on_wardrobe_pressed() -> void:

@@ -8,3 +8,5 @@ id = 4
 fruit_name = "Arancia Pazzoide"
 mass = 1.5
 radius = 145.0
+sheet_col = 1
+sheet_row = 1

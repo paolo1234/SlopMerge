@@ -41,14 +41,24 @@ func _populate_slopdex() -> void:
 		var atlas = AtlasTexture.new()
 		atlas.atlas = gm_texture
 		
-		var fruit_sheet_size = tex_size.x / 4.0 # 512
-		var frame_size = fruit_sheet_size / 4.0 # 128
+		var block_size = tex_size.x / 4.0 # 512
+		var frame_size = block_size / 4.0 # 128
 		
-		var fruit_index = (fruit_data.id - 1)
-		var col = (fruit_index % 4)
-		var row = (fruit_index / 4)
+		var b_col = fruit_data.sheet_col
+		var b_row = fruit_data.sheet_row
 		
-		atlas.region = Rect2(col * fruit_sheet_size, row * fruit_sheet_size, frame_size, frame_size)
+		if (b_col == 0 and b_row == 0) or b_row > 2:
+			var fruit_index = (fruit_data.id - 1)
+			b_col = (fruit_index % 4)
+			b_row = (fruit_index / 4)
+		
+		var f_col = fruit_data.frame_col
+		var f_row = fruit_data.frame_row
+		
+		var rect_x = (b_col * block_size) + (f_col * frame_size)
+		var rect_y = (b_row * block_size) + (f_row * frame_size)
+		
+		atlas.region = Rect2(rect_x, rect_y, frame_size, frame_size)
 		icon.texture = atlas
 		
 		print("[Slopdex] Created slot for ", fruit_data.fruit_name, " region: ", atlas.region)

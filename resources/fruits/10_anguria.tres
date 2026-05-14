@@ -8,3 +8,5 @@ id = 10
 fruit_name = "Anguria Skibidi"
 mass = 5.0
 radius = 430.0
+sheet_col = 0
+sheet_row = 2

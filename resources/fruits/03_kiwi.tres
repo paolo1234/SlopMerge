@@ -8,3 +8,5 @@ id = 3
 fruit_name = "Kiwi Sospettoso"
 mass = 1.6
 radius = 145.0
+sheet_col = 0
+sheet_row = 0

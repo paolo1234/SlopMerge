@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.8.0] - 2026-05-14
+- **Fix**: Risolto errore di parsing "Could not resolve external class member SPRITESHEET" tramite rimozione circular dependency in `GameManager.gd`.
+- **Fix**: Corretto percorso spritesheet in `GameManager.gd` (rimosso suffisso `_clean`).
+- **Build**: Incrementata versione a 1.8.0 (Build 10) e generata APK.
+- **Testing**: Verificato corretto caricamento Main Menu e Gameplay post-fix.
+
+- [2026-05-13] **Fix**: Risolto bug critico della mappatura spritesheet in `Fruit.gd`, `Slopdex.gd` e `NextQueue.gd`. Il sistema ora utilizza l'intero blocco 512x512 per ogni frutto invece di ritagliarlo erroneamente a 128x128. I frutti sono ora pienamente visibili e centrati.
+
 ### [1.7.4] - 2026-05-13
 - **Fix**: Ripristinata compressione VRAM (modalità 2) per compatibilità ottimale Android.
 - **Fix**: Risolto bug critico case-sensitivity `Fruit.tscn` -> `fruit.tscn`.
