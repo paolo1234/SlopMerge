@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.5] - 2026-05-14
+### Refactor
+- **FruitVisuals**: Centralized sprite mapping and scaling logic into a dedicated Autoload.
+- **SaveManager**: Isolated all data persistence logic (progression.cfg) from Game/Score managers.
+- **Code Quality**: Reduced duplication in `Fruit.gd`, `Spawner.gd`, and `NextQueue.gd`.
+- **Warning Cleanup**: Suppressed unused signals in `EventBus` for a cleaner debugger.
+
 ## [1.8.4] - 2026-05-14
 ### Fixed
 - Spawner position moved back below CringeLine (dead line) but above HUD to avoid overlaps.

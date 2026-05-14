@@ -24,24 +24,13 @@ func _ready() -> void:
 	menu_button.pressed.connect(_on_menu_pressed)
 	
 	# Entry Animation
-	center_panel.scale = Vector2.ZERO
-	center_panel.pivot_offset = center_panel.size / 2
-	var tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
-	tween.tween_property(center_panel, "scale", Vector2.ONE, 0.5).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	UIUtils.animate_pop_in(center_panel)
 	
 	_setup_juice()
 
 func _setup_juice() -> void:
-	for btn in [restart_button, menu_button]:
-		btn.pivot_offset = btn.size / 2
-		btn.mouse_entered.connect(func(): 
-			var t = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
-			t.tween_property(btn, "scale", Vector2(1.1, 1.1), 0.1)
-		)
-		btn.mouse_exited.connect(func(): 
-			var t = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
-			t.tween_property(btn, "scale", Vector2(1.0, 1.0), 0.1)
-		)
+	UIUtils.setup_button(restart_button)
+	UIUtils.setup_button(menu_button)
 
 func _on_restart_pressed() -> void:
 	print("[GameOver] Restart pressed")

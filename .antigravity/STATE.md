@@ -1,6 +1,13 @@
 # Stato Attuale del Progetto: Slop Merge
 
-- [x] Premium GameOver: Refinement grafico (blur, tween) e fix stabilità (is_game_over flag).
+**Versione Corrente**: v1.8.5 (Refactor Branch)
+**Stato**: Fase 10 - Polish & Release (Completata)
+
+## Milestone Recenti 🚀
+- [x] **Refactor Clean Architecture**: Creazione di `FruitVisuals` e `SaveManager`.
+- [x] **Zero-Duplication Logic**: Rimozione di 150+ righe di codice ridondante.
+- [x] **Bug Hunting v1.8.4**: Risolti glitch di transizione e ordine di spawn.
+- [x] **Spawner Polish**: Ottimizzato layout per evitare collisioni con la HUD.
 - [x] Menù di Pausa: Implementazione completa con blur shader, settings volume e navigazione.
 
 ## Task Completati ✅

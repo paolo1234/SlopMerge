@@ -22,6 +22,8 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+UIUtils="*res://core/utils/UIUtils.gd"
+
 FruitVisuals="*res://core/utils/FruitVisuals.gd"
 
 SaveManager="*res://core/autoloads/SaveManager.gd"

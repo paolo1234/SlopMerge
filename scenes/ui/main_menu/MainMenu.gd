@@ -19,6 +19,10 @@ func _ready() -> void:
 		UpdateManager.update_available.connect(_on_update_available)
 
 	_setup_juice()
+	
+	# Initial pop-in
+	UIUtils.animate_pop_in($Title)
+	UIUtils.animate_pop_in($VBoxContainer, 0.2)
 
 func _on_update_available(_version: String, _changelog: String) -> void:
 	_show_update_button()
@@ -50,20 +54,10 @@ func _setup_juice() -> void:
 	tween.tween_property($Title, "scale", Vector2(1.0, 1.0), 1.5).set_trans(Tween.TRANS_SINE)
 	$Title.pivot_offset = $Title.size / 2
 
-	# Button hover effects
+	# Standardize all buttons
 	for btn in $VBoxContainer.get_children():
 		if btn is Button:
-			btn.pivot_offset = btn.size / 2
-			if not btn.mouse_entered.is_connected(_on_button_hover.bind(btn)):
-				btn.mouse_entered.connect(_on_button_hover.bind(btn))
-			if not btn.mouse_exited.is_connected(_on_button_unhover.bind(btn)):
-				btn.mouse_exited.connect(_on_button_unhover.bind(btn))
-
-func _on_button_hover(btn: Button) -> void:
-	create_tween().tween_property(btn, "scale", Vector2(1.1, 1.1), 0.1).set_trans(Tween.TRANS_BACK)
-
-func _on_button_unhover(btn: Button) -> void:
-	create_tween().tween_property(btn, "scale", Vector2(1.0, 1.0), 0.1).set_trans(Tween.TRANS_BACK)
+			UIUtils.setup_button(btn)
 
 func _on_play_pressed() -> void:
 	print("[MainMenu] Play pressed")
