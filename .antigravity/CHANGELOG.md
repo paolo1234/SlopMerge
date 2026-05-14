@@ -1,5 +1,13 @@
 # Changelog
 
+### [1.8.2] - 2026-05-14
+- **Added**: SlopEditor (v1.0) - Strumento web-based per la gestione degli asset.
+- **Added**: "Zero-Step" Asset Workflow - Esportazione diretta in Godot senza modifiche al codice.
+- **Added**: Supporto a mappatura frutti dinamica (infiniti tier supportati).
+- **Added**: Supporto a "Visual Scale" per sprite indipendenti dal raggio di collisione.
+- **Fixed**: Hitbox scaling in `Fruit.gd` (corretto allineamento visivo/fisico).
+- **Refactor**: `NextQueue.gd` e `Slopdex.gd` ora utilizzano il sistema di mapping centralizzato.
+
 ### [1.8.1] - 2026-05-14
 - **Feat**: Introdotto sistema `SpriteSheetLayout` per la gestione centralizzata e dinamica degli atlanti. Supporta griglie semplici, nidificate e mappature esplicite.
 - **Refactor**: Rimosso calcolo manuale dei Rect2 da tutti i componenti UI e gameplay.

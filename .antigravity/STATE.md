@@ -12,22 +12,15 @@
 - [x] Update System: Corretto branch URL (master) e attivato sistema di download diretto.)
 - [x] Logica di Game Over (Cringe Line) e High Score persistente
 - [x] Fase 8: Mobile Deployment & In-Game Update
-    - [x] Implementare UpdateManager (Check version.json su GitHub)
-    - [x] Download APK asincrono con progress bar
-    - [x] Integrazione installazione nativa Android
-    - [x] Fix rendering frutti su Android (Case-sensitivity & VRAM)
-- [ ] Fase 9: Metagame & Audio
-    - [ ] Integrazione SFX (AudioManager)
-    - [ ] Screen Shake globale
-    - [ ] Feature "Frullatore del Caos"rmance (Caching & Direct Refs)
-- [x] Fix raggi di collisione nei file .tres (allineamento con sprite)
-- [x] Implementazione tutti i tier di frutta (1-11) con risorse dedicate
-- [x] Sistema di Reazioni a Catena: Floating Text e Combo Multipliers
-- [x] Upgrade Risoluzione: Porting a 1080x1920 (Full HD Mobile) e adattamento layout fisico
+- [x] **SlopEditor & Zero-Step Pipeline**: Creato tool web-based per la gestione dinamica degli asset.
+    - [x] Mapping dinamico Tier -> Sprite (senza limiti di numero).
+    - [x] Gestione collisioni (Circle/Rect) e offset visivi nell'editor.
+    - [x] Supporto "Visual Scale" per ridimensionare sprite indipendentemente dalla fisica.
+    - [x] Integrazione nativa in Godot via `SpriteSheetLayout`.
 - [x] **Gestione Spritesheet**: Implementato `SpriteSheetLayout` (sistema a risorse centralizzato).
 
 ## Task Attivi (In corso) 🛠️
-- [x] **Game-Core Sync & Revamp**: Estrazione miglioramenti generici in `game-core` e rifacimento totale dei workflow per garantire disciplina (branching, commits, testing, docs).
+- [x] **Game-Core Sync & Revamp**: Estrazione miglioramenti generici in `game-core`.
 - [ ] **Frullatore del Caos**: Implementazione abilità speciale attiva al 100% del Meter.
 - [ ] **Power-up Magnete**: Raggio traente per riposizionare frutti (Ads rewarded).
 - [ ] **Power-up Slow Motion**: Rallentamento temporaneo del tempo.
@@ -41,17 +34,11 @@
 - [x] **Performance Mobile**: Sostituite chiamate `load()` con `preload()` in GameManager e Fruit.
 - [x] **Standard Naming**: Refactoring di tutti gli script principali in `PascalCase`.
 - [x] **Debug Overhead**: Debug drawing (`_draw`) in Fruit reso condizionale a `OS.is_debug_build()`.
-- [x] **VRAM Texture Android**: Corretto import dello spritesheet da Lossless (`compress/mode=0`) a VRAM Compressed (`compress/mode=2`). Le GPU mobile richiedono texture ETC2/ASTC.
-- [x] **Null Safety Texture**: Aggiunta protezione null su `sprite.texture` in Fruit.gd, NextQueue.gd e Slopdex.gd per prevenire crash se la texture non viene caricata.
-- [x] **FileAccess → ResourceLoader**: Sostituito `FileAccess.file_exists()` con `ResourceLoader.exists()` in AudioManager.gd per compatibilità path `res://` su Android.
-### [1.7.4] - 2026-05-13
-- **Fix**: Ripristinata compressione VRAM (modalità 2) per compatibilità ottimale Android.
-- **Fix**: Risolto bug critico case-sensitivity `Fruit.tscn` -> `fruit.tscn`.
-- **Fix**: Corretto URL UpdateManager per puntare al branch `master`.
-- **Cleanup**: Rimossi asset corrotti (`pause_icon.png`).
-- **Build**: Versione 1.7.4 disponibile per update in-game.bili (VRAM compression) e permessi di archiviazione.
+- [x] **VRAM Texture Android**: Corretto import dello spritesheet da Lossless (`compress/mode=0`) a VRAM Compressed (`compress/mode=2`).
+- [x] **Null Safety Texture**: Aggiunta protezione null su `sprite.texture` in Fruit.gd, NextQueue.gd e Slopdex.gd.
+- [x] **FileAccess → ResourceLoader**: Sostituito `FileAccess.file_exists()` con `ResourceLoader.exists()` in AudioManager.gd.
 - [x] **Android Permissions**: Abilitati `WRITE_EXTERNAL_STORAGE` e `REQUEST_INSTALL_PACKAGES` per il sistema di update.
 
 ## 🛠 In Corso
-- [x] **Full Project Validation**: Eseguito testing completo di gameplay, UI e metagame. Risolto bug critico in Slopdex.
+- [x] **Full Project Validation**: Eseguito testing completo di gameplay, UI e metagame.
 - [ ] **Nuova Feature**: Implementazione "Frullatore del Caos" (Meter 100%).

@@ -1,5 +1,5 @@
 {
-  "latest_version": "1.7.9",
+  "latest_version": "1.8.2",
   "direct_apk": "https://github.com/paolo1234/SlopMerge/raw/master/slop_merge.apk",
-  "changelog": "v1.7.9: UI Modularization (Update/Cringe), VFX Positioning Fix, Responsive Layout for all resolutions."
+  "changelog": "v1.8.2: SlopEditor Integration, Dynamic Fruit Mapping, Visual Scale support and Hitbox scaling fixes."
 }
