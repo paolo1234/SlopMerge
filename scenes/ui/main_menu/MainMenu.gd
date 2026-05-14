@@ -4,34 +4,50 @@ const UPDATE_OVERLAY_SCENE = preload("res://scenes/ui/update_overlay/update_over
 var _update_tween: Tween
 
 func _ready() -> void:
-	# I segnali pressed dei bottoni menu sono già connessi nel .tscn
+	_connect_button_signals()
+	_setup_update_button()
+	_add_version_label()
+	_setup_juice()
 
-	# Update button — nascosto di default
-	var update_btn: Button = $VBoxContainer/UpdateButton
-	update_btn.visible = false
-	if not update_btn.pressed.is_connected(_on_update_pressed):
-		update_btn.pressed.connect(_on_update_pressed)
+	UIUtils.animate_pop_in($Title)
+	UIUtils.animate_pop_in($VBoxContainer, 0.2)
 
-	# Connetti segnali UpdateManager
 	if UpdateManager.is_update_available:
 		_show_update_button()
 	else:
 		UpdateManager.update_available.connect(_on_update_available)
 
-	_setup_juice()
-	_add_version_label()
-	
-	# Initial pop-in
-	UIUtils.animate_pop_in($Title)
-	UIUtils.animate_pop_in($VBoxContainer, 0.2)
+func _connect_button_signals() -> void:
+	var vbox: VBoxContainer = $VBoxContainer
+	var buttons := [
+		["PlayButton", _on_play_pressed],
+		["GachaButton", _on_gacha_pressed],
+		["SlopdexButton", _on_slopdex_pressed],
+		["WardrobeButton", _on_wardrobe_pressed],
+		["QuitButton", _on_quit_pressed]
+	]
+	for btn_data in buttons:
+		var btn: Button = vbox.get_node(btn_data[0])
+		if not btn.pressed.is_connected(btn_data[1]):
+			btn.pressed.connect(btn_data[1])
+
+func _setup_update_button() -> void:
+	var update_btn: Button = $VBoxContainer/UpdateButton
+	update_btn.visible = false
+	if not update_btn.pressed.is_connected(_on_update_pressed):
+		update_btn.pressed.connect(_on_update_pressed)
 
 func _add_version_label() -> void:
-	var v_label = Label.new()
-	v_label.text = "v" + UpdateManager.latest_version
+	var v_label: Label = $VersionLabel if has_node("VersionLabel") else Label.new()
+	var version := UpdateManager.latest_version
+	if version == "":
+		version = ProjectSettings.get_setting("application/config/version", "0.0.0")
+	v_label.text = "v" + version
 	v_label.modulate = Color(1, 1, 1, 0.4)
 	v_label.set("theme_override_font_sizes/font_size", 24)
 	
-	add_child(v_label)
+	if v_label.get_parent() == null:
+		add_child(v_label)
 	v_label.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
 	v_label.offset_bottom = -20
 	v_label.offset_right = -20

@@ -86,3 +86,21 @@ func get_volume(bus_name: String) -> float:
 	if bus_idx != -1:
 		return db_to_linear(AudioServer.get_bus_volume_db(bus_idx))
 	return 1.0
+
+func set_master_volume(linear_value: float) -> void:
+	set_volume(BUS_MASTER, linear_value)
+
+func get_master_volume() -> float:
+	return get_volume(BUS_MASTER)
+
+func set_sfx_volume(linear_value: float) -> void:
+	set_volume(BUS_SFX, linear_value)
+
+func get_sfx_volume() -> float:
+	return get_volume(BUS_SFX)
+
+func set_music_volume(linear_value: float) -> void:
+	set_volume(BUS_MUSIC, linear_value)
+
+func get_music_volume() -> float:
+	return get_volume(BUS_MUSIC)

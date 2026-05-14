@@ -1,5 +1,5 @@
 {
-  "latest_version": "1.8.7",
+  "latest_version": "1.8.8",
   "direct_apk": "https://github.com/paolo1234/SlopMerge/raw/master/slop_merge.apk",
-  "changelog": "v1.8.7: Critical bug fix for Restart/Pause race condition. Improved input blocking during transitions."
+  "changelog": "v1.8.8: Fixed main menu button navigation, restored Android app icon PNG, and repaired pause menu audio volume controls."
 }

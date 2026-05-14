@@ -1,5 +1,6 @@
 [gd_scene format=3]
 
+[ext_resource type="Script" path="res://scenes/ui/main_menu/MainMenu.gd" id="1_script"]
 [ext_resource type="Theme" path="res://assets/themes/main_theme.tres" id="2_theme"]
 [ext_resource type="Shader" path="res://assets/shaders/ui_background.gdshader" id="3_shader"]
 
@@ -26,6 +27,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_theme")
+script = ExtResource("1_script")
 
 [node name="Background" type="ColorRect" parent="." unique_id=1907805059]
 material = SubResource("ShaderMaterial_bg")
