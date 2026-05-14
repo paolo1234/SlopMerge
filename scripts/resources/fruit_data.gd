@@ -7,3 +7,9 @@ class_name FruitData
 @export var radius: float = 30.0
 @export var sprite_texture: Texture2D
 @export var next_evolution: Resource
+
+@export_group("Spritesheet Mapping")
+@export var sheet_col: int = 0
+@export var sheet_row: int = 0
+@export var frame_col: int = 0
+@export var frame_row: int = 0

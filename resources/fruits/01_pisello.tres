@@ -8,3 +8,5 @@ id = 1
 fruit_name = "Pisello Triste"
 mass = 0.8
 radius = 85.0
+sheet_col = 0
+sheet_row = 0

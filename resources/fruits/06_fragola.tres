@@ -8,3 +8,5 @@ id = 6
 fruit_name = "Fragola Sus"
 mass = 2.2
 radius = 210.0
+sheet_col = 2
+sheet_row = 1

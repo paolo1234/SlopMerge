@@ -8,3 +8,5 @@ id = 9
 fruit_name = "Cocco Longe"
 mass = 4.0
 radius = 360.0
+sheet_col = 3
+sheet_row = 0

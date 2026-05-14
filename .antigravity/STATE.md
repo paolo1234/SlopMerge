@@ -43,14 +43,11 @@
 - [x] **VRAM Texture Android**: Corretto import dello spritesheet da Lossless (`compress/mode=0`) a VRAM Compressed (`compress/mode=2`). Le GPU mobile richiedono texture ETC2/ASTC.
 - [x] **Null Safety Texture**: Aggiunta protezione null su `sprite.texture` in Fruit.gd, NextQueue.gd e Slopdex.gd per prevenire crash se la texture non viene caricata.
 - [x] **FileAccess → ResourceLoader**: Sostituito `FileAccess.file_exists()` con `ResourceLoader.exists()` in AudioManager.gd per compatibilità path `res://` su Android.
-### [1.7.4] - 2026-05-13
-- **Fix**: Ripristinata compressione VRAM (modalità 2) per compatibilità ottimale Android.
-- **Fix**: Risolto bug critico case-sensitivity `Fruit.tscn` -> `fruit.tscn`.
-- **Fix**: Corretto URL UpdateManager per puntare al branch `master`.
-- **Cleanup**: Rimossi asset corrotti (`pause_icon.png`).
-- **Build**: Versione 1.7.4 disponibile per update in-game.bili (VRAM compression) e permessi di archiviazione.
-- [x] **Android Permissions**: Abilitati `WRITE_EXTERNAL_STORAGE` e `REQUEST_INSTALL_PACKAGES` per il sistema di update.
+
+### [1.8.0] - 2026-05-14
+- **Fix**: Risolto errore di parsing SPRITESHEET (circular dependency).
+- **Fix**: Corretto percorso spritesheet.
+- **Build**: Versione 1.8.0 con APK generato.
 
 ## 🛠 In Corso
-- [x] **Full Project Validation**: Eseguito testing completo di gameplay, UI e metagame. Risolto bug critico in Slopdex.
-- [ ] **Nuova Feature**: Implementazione "Frullatore del Caos" (Meter 100%).
+- [ ] **Frullatore del Caos**: Implementazione abilità speciale attiva al 100% del Meter.

@@ -16,7 +16,6 @@ func _ready() -> void:
 	merge_area.body_entered.connect(_on_merge_area_body_entered)
 	if data:
 		_apply_data()
-	
 	# Inizializza lo shader
 	if sprite.material == null:
 		sprite.material = ShaderMaterial.new()
@@ -28,6 +27,33 @@ func _ready() -> void:
 		sprite.material = null
 	else:
 		print("[Fruit] Shader material assigned.")
+	
+
+func _setup_debug_label() -> void:
+	if not OS.is_debug_build():
+		return
+		
+	var debug_container = Node2D.new()
+	debug_container.name = "DebugContainer"
+	add_child(debug_container)
+	
+	var label = Label.new()
+	label.name = "DebugLabel"
+	label.text = data.fruit_name if data else "Unknown"
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	
+	# Stile semplice per visibilità
+	label.add_theme_font_size_override("font_size", 20)
+	label.add_theme_color_override("font_color", Color.YELLOW)
+	label.add_theme_color_override("font_outline_color", Color.BLACK)
+	label.add_theme_constant_override("outline_size", 6)
+	
+	# Posizionamento al centro
+	label.position = Vector2(-100, -20) # Centro approssimativo
+	label.custom_minimum_size = Vector2(200, 40)
+	
+	debug_container.add_child(label)
 
 func _apply_data() -> void:
 	if not data:
@@ -50,17 +76,33 @@ func _apply_data() -> void:
 		tex_size = Vector2(2048, 2048)
 		
 	sprite.region_enabled = true
+	# Revert to default filtering (Linear)
+	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_PARENT_NODE
 	
 	# Ogni frutto occupa un blocco 512x512 (griglia 4x4)
-	var fruit_sheet_size = tex_size.x / 4.0
-	var frame_size = fruit_sheet_size / 4.0
+	# Ogni blocco contiene 16 frame (faccine) in griglia 4x4 (solo le prime 2 righe usate)
+	var block_size = tex_size.x / 4.0 # 512
+	var frame_size = block_size / 4.0 # 128
 	
-	var fruit_index = (data.id - 1)
-	var col = (fruit_index % 4)
-	var row = (fruit_index / 4)
+	# Determiniamo la posizione del blocco (frutto)
+	var b_col = data.sheet_col
+	var b_row = data.sheet_row
 	
-	# Prendiamo il primo frame (0,0) del blocco del frutto
-	sprite.region_rect = Rect2(col * fruit_sheet_size, row * fruit_sheet_size, frame_size, frame_size)
+	# Se sono a 0 (default), usiamo l'ID come fallback per il blocco
+	# NOTA: sheet_row = 3 era un errore nei .tres, forziamo il ricalcolo se fuori griglia 4x4
+	if (b_col == 0 and b_row == 0) or b_row > 2:
+		var fruit_index = (data.id - 1)
+		b_col = (fruit_index % 4)
+		b_row = (fruit_index / 4)
+	
+	# Determiniamo il frame specifico (faccina)
+	var f_col = data.frame_col
+	var f_row = data.frame_row
+	
+	# Calcolo region_rect finale (con padding per evitare tagli dovuti al disallineamento della spritesheet)
+	var base_rect_x = (b_col * block_size) + (f_col * frame_size)
+	var base_rect_y = (b_row * block_size) + (f_row * frame_size)
+	sprite.region_rect = Rect2(base_rect_x, base_rect_y, frame_size, frame_size)
 	
 	# Autoscale lo sprite per corrispondere al raggio fisico
 	var target_size = data.radius * 2.0
@@ -112,6 +154,8 @@ func _process(_delta: float) -> void:
 	
 	if OS.is_debug_build():
 		queue_redraw()
+		if has_node("DebugContainer"):
+			get_node("DebugContainer").global_rotation = 0
 
 func _draw() -> void:
 	# Debug visualization

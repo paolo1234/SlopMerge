@@ -8,3 +8,5 @@ id = 8
 fruit_name = "Ananas Gigachad"
 mass = 3.3
 radius = 300.0
+sheet_col = 3
+sheet_row = 1

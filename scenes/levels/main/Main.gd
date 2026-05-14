@@ -89,6 +89,7 @@ func _adjust_layout() -> void:
 	# 2. Spawner
 	if has_node("Spawner"):
 		$Spawner.global_position.x = center_x
+		$Spawner.global_position.y = size.y - 300 # Position at the bottom
 		
 	# 3. CringeLine
 	if has_node("CringeLine"):

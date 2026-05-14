@@ -90,7 +90,7 @@ mouse_filter = 2
 
 [node name="Spawner" type="Marker2D" parent="." unique_id=1039605134]
 script = ExtResource("2_spawner")
-position = Vector2(540, 1750)
+position = Vector2(540, 250)
 
 [node name="FruitsContainer" type="Node2D" parent="." unique_id=23782574]
 

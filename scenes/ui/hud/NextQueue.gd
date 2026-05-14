@@ -23,6 +23,7 @@ func _apply_fruit_icon(target: TextureRect, data: Resource) -> void:
 	if not tex:
 		push_error("[NextQueue] SPRITESHEET is null! Cannot apply icon.")
 		return
+	target.texture_filter = Control.TEXTURE_FILTER_PARENT_NODE
 	
 	var tex_size = tex.get_size()
 	if tex_size.x <= 0:
@@ -32,14 +33,27 @@ func _apply_fruit_icon(target: TextureRect, data: Resource) -> void:
 	var atlas = AtlasTexture.new()
 	atlas.atlas = tex
 	
-	var fruit_sheet_size = tex_size.x / 4.0 # 512
-	var frame_size = fruit_sheet_size / 4.0 # 128
+	var block_size = tex_size.x / 4.0 # 512
+	var frame_size = block_size / 4.0 # 128
 	
-	var fruit_index = (data.id - 1)
-	var col = (fruit_index % 4)
-	var row = (fruit_index / 4)
+	var b_col = data.sheet_col
+	var b_row = data.sheet_row
 	
-	atlas.region = Rect2(col * fruit_sheet_size, row * fruit_sheet_size, frame_size, frame_size)
+	# Se sono a 0 (default), usiamo l'ID come fallback per il blocco
+	# NOTA: sheet_row = 3 era un errore nei .tres, forziamo il ricalcolo se fuori griglia 4x4
+	if (b_col == 0 and b_row == 0) or b_row > 2:
+		var fruit_index = (data.id - 1)
+		b_col = (fruit_index % 4)
+		b_row = (fruit_index / 4)
+	
+	var f_col = data.frame_col
+	var f_row = data.frame_row
+	
+	var base_rect_x = (b_col * block_size) + (f_col * frame_size)
+	var base_rect_y = (b_row * block_size) + (f_row * frame_size)
+	atlas.region = Rect2(base_rect_x, base_rect_y, frame_size, frame_size)
 	target.texture = atlas
+	target.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	target.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	
 	print("[NextQueue] Applied icon for ", data.fruit_name, " region: ", atlas.region)

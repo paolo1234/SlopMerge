@@ -8,3 +8,5 @@ id = 7
 fruit_name = "Melone Sigma"
 mass = 2.7
 radius = 250.0
+sheet_col = 1
+sheet_row = 2

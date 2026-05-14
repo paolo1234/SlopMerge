@@ -10,9 +10,15 @@ func _ready() -> void:
 	# Fondamentale: permetti alla UI di funzionare anche in pausa
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	
-	var gm = get_node("/root/GameManager")
-	score_label.text = "Score: " + str(gm.score)
-	high_score_label.text = "Best: " + str(gm.high_score)
+	var score = 0
+	var high_score = 0
+	
+	if has_node("/root/ScoreManager"):
+		score = ScoreManager.score
+		high_score = ScoreManager.high_score
+	
+	score_label.text = "Score: " + str(score)
+	high_score_label.text = "Best: " + str(high_score)
 	
 	restart_button.pressed.connect(_on_restart_pressed)
 	menu_button.pressed.connect(_on_menu_pressed)
@@ -38,9 +44,10 @@ func _setup_juice() -> void:
 		)
 
 func _on_restart_pressed() -> void:
-	var gm = get_node("/root/GameManager")
-	gm.is_game_over = false
-	gm.score = 0
+	print("[GameOver] Restart pressed")
+	GameManager.is_game_over = false
+	if has_node("/root/ScoreManager"):
+		ScoreManager.reset_score()
 	get_tree().paused = false
 	
 	if has_node("/root/TransitionManager"):
@@ -51,9 +58,10 @@ func _on_restart_pressed() -> void:
 	queue_free()
 
 func _on_menu_pressed() -> void:
-	var gm = get_node("/root/GameManager")
-	gm.is_game_over = false
-	gm.score = 0 # Reset score even when going to menu
+	print("[GameOver] Menu pressed")
+	GameManager.is_game_over = false
+	if has_node("/root/ScoreManager"):
+		ScoreManager.reset_score() # Reset score even when going to menu
 	get_tree().paused = false
 	
 	if has_node("/root/TransitionManager"):
