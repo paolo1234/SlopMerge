@@ -33,29 +33,27 @@ func _setup_juice() -> void:
 	UIUtils.setup_button(menu_button)
 
 func _on_restart_pressed() -> void:
+	restart_button.disabled = true
+	menu_button.disabled = true
+	
 	print("[GameOver] Restart pressed")
 	GameManager.is_game_over = false
 	if has_node("/root/ScoreManager"):
 		ScoreManager.reset_score()
 	get_tree().paused = false
 	
-	if has_node("/root/TransitionManager"):
-		get_node("/root/TransitionManager").transition_to("res://scenes/levels/main/main.tscn")
-	else:
-		get_tree().change_scene_to_file("res://scenes/levels/main/main.tscn")
-	
+	TransitionManager.transition_to("res://scenes/levels/main/main.tscn")
 	queue_free()
 
 func _on_menu_pressed() -> void:
+	restart_button.disabled = true
+	menu_button.disabled = true
+	
 	print("[GameOver] Menu pressed")
 	GameManager.is_game_over = false
 	if has_node("/root/ScoreManager"):
 		ScoreManager.reset_score() # Reset score even when going to menu
 	get_tree().paused = false
 	
-	if has_node("/root/TransitionManager"):
-		get_node("/root/TransitionManager").transition_to("res://scenes/ui/main_menu/main_menu.tscn")
-	else:
-		get_tree().change_scene_to_file("res://scenes/ui/main_menu/main_menu.tscn")
-	
+	TransitionManager.transition_to("res://scenes/ui/main_menu/main_menu.tscn")
 	queue_free()

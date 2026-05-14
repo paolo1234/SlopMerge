@@ -15,6 +15,7 @@ func transition_to(scene_path: String) -> void:
 	is_transitioning = true
 	
 	color_rect.show()
+	color_rect.mouse_filter = Control.MOUSE_FILTER_STOP
 	var tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
 	
 	# Fade out
@@ -34,4 +35,5 @@ func transition_to(scene_path: String) -> void:
 	await tween_in.finished
 	
 	color_rect.hide()
+	color_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	is_transitioning = false

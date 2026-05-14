@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.8.7] - 2026-05-14
+### Fixed
+- **Race Condition**: Prevented Pause Menu from opening during Game Over transitions.
+- **Input Blocking**: TransitionManager now correctly blocks all mouse input during fades.
+- **Double Click Protection**: GameOver buttons are now disabled immediately upon use.
+
 ## [1.8.6] - 2026-05-14
 ### Refactor
 - **UIUtils**: Added unified utility for button interactions (hover/click) and pop-in animations.
@@ -140,6 +146,13 @@ Tutte le modifiche importanti a questo progetto saranno documentate in questo fi
 - Ottimizzati raggi di collisione nei file `.tres` per evitare sovrapposizioni visive.
 
 ## [1.2.0] - 2026-05-11
+Versione Corrente: v1.8.7 (Bug Fix Release)
+Stato: Fase 10 - Polish & Release (Completata)
+
+## Milestone Recenti 🚀
+- [x] **Fix Race Condition**: Risolto il bug "Restart + Pause" segnalato dall'utente.
+- [x] **Unified UI Utility**: Tutte le animazioni bottoni centralizzate in `UIUtils`.
+
 ### Added
 - **Sistema di Combo**: Tracciamento delle fusioni consecutive con moltiplicatori di punteggio.
 - **Chain Events**: Segnalazione centralizzata delle catene di fusioni per UI e gameplay.
