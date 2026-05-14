@@ -1,7 +1,6 @@
 [gd_scene format=3]
 
 [ext_resource type="Theme" path="res://assets/themes/main_theme.tres" id="2_theme"]
-[ext_resource type="Script" path="res://scenes/ui/main_menu/MainMenu.gd" id="1_script"]
 [ext_resource type="Shader" path="res://assets/shaders/ui_background.gdshader" id="3_shader"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bg"]
@@ -20,7 +19,6 @@ shadow_color = Color(1, 0, 1, 0.3)
 shadow_offset = Vector2(8, 8)
 
 [node name="MainMenu" type="Control" unique_id=1439084022]
-script = ExtResource("1_script")
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -117,6 +115,20 @@ visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "🚀 UPDATE AVAILABLE! 🚀"
+
+[node name="VersionLabel" type="Label" parent="." unique_id=800561912]
+layout_mode = 0
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -60.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "v1.8.7"
 
 [connection signal="pressed" from="VBoxContainer/PlayButton" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="VBoxContainer/GachaButton" to="." method="_on_gacha_pressed"]

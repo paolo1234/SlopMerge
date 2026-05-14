@@ -19,10 +19,24 @@ func _ready() -> void:
 		UpdateManager.update_available.connect(_on_update_available)
 
 	_setup_juice()
+	_add_version_label()
 	
 	# Initial pop-in
 	UIUtils.animate_pop_in($Title)
 	UIUtils.animate_pop_in($VBoxContainer, 0.2)
+
+func _add_version_label() -> void:
+	var v_label = Label.new()
+	v_label.text = "v" + UpdateManager.latest_version
+	v_label.modulate = Color(1, 1, 1, 0.4)
+	v_label.set("theme_override_font_sizes/font_size", 24)
+	
+	add_child(v_label)
+	v_label.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
+	v_label.offset_bottom = -20
+	v_label.offset_right = -20
+	v_label.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	v_label.grow_vertical = Control.GROW_DIRECTION_BEGIN
 
 func _on_update_available(_version: String, _changelog: String) -> void:
 	_show_update_button()
